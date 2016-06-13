@@ -57,9 +57,6 @@ int main(int argc, char * argv[])
     glutSpecialUpFunc(SpecialKeyboardUpCallback);
     
     g_Model->load("objs/tank_bottom.obj", "objs/tank_top.obj", Vector(), "shader/vertex.glsl", "shader/fragment_toon.glsl");
-    //g_Tank.load("objs/tank_bottom.obj", "objs/tank_top.obj", Vector(), "shader/vertex.glsl", "shader/fragment_blin.glsl");
-
-    //g_Model.load("objs/sibenik.obj", "shader/underwater.glsl", "shader/fragment_toon.glsl",true);
     
     glutMainLoop();
     
