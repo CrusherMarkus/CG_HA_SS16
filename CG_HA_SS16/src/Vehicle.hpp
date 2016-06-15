@@ -13,6 +13,7 @@
 #include "Model.hpp"
 #include "Matrix.hpp"
 #include "DisplayText.hpp"
+#include "ModelBuilder.hpp"
 
 using namespace std;
 
@@ -33,8 +34,9 @@ public:
     Vector& getPosition();
 
 protected:
-    Model model;
-
+    
+    Model *model;
+    
     Matrix cannonmatrix;
     Vector position;
     double velocity;

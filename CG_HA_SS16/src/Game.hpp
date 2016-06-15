@@ -37,6 +37,7 @@ public:
     
     list<Projektil*> projektils;
 
+
 protected:
 private:
 

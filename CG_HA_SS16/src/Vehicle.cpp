@@ -19,8 +19,11 @@ Vehicle::~Vehicle() {
 bool Vehicle::load(const char* Model, const Vector& StartPos,
                 const char* vertexShader, const char* fragmentShader) {
     
-    if(!this->model.load(Model, false, vertexShader, fragmentShader))
-        return false;
+    
+    ModelBuilder modelBuilder;
+    
+    model = modelBuilder.buildModel("hallo", Model);
+
     
     Matrix m;
     m.translation(StartPos);
@@ -85,6 +88,6 @@ void Vehicle::draw() {
     glEnd();
     glPushMatrix();
     glMultMatrixf(m);
-    model.drawTriangles();
+    model->draw();
     glPopMatrix();
 }
