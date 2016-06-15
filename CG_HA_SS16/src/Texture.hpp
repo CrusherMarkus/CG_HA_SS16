@@ -24,7 +24,7 @@ public:
 protected:
     unsigned char* LoadBMP( const char* Filename, unsigned int& width, unsigned int& height );
     GLuint m_TextureID;
-
+    
 };
 
 #endif /* Texture_hpp */

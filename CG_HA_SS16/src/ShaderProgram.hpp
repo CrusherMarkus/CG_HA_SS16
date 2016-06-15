@@ -10,46 +10,41 @@
 #define ShaderProgram_hpp
 
 #include <stdio.h>
-#include <iostream>
-#include <string>
 #include <GLUT/GLUT.h>
-#include <OpenGL/OpenGL.h>
-#include <vector>
-#include <fstream>
 
 #include "Vector.hpp"
 #include "Color.hpp"
 #include "Matrix.hpp"
 
-using namespace std;
-
-class ShaderProgram{
+class ShaderProgram {
+private:
+    std::string vertexShaderCode;
+    std::string fragmentShaderCode;
+    GLuint vertexShader;
+    GLuint fragmentShader;
+    GLuint shaderProgram;
+    
 public:
     ShaderProgram();
     ~ShaderProgram();
-    bool load (const char* VertexShader, const char* FragmentShader);
-    bool loadVertexShader(const char* VertexShader);
-    bool loadFragmentShader(const char* FragmentShader);
-    bool compile(string* CompileErrors = NULL);
     
-    GLint getParameterID(const char* ParameterName) const;
+    GLint getParameterIdentifier(const char *parameterName) const;
+    void setParameter(GLint identifier, float parameter);
+    void setParameter(GLint identifier, int parameter);
+    void setParameter(GLint identifier, const Vector &parameter);
+    void setParameter(GLint identifier, const Color &parameter);
+    void setParameter(GLint identifier, const Matrix &parameter);
     
-    void setParameter(GLint ID, float Param);
-    void setParameter(GLint ID, int Param);
-    void setParameter(GLint ID, const Vector& Param);
-    void setParameter(GLint ID, const Color& Param);
-    void setParameter(GLint ID, const Matrix& Param);
-    
+    bool load(const char *vertexShaderPathAndFilename, const char *fragmentShaderPathAndFilename);
+    bool loadVertexShader(const char *vertexShaderPathAndFilename);
+    bool loadFragmentShader(const char *fragmentShaderPathAndFilename);
+    bool compile(std::string *compileErrorMessage = NULL);
     void activate() const;
     void deactivate() const;
     
 private:
-    bool loadFile(char* &Buffer, const char* FilePath, GLint &Size);
-    bool checkShaderError(GLuint Shader, string* CompileErrors);
-    
-    GLuint m_VertexShader;
-    GLuint m_FragmentShader;
-    GLuint m_ShaderProgram;
+    bool loadShaderCodeFromFile(const char *shaderPathAndFilename, std::string *shaderCode);
+    bool compileShader(GLuint shaderIdentifier, std::string *shaderCode, std::string *compileErrorMessage = NULL);
 };
 
 #endif /* ShaderProgram_hpp */

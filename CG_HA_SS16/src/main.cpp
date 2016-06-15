@@ -13,18 +13,18 @@
 #include "Camera.hpp"
 #include "Model.hpp"
 #include "Matrix.hpp"
-#include "Tank.hpp"
+#include "Game.hpp"
 
 
 const unsigned int g_WindowWidth=1024;
 const unsigned int g_WindowHeight=768;
-const Vector g_LightPos = Vector( 0,15,0);
+const Vector g_LightPos = Vector( 200,100,0);
 
-int oldTimeSinceStart = 0;
+float timeNow;
 
+Game g_Game;
+Timer g_Timer;
 Camera g_Camera;
-
-Tank* g_Model = new Tank();
 
 int g_MouseButton = 0;
 int g_MouseState = 0;
@@ -56,7 +56,8 @@ int main(int argc, char * argv[])
     glutSpecialFunc(SpecialKeyboardCallback);
     glutSpecialUpFunc(SpecialKeyboardUpCallback);
     
-    g_Model->load("objs/tank_bottom.obj", "objs/tank_top.obj", Vector(), "shader/vertex.glsl", "shader/fragment_toon.glsl");
+    g_Game.initialize();
+    
     
     glutMainLoop();
     
@@ -125,13 +126,15 @@ void DrawGroundGrid()
     
 }
 
+
 void MouseCallback(int Button, int State, int x, int y)
 {
     g_MouseButton = Button;
     g_MouseState = State;
     g_Camera.mouseInput(x,y,Button,State);
-    
 }
+
+
 
 void MouseMoveCallback( int x, int y)
 {
@@ -140,7 +143,7 @@ void MouseMoveCallback( int x, int y)
 
 void MousePassiveMoveCallback( int x, int y)
 {
-	g_Model->aim(x, y);
+
 }
 
 void KeyboardCallback( unsigned char key, int x, int y)
@@ -152,16 +155,16 @@ void SpecialKeyboardCallback( int key, int x, int y)
 {
     switch (key) {
         case GLUT_KEY_UP:
-            g_Model->steer(1.f, 0);
+            g_Game.m_Vehicle.steer(1.f, 0);
             break;
         case GLUT_KEY_DOWN:
-            g_Model->steer(-1.f, 0);
+            g_Game.m_Vehicle.steer(-1.f, 0);
             break;
         case GLUT_KEY_LEFT:
-            g_Model->steer(0, 1.f);
+            g_Game.m_Vehicle.steer(0, 1.f);
             break;
         case GLUT_KEY_RIGHT:
-            g_Model->steer(0, -1.f);
+            g_Game.m_Vehicle.steer(0, -1.f);
             break;
         default:
             break;
@@ -170,28 +173,27 @@ void SpecialKeyboardCallback( int key, int x, int y)
 
 void SpecialKeyboardUpCallback( int key, int x, int y)
 {
-    g_Model->steer(0, 0);
+    g_Game.m_Vehicle.steer(0, 0);
 }
 
 void DrawScene()
 {
-    int timeSinceStart = glutGet(GLUT_ELAPSED_TIME);
-    int deltaTime = timeSinceStart - oldTimeSinceStart;
-    oldTimeSinceStart = timeSinceStart;
-    
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     GLfloat lpos[4];
-    lpos[0]=g_LightPos.X; lpos[1]=g_LightPos.Y; lpos[2]=g_LightPos.Z; lpos[3]=1;
+    
+    lpos[0] = g_LightPos.X;
+    lpos[1] = g_LightPos.Y;
+    lpos[2] = g_LightPos.Z;
+    lpos[3] = 1;
+    
     glLightfv(GL_LIGHT0, GL_POSITION, lpos);
     
-    g_Camera.apply();
-	g_Model->draw();
-
+    
+    g_Game.gameLoop();
+    
+    
     DrawGroundGrid();
-    
-    
-    // call your tank & Scene class-members here
-    
+
     glutSwapBuffers();
     glutPostRedisplay();
     

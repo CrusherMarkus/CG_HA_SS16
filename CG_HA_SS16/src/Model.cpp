@@ -14,13 +14,13 @@
 #include <cassert>
 #include <cmath>
 #include <cfloat>
-#include "Camera.hpp"
 
 #include <string>
 #include <vector>
 #include <map>
 #include <fstream>
 #include <sstream>
+#include "Camera.hpp"
 
 #include "Model.hpp"
 
@@ -47,42 +47,63 @@ BoundingBox::BoundingBox( const Vector& min, const Vector& max) : Min(min), Max(
 {
 }
 
+void Model::loadTexture(const char* s) {
+    this->texture.LoadFromBMP(s);
+}
+
 Model::Model() : m_pVertices(NULL), m_pMaterials(NULL), m_MaterialCount(0), m_VertexCount(0)
 {
     m_pMaterials = new Material[30];
+    this->shader = new ShaderProgram();
+    this->tilingU = 1;
+    this->tilingV = 1;
 }
 
 Model::~Model()
 {
-    if( m_pVertices)
+    if( m_pVertices) {
         delete [] m_pVertices;
-    if(m_pMaterials)
-        delete [] m_pMaterials;
+    }
+    
+    delete [] m_pMaterials;
+    delete this->shader;
 }
 
-bool Model::load( const char* Filename, const char* VertexShader, const char* FragmentShader, bool FitSize)
-{
-    
+bool Model::isSelected() const {
+    return this->selected;
+}
+
+void Model::setSelected(bool isSelected) {
+    this->selected = isSelected;
+}
+
+bool Model::load(const char* Filename, bool FitSize, const char *vertexShader, const char *fragmentShader) {
     createModel(Filename, FitSize);
+    //createCube();
     
-    this->shader.load(VertexShader, FragmentShader);
-    string* tmp = new string();
-    if(!this->shader.compile(tmp)) {
-        cout << *tmp << endl;
-        
-        exit(1);
+    if(!this->shader->load(vertexShader, fragmentShader)) {
+        return false;
     }
-    delete tmp;
     
-    this->shader.activate();
-    this->shader.setParameter(this->shader.getParameterID("LightPos"), g_Camera.getViewMatrix() * g_LightPos);
-    this->shader.setParameter(this->shader.getParameterID("LightColor"), Vector(0.f, 1.f, 0.f));
-    this->shader.deactivate();
+    std::string compilerErrorMessage;
+    if (this->shader->compile(&compilerErrorMessage)) {
+        this->shader->activate();
+        this->shader->setParameter(this->shader->getParameterIdentifier("LightPos"), g_Camera.getViewMatrix() * g_LightPos); //Nochmal nachschauen
+        this->shader->setParameter(this->shader->getParameterIdentifier("LightColor"), Vector(1.f, 0.f, 0.f));
+        this->shader->deactivate();
+    } else {
+        std::cout << compilerErrorMessage;
+        
+        return false;
+    }
+    
+    this->whiteTexture.LoadFromBMP("white.bmp");
     
     return true;
 }
 
 void Model::createBoundingBox(std::vector<Vector> vertices) {
+    g_Camera.apply();
     m_Box.Max.X = m_Box.Min.X = vertices[0].X;
     m_Box.Max.Y = m_Box.Min.Y = vertices[0].Y;
     m_Box.Max.Z = m_Box.Min.Z = vertices[0].Z;
@@ -100,10 +121,201 @@ void Model::createBoundingBox(std::vector<Vector> vertices) {
     }
 }
 
+void Model::setTiling(int u, int v) {
+    this->tilingU = u;
+    this->tilingV = v;
+}
+
+void Model::showBox() const{
+    glDisable(GL_LIGHTING);
+    glColor3f(0.0, 1.0, 0.0); //rgb(54%,17%,89%) = lila
+    glBegin(GL_LINES);
+    
+    glVertex3f(m_Box.Min.X, m_Box.Max.Y, m_Box.Min.Z);
+    glVertex3f(m_Box.Min.X, m_Box.Max.Y, m_Box.Max.Z);
+    
+    glVertex3f(m_Box.Min.X, m_Box.Max.Y, m_Box.Max.Z);
+    glVertex3f(m_Box.Max.X, m_Box.Max.Y, m_Box.Max.Z);
+    
+    glVertex3f(m_Box.Max.X, m_Box.Max.Y, m_Box.Max.Z);
+    glVertex3f(m_Box.Max.X, m_Box.Max.Y, m_Box.Min.Z);
+    
+    glVertex3f(m_Box.Max.X, m_Box.Max.Y, m_Box.Min.Z);
+    glVertex3f(m_Box.Min.X, m_Box.Max.Y, m_Box.Min.Z);
+    
+    glVertex3f(m_Box.Min.X, m_Box.Min.Y, m_Box.Min.Z);
+    glVertex3f(m_Box.Min.X, m_Box.Min.Y, m_Box.Max.Z);
+    
+    glVertex3f(m_Box.Min.X, m_Box.Min.Y, m_Box.Max.Z);
+    glVertex3f(m_Box.Max.X, m_Box.Min.Y, m_Box.Max.Z);
+    
+    glVertex3f(m_Box.Max.X, m_Box.Min.Y, m_Box.Max.Z);
+    glVertex3f(m_Box.Max.X, m_Box.Min.Y, m_Box.Min.Z);
+    
+    glVertex3f(m_Box.Max.X, m_Box.Min.Y, m_Box.Min.Z);
+    glVertex3f(m_Box.Min.X, m_Box.Min.Y, m_Box.Min.Z);
+    
+    glVertex3f(m_Box.Min.X, m_Box.Max.Y, m_Box.Min.Z);
+    glVertex3f(m_Box.Min.X, m_Box.Min.Y, m_Box.Min.Z);
+    
+    glVertex3f(m_Box.Min.X, m_Box.Max.Y, m_Box.Max.Z);
+    glVertex3f(m_Box.Min.X, m_Box.Min.Y, m_Box.Max.Z);
+    
+    glVertex3f(m_Box.Max.X, m_Box.Max.Y, m_Box.Max.Z);
+    glVertex3f(m_Box.Max.X, m_Box.Min.Y, m_Box.Max.Z);
+    
+    glVertex3f(m_Box.Max.X, m_Box.Max.Y, m_Box.Min.Z);
+    glVertex3f(m_Box.Max.X, m_Box.Min.Y, m_Box.Min.Z);
+    
+    glEnd();
+    glEnable(GL_LIGHTING);
+}
+
+void Model::createRectangle(Vector size, Vector pos, const char* VertexShader, const char* FragmentShader, const char* wallpaper)
+{
+    size.X /= 2;
+    size.Y /= 2;
+    size.Z /= 2;
+    
+    Vector PositionsFromFile[8] =
+    {
+        Vector(pos.X - size.X, pos.Y - size.Y, pos.Z + size.Z),
+        Vector(pos.X - size.X,  pos.Y + size.Y, pos.Z + size.Z),
+        Vector(pos.X + size.X, pos.Y - size.Y, pos.Z + size.Z),
+        Vector(pos.X + size.X,  pos.Y + size.Y, pos.Z + size.Z),
+        Vector(pos.X + size.X, pos.Y - size.Y, pos.Z - size.Z),
+        Vector(pos.X + size.X,  pos.Y + size.Y, pos.Z - size.Z),
+        Vector(pos.X - size.X, pos.Y - size.Y, pos.Z - size.Z),
+        Vector(pos.X - size.X, pos.Y + size.Y, pos.Z - size.Z)
+    };
+    struct Texcoord
+    {
+        float s, t;
+    };
+    Texcoord TexcoordFromFile[20] =
+    {
+        { 0, 1 },
+        { 1, 0 },
+        { 0, 0 },
+        { 0, 0 },
+        { 1, 1 },
+        { 0, 1 },
+        { 1, 1 },
+        { 0, 0 },
+        { 1, 0 },
+        { 1, 0 },
+        { 0, 1 },
+        { 1, 1 },
+        { 1, 0 },
+        { 0, 0 },
+        { 1, 1 },
+        { 0, 1 },
+        { 0, 0 },
+        { 1, 0 },
+        { 0, 1 },
+        { 1, 1 }
+    };
+    struct Face
+    {
+        unsigned int vIndex[3], tIndex[3];
+    };
+    Face FacesFromFile[12]
+    {
+        //face 1
+        { 3,4,2,   9, 12, 6 },
+        { 3,2,1,   9, 6, 3 },
+        //face 2
+        { 5,6,4,   13,15,11 },
+        { 5,4,3,   13,11,8 },
+        //face 3
+        { 7,8,6,   18,20,16 },
+        { 7,6,5,   18,16,14 },
+        //face 4
+        { 1,2,8,   2,5,19 },
+        { 1,8,7,   2,19,17 },
+        //face 5
+        { 4,6,8,   10,15,19 },
+        { 4,8,2,   10,19,4 },
+        //face 6
+        { 5,3,1,   13,7,1 },
+        { 5,1,7,   13,1,17 }
+    };
+    
+    Material* material = new Material();
+    material->setName("Grundmaterial");
+    material->setAmbientColor(Color(0.1, 0.1, 0.1));
+    material->setDiffuseColor(Color(0.3, 0.3, 0.3));
+    material->setSpecularColor(Color(0.1, 0.1, 0.1));
+    material->setSpecularExponent(4.0);
+    material->setDiffuseTexture(wallpaper);
+    
+    this->m_pMaterials[this->m_MaterialCount++] = *material;
+    
+    m_pVertices = new Vertex[12 * 3];
+    m_VertexCount = 12 * 3;
+    for (int i = 0; i<12; i++)
+    {
+        unsigned int PosIdx0 = FacesFromFile[i].vIndex[0] - 1;
+        unsigned int PosIdx1 = FacesFromFile[i].vIndex[1] - 1;
+        unsigned int PosIdx2 = FacesFromFile[i].vIndex[2] - 1;
+        
+        unsigned int TexIdx0 = FacesFromFile[i].tIndex[0] - 1;
+        unsigned int TexIdx1 = FacesFromFile[i].tIndex[1] - 1;
+        unsigned int TexIdx2 = FacesFromFile[i].tIndex[2] - 1;
+        
+        Vector a = m_pVertices[i * 3].Position = PositionsFromFile[PosIdx0];
+        Vector b = m_pVertices[i * 3 + 1].Position = PositionsFromFile[PosIdx1];
+        Vector c = m_pVertices[i * 3 + 2].Position = PositionsFromFile[PosIdx2];
+        
+        m_pVertices[i * 3].TexcoordS = TexcoordFromFile[TexIdx0].s;
+        m_pVertices[i * 3 + 1].TexcoordS = TexcoordFromFile[TexIdx1].s;
+        m_pVertices[i * 3 + 2].TexcoordS = TexcoordFromFile[TexIdx2].s;
+        
+        m_pVertices[i * 3].TexcoordT = TexcoordFromFile[TexIdx0].t;
+        m_pVertices[i * 3 + 1].TexcoordT = TexcoordFromFile[TexIdx1].t;
+        m_pVertices[i * 3 + 2].TexcoordT = TexcoordFromFile[TexIdx2].t;
+        
+        Vector normal = (b - a).cross(c - a);
+        normal.normalize();
+        
+        m_pVertices[i * 3].Normal =
+        m_pVertices[i * 3 + 1].Normal =
+        m_pVertices[i * 3 + 2].Normal = normal;
+        
+        m_pVertices[i * 3].Material =
+        m_pVertices[i * 3 + 1].Material =
+        m_pVertices[i * 3 + 2].Material = material;
+    }
+    
+    //Lade den Shader
+    if (!shader->load(VertexShader, FragmentShader)) {
+        std::cout << "Cannot load Vertex- or FragmentShader:" << VertexShader << " " << FragmentShader << std::endl;
+        //sleep(5000);
+        exit(-11);
+    }
+    
+    
+    std::string compilerErrorMessage;
+    if (shader->compile(&compilerErrorMessage)) {
+        shader->activate();
+        shader->setParameter(shader->getParameterIdentifier("LightPos"), g_LightPos);//Camera
+        shader->setParameter(shader->getParameterIdentifier("LightColor"), Vector(1.f, 0.f, 0.f));
+        shader->deactivate();
+    }
+    else {
+        std::cout << compilerErrorMessage;
+        
+        //sleep(5000);
+        exit(-12);
+    }
+}
+
 void Model::createModel(const char* filename, bool fitSize) {
+    
+    
     std::ifstream inStream(filename);
     if (!inStream) {
-        std::cout << "Kann die Datei nicht oeffnen: " << filename << std::endl;
+        std::cout << "Cannot open file " << filename << std::endl;
         exit(-1);
     }
     
@@ -175,15 +387,65 @@ void Model::createModel(const char* filename, bool fitSize) {
             continue;
         }
         
+        /*// face
+         if (token[0] == 'f') {
+         token += 2;
+         
+         Face face;
+         Face face2;
+         unsigned int vertexIndex[4], texIndex[4];
+         
+         int matches = sscanf(token, "%d/%d %d/%d %d/%d %d/%d", &vertexIndex[0], &texIndex[0], &vertexIndex[1], &texIndex[1], &vertexIndex[2], &texIndex[2], &vertexIndex[3], &texIndex[3]);
+         
+         face.pidx[0] = vertexIndex[0];
+         face.pidx[1] = vertexIndex[1];
+         face.pidx[2] = vertexIndex[2];
+         face.tidx[0] = texIndex[0];
+         face.tidx[1] = texIndex[1];
+         face.tidx[2] = texIndex[2];
+         face.material = currentMaterial;
+         f.push_back(face);
+         
+         if (matches == 8) {
+         face2.pidx[0] = vertexIndex[2];
+         face2.pidx[1] = vertexIndex[3];
+         face2.pidx[2] = vertexIndex[0];
+         face2.tidx[0] = texIndex[2];
+         face2.tidx[1] = texIndex[3];
+         face2.tidx[2] = texIndex[0];
+         face.material = currentMaterial;
+         f.push_back(face2);
+         }
+         
+         continue;
+         }*/
+        
         // face
         if (token[0] == 'f') {
             token += 2;
             
             Face face;
             Face face2;
-            unsigned int vertexIndex[4], texIndex[4];
+            int vertexIndex[4] = {1, 1, 1, 1}, texIndex[4] = {1, 1, 1, 1};
+            int junk;
             
             int matches = sscanf(token, "%d/%d %d/%d %d/%d %d/%d", &vertexIndex[0], &texIndex[0], &vertexIndex[1], &texIndex[1], &vertexIndex[2], &texIndex[2], &vertexIndex[3], &texIndex[3]);
+            if (matches < 6) {
+                matches = sscanf(token, "%d/%d/%d %d/%d/%d %d/%d/%d %d/%d/%d", &vertexIndex[0], &texIndex[0], &junk, &vertexIndex[1], &texIndex[1], &junk, &vertexIndex[2], &texIndex[2], &junk, &vertexIndex[3], &texIndex[3], &junk);
+            }
+            
+            if (vertexIndex[0] < 0) {
+                vertexIndex[0] = (int)v.size() - vertexIndex[0];
+                vertexIndex[1] = (int)v.size() - vertexIndex[1];
+                vertexIndex[2] = (int)v.size() - vertexIndex[2];
+                texIndex[0] = (int)t.size() - texIndex[0];
+                texIndex[1] = (int)t.size() - texIndex[1];
+                texIndex[2] = (int)t.size() - texIndex[2];
+                if (matches == 8) {
+                    vertexIndex[3] = (int)v.size() - vertexIndex[3];
+                    texIndex[3] = (int)t.size() - texIndex[3];
+                }
+            }
             
             face.pidx[0] = vertexIndex[0];
             face.pidx[1] = vertexIndex[1];
@@ -193,7 +455,7 @@ void Model::createModel(const char* filename, bool fitSize) {
             face.tidx[2] = texIndex[2];
             face.material = currentMaterial;
             f.push_back(face);
-        
+            
             if (matches == 8) {
                 face2.pidx[0] = vertexIndex[2];
                 face2.pidx[1] = vertexIndex[3];
@@ -218,6 +480,7 @@ void Model::createModel(const char* filename, bool fitSize) {
             filepath = filepath.substr(0, filepath.find_last_of("\\/") + 1);
             
             loadMaterial((filepath + std::string(materialFile)).c_str(), materialMap);
+            
         }
         
         // use mtl
@@ -411,76 +674,70 @@ void Model::drawLines() const
     glFlush();
 }
 
-void Model::drawTriangles()
+void Model::drawTriangles() const
 {
     Material *currentMaterial = NULL;
     
-    this->shader.activate();
+    this->shader->activate();
+    
+    //std::cout << m_VertexCount << std::endl;
     
     for(unsigned int i = 0; i < m_VertexCount / 3; i++)
     {
-        
         if (this->m_pVertices[i * 3].Material != NULL && currentMaterial != this->m_pVertices[i * 3].Material) {
             currentMaterial = this->m_pVertices[i * 3].Material;
             
-     
-            float diff[4] = {currentMaterial->getDiffuseColor().R, currentMaterial->getDiffuseColor().G, currentMaterial->getDiffuseColor().B, 1};
-            float amb[4] = {currentMaterial->getAmbientColor().R, currentMaterial->getAmbientColor().G, currentMaterial->getAmbientColor().B, 1};
-            float spec[4] = {currentMaterial->getSpecularColor().R, currentMaterial->getSpecularColor().G, currentMaterial->getSpecularColor().B, 1};
+            this->shader->setParameter(this->shader->getParameterIdentifier("DiffColor"),
+                                       Vector(currentMaterial->getDiffuseColor().R,
+                                              currentMaterial->getDiffuseColor().G,
+                                              currentMaterial->getDiffuseColor().B));
+            this->shader->setParameter(this->shader->getParameterIdentifier("SpecColor"),
+                                       Vector(currentMaterial->getSpecularColor().R,
+                                              currentMaterial->getSpecularColor().G,
+                                              currentMaterial->getSpecularColor().B));
+            this->shader->setParameter(this->shader->getParameterIdentifier("AmbientColor"),
+                                       Vector(currentMaterial->getAmbientColor().R,
+                                              currentMaterial->getAmbientColor().G,
+                                              currentMaterial->getAmbientColor().B));
+            this->shader->setParameter(this->shader->getParameterIdentifier("SpecExp"), currentMaterial->getSpecularExponent());
             
-            glMaterialfv(GL_FRONT, GL_DIFFUSE, diff);
-            glMaterialfv(GL_FRONT, GL_SPECULAR, spec);
-            glMateriali(GL_FRONT, GL_SHININESS, currentMaterial->getSpecularExponent());
-            glMaterialfv(GL_FRONT, GL_AMBIENT, amb);
-     
-            this->shader.setParameter(this->shader.getParameterID("DiffColor"),
-                                      Vector(currentMaterial->getDiffuseColor().R,
-                                             currentMaterial->getDiffuseColor().G,
-                                             currentMaterial->getDiffuseColor().B));
-            this->shader.setParameter(this->shader.getParameterID("SpecColor"),
-                                      Vector(currentMaterial->getSpecularColor().R,
-                                             currentMaterial->getSpecularColor().G,
-                                             currentMaterial->getSpecularColor().B));
-            this->shader.setParameter(this->shader.getParameterID("AmbientColor"),
-                                      Vector(currentMaterial->getAmbientColor().R,
-                                             currentMaterial->getAmbientColor().G,
-                                             currentMaterial->getAmbientColor().B));
-            this->shader.setParameter(this->shader.getParameterID("SpecExp"),
-                                      currentMaterial->getSpecularExponent());
-            
-            //std::cout << currentMaterial->getTexture().isValid() << std::endl;
-            
-            glActiveTexture(GL_TEXTURE0);
-            glClientActiveTexture(GL_TEXTURE0);
-            currentMaterial->getTexture().apply();
-            this->shader.setParameter(this->shader.getParameterID("DiffuseTexture"), 0);
+            if (currentMaterial->getDiffuseTexture().isValid()) { //falls keine diffuse Texture gefunden wird, weiße Textur anwenden, da sonst schwarzes bild
+                currentMaterial->getDiffuseTexture().apply();
+            } else {
+                this->whiteTexture.apply();
+            }
+            this->shader->setParameter(this->shader->getParameterIdentifier("DiffuseTexture"), 0);
+        } else {
+            glColor3f(1, 0.6, 0.6);
         }
         
         glBegin(GL_TRIANGLES);
         
         Vertex firstVertex = m_pVertices[i * 3];
         glNormal3f(firstVertex.Normal.X, firstVertex.Normal.Y, firstVertex.Normal.Z);
-        glTexCoord2f(firstVertex.TexcoordS, firstVertex.TexcoordT);
+        glTexCoord2f(firstVertex.TexcoordS * this->tilingU, firstVertex.TexcoordT * this->tilingV);
         glVertex3f(firstVertex.Position.X, firstVertex.Position.Y, firstVertex.Position.Z);
         
         Vertex secondVertex = m_pVertices[i * 3 + 1];
         glNormal3f(secondVertex.Normal.X, secondVertex.Normal.Y, secondVertex.Normal.Z);
-        glTexCoord2f(secondVertex.TexcoordS, secondVertex.TexcoordT);
+        glTexCoord2f(secondVertex.TexcoordS * this->tilingU, secondVertex.TexcoordT * this->tilingV);
         glVertex3f(secondVertex.Position.X, secondVertex.Position.Y, secondVertex.Position.Z);
         
         Vertex thirdVertex = m_pVertices[i * 3 + 2];
         glNormal3f(thirdVertex.Normal.X, thirdVertex.Normal.Y, thirdVertex.Normal.Z);
-        glTexCoord2f(thirdVertex.TexcoordS, thirdVertex.TexcoordT);
+        glTexCoord2f(thirdVertex.TexcoordS * this->tilingU, thirdVertex.TexcoordT * this->tilingV);
         glVertex3f(thirdVertex.Position.X, thirdVertex.Position.Y, thirdVertex.Position.Z);
-        
         glEnd();
     }
-    this->shader.deactivate();
+    
+    this->shader->deactivate();
 }
 
 void Model::loadMaterial(const char* filename, std::map<std::string, int> &materialMap) {
+    std::cout << "Model::loadMaterial: " << filename << " " << &materialMap << std::endl;
     Material material;
     std::fstream inStream(filename, std::ios::in);
+    std::string noun, junk;
     
     if (!inStream) {
         std::cout << "Cannot open file " << filename << std::endl;

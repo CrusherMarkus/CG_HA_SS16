@@ -21,11 +21,11 @@ public:
     Material();
     ~Material();
     const Color& getDiffuseColor() const;
+    const Texture &getDiffuseTexture() const;
     const Color& getSpecularColor() const;
     const Color& getAmbientColor() const;
     float getSpecularExponent() const;
     const std::string& getName() const;
-    const Texture& getTexture() const;
     
     void setDiffuseColor( const Color& color);
     void setSpecularColor( const Color& color);
@@ -33,7 +33,7 @@ public:
     void setSpecularExponent( const float exp);
     void setName( const std::string& name);
     void setDiffuseTexture( const char* Filename);
-
+    
 protected:
     Color m_DiffuseColor;
     Color m_SpecularColor;
@@ -43,5 +43,4 @@ protected:
     std::string m_Name;
     
 };
-
 #endif /* Material_hpp */

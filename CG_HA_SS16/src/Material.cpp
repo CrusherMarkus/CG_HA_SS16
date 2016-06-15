@@ -47,14 +47,13 @@ const std::string& Material::getName() const
     return m_Name;
 }
 
-const Texture& Material::getTexture() const
-{
-    return m_DiffuseTexture;
-}
-
 void Material::setDiffuseColor( const Color& color)
 {
     m_DiffuseColor = color;
+}
+
+const Texture &Material::getDiffuseTexture() const {
+    return this->m_DiffuseTexture;
 }
 
 void Material::setSpecularColor( const Color& color)
