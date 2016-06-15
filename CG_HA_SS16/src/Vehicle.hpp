@@ -22,8 +22,7 @@ class Vehicle
 public:
     Vehicle();
     ~Vehicle();
-    bool load(const char* Model, const Vector& StartPos,
-              const char* vertexShader, const char* fragmentShader);
+    bool load(const char* Model, const Vector& StartPos);
     void steer(float ForwardBackward, float LeftRight);
 
     void update(float delta);

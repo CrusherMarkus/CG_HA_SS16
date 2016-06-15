@@ -18,6 +18,7 @@
 #include <map>
 #include "Material.hpp"
 #include "ShaderProgram.hpp"
+#include "ShaderManager.hpp"
 #include "Camera.hpp"
 #include "Vertex.hpp"
 #include "BoundingBox.hpp"
@@ -36,7 +37,7 @@ protected:
     Texture whiteTexture;
     BoundingBox boundingBox;
     bool selected;
-    vector<FaceGroup> faceGroups;
+    //vector<FaceGroup> faceGroups;
     
 public:
     Model(const std::string &name);

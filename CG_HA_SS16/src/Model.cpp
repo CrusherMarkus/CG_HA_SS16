@@ -74,8 +74,6 @@ void Model::setSelected(bool isSelected) {
     this->selected = isSelected;
 }
 
-#pragma mark - Public methods
-
 void Model::draw() const {
     glBindBuffer(GL_ARRAY_BUFFER, this->vertexBufferIdentififer);
     glEnableClientState(GL_VERTEX_ARRAY);
@@ -88,7 +86,7 @@ void Model::draw() const {
     glClientActiveTexture(GL_TEXTURE0);
     glTexCoordPointer(2, GL_FLOAT, sizeof(Vertex), (void *)offsetof(Vertex, TexcoordS));
     
-    ShaderProgram *shader;
+    ShaderProgram *shader = ShaderManager::getInstance().getShader("default");
     shader->activate();
     if (this->materialCount > 0) {
         Material *mat = &this->materials[0];

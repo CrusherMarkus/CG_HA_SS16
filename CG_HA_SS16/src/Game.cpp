@@ -21,7 +21,13 @@ Game::~Game()
 void Game::initialize(){
     cout << "Game::initialize" << endl;
     
-    m_Vehicle.load("objs/tank-camou.obj", Vector(0,0,-3), "shader/vertex.glsl", "shader/fragment_blin.glsl");
+    /*
+    ShaderProgram* shader;
+    shader
+    "shader/vertex.glsl", "shader/fragment_blin.glsl"
+    */
+ 
+    m_Vehicle.load("objs/lego.obj", Vector(0,0,-3));
 }
 
 

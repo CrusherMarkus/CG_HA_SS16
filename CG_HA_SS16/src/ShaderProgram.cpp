@@ -12,7 +12,7 @@
 #include <vector>
 
 ShaderProgram::ShaderProgram() {
-    
+    this->shaderProgram = glCreateProgram();
 }
 
 ShaderProgram::~ShaderProgram() {
@@ -31,6 +31,10 @@ void ShaderProgram::setParameter(GLint identifier, int parameter) {
     glUniform1i(identifier, parameter);
 }
 
+void ShaderProgram::setParameter(GLint identifier, bool parameter) {
+    glUniform1i(identifier, parameter);
+}
+
 void ShaderProgram::setParameter(GLint identifier, const Vector &parameter) {
     glUniform3f(identifier, parameter.X, parameter.Y, parameter.Z);
 }
@@ -43,26 +47,27 @@ void ShaderProgram::setParameter(GLint identifier, const Matrix &parameter ) {
     glUniformMatrix4fv(identifier, 1, GL_FALSE, (float *)&parameter);
 }
 
-bool ShaderProgram::load(const char *vertexShaderPathAndFilename, const char *fragmentShaderPathAndFilename) {
-    bool isVertexShaderLoaded = this->loadVertexShader(vertexShaderPathAndFilename);
-    if (!isVertexShaderLoaded) {
-        return false;
-    }
-    
-    bool isFragmentShaderLoaded = this->loadFragmentShader(fragmentShaderPathAndFilename);
-    if (!isFragmentShaderLoaded) {
-        return false;
-    }
-    
-    return true;
+void ShaderProgram::setLinkerParameter(GLenum pname, GLint value) {
+    glProgramParameteriEXT(this->shaderProgram, pname, value);
 }
 
-bool ShaderProgram::loadVertexShader(const char *vertexShaderPathAndFilename) {
-    return this->loadShaderCodeFromFile(vertexShaderPathAndFilename, &this->vertexShaderCode);
-}
-
-bool ShaderProgram::loadFragmentShader(const char *fragmentShaderPathAndFilename) {
-    return this->loadShaderCodeFromFile(fragmentShaderPathAndFilename, &this->fragmentShaderCode);
+void ShaderProgram::attach(GLenum type, const char *shaderPathAndFilename) {
+    std::string *shaderCode = NULL;
+    switch (type) {
+        case GL_VERTEX_SHADER:
+            shaderCode = &this->vertexShaderCode;
+            break;
+        case GL_FRAGMENT_SHADER:
+            shaderCode = &this->fragmentShaderCode;
+            break;
+        case GL_GEOMETRY_SHADER_EXT:
+            shaderCode = &this->geometryShaderCode;
+            break;
+        default:
+            throw Exception("Unsupported shader type.");
+    }
+    
+    this->loadShaderCodeFromFile(shaderPathAndFilename, shaderCode);
 }
 
 bool ShaderProgram::compile(std::string *compileErrorMessage) {
@@ -73,34 +78,22 @@ bool ShaderProgram::compile(std::string *compileErrorMessage) {
     
     this->vertexShader = glCreateShader(GL_VERTEX_SHADER);
     this->fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+    this->geometryShader = glCreateShader(GL_GEOMETRY_SHADER_EXT);
     
-    std::cout << "Compiling shaders... ";
-    bool isVertexShaderCompiled = false;
-    bool isFragementShaderCompiled = false;
+    std::cout << "Compiling and linking shaders... ";
     if (this->vertexShaderCode != "") {
-        isVertexShaderCompiled = this->compileShader(this->vertexShader, &this->vertexShaderCode, compileErrorMessage);
-        if (!isVertexShaderCompiled) {
-            return false;
-        }
-    }
-    if (this->fragmentShaderCode != "") {
-        isFragementShaderCompiled = this->compileShader(this->fragmentShader, &this->fragmentShaderCode, compileErrorMessage);
-        if (!isFragementShaderCompiled) {
-            return false;
-        }
-    }
-    std::cout << "Done!" << std::endl;
-    
-    std::cout << "Linking shaders... ";
-    this->shaderProgram = glCreateProgram();
-    if (isVertexShaderCompiled) {
+        this->compileShader(this->vertexShader, &this->vertexShaderCode, compileErrorMessage);
         glAttachShader(this->shaderProgram, this->vertexShader);
     }
-    if (isFragementShaderCompiled) {
+    if (this->fragmentShaderCode != "") {
+        this->compileShader(this->fragmentShader, &this->fragmentShaderCode, compileErrorMessage);
         glAttachShader(this->shaderProgram, this->fragmentShader);
     }
+    if (this->geometryShaderCode != "") {
+        this->compileShader(this->geometryShader, &this->geometryShaderCode, compileErrorMessage);
+        glAttachShader(this->shaderProgram, this->geometryShader);
+    }
     glLinkProgram(this->shaderProgram);
-    
     GLint linkResult = GL_FALSE;
     int infoLogLength;
     glGetProgramiv(this->shaderProgram, GL_LINK_STATUS, &linkResult);
@@ -117,6 +110,7 @@ bool ShaderProgram::compile(std::string *compileErrorMessage) {
     
     glDeleteShader(this->vertexShader);
     glDeleteShader(this->fragmentShader);
+    glDeleteShader(this->geometryShader);
     
     return true;
 }
@@ -129,12 +123,13 @@ void ShaderProgram::deactivate() const {
     glUseProgram(0);
 }
 
-bool ShaderProgram::loadShaderCodeFromFile(const char *shaderPathAndFilename, std::string *shaderCode) {
+void ShaderProgram::loadShaderCodeFromFile(const char *shaderPathAndFilename, std::string *shaderCode) {
     std::ifstream shaderStream(shaderPathAndFilename, std::ios::in);
     
     if (!shaderStream.is_open()) {
-        std::cout << "Could not open " << shaderPathAndFilename << std::endl;
-        return false;
+        char *errorMessage;
+        sprintf(errorMessage, "Could not open file %s for reading.", shaderPathAndFilename);
+        throw Exception(errorMessage);
     }
     
     std::cout << "Loading " << shaderPathAndFilename << "...";
@@ -146,8 +141,6 @@ bool ShaderProgram::loadShaderCodeFromFile(const char *shaderPathAndFilename, st
     shaderStream.close();
     
     std::cout << " Done!" << std::endl;
-    
-    return true;
 }
 
 bool ShaderProgram::compileShader(GLuint shaderIdentifier, std::string *shaderCode, std::string *compileErrorMessage) {

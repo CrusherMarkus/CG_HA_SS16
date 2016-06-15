@@ -18,7 +18,7 @@
 
 const unsigned int g_WindowWidth=1024;
 const unsigned int g_WindowHeight=768;
-const Vector g_LightPos = Vector( 200,100,0);
+const Vector g_LightPos = Vector( 0,15,0);
 
 float timeNow;
 

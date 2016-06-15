@@ -16,8 +16,7 @@ Vehicle::~Vehicle() {
 
 }
 
-bool Vehicle::load(const char* Model, const Vector& StartPos,
-                const char* vertexShader, const char* fragmentShader) {
+bool Vehicle::load(const char* Model, const Vector& StartPos) {
     
     
     ModelBuilder modelBuilder;
@@ -27,9 +26,13 @@ bool Vehicle::load(const char* Model, const Vector& StartPos,
     
     Matrix m;
     m.translation(StartPos);
-    
+    m.scale(0.1);
+
     m_MatrixVehicle *=m;
     position = StartPos;
+    
+    
+
     
     return true;
 }

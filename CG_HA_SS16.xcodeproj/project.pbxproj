@@ -32,6 +32,8 @@
 		88E77F291D11A81100E045A6 /* ObjParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88E77F271D11A81100E045A6 /* ObjParser.cpp */; };
 		88E77F2B1D11C4E900E045A6 /* libboost_filesystem.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 88E77F2A1D11C4E900E045A6 /* libboost_filesystem.a */; };
 		88E77F2D1D11C51700E045A6 /* libboost_system.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 88E77F2C1D11C51700E045A6 /* libboost_system.a */; };
+		88E77F771D11D93000E045A6 /* ShaderManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88E77F751D11D93000E045A6 /* ShaderManager.cpp */; };
+		88E77F7B1D11DA2100E045A6 /* LightManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88E77F791D11DA2100E045A6 /* LightManager.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -54,8 +56,6 @@
 		881DF5401D1095F0006A0D83 /* Vehicle.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Vehicle.hpp; path = src/Vehicle.hpp; sourceTree = "<group>"; };
 		881DF5421D10A3F4006A0D83 /* RGBImage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = RGBImage.cpp; path = src/RGBImage.cpp; sourceTree = "<group>"; };
 		881DF5431D10A3F4006A0D83 /* RGBImage.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = RGBImage.hpp; path = src/RGBImage.hpp; sourceTree = "<group>"; };
-		886D28441D10D3310047659B /* fragment_blin.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = fragment_blin.glsl; path = shader/fragment_blin.glsl; sourceTree = "<group>"; };
-		886D28451D10D3310047659B /* vertex.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = vertex.glsl; path = shader/vertex.glsl; sourceTree = "<group>"; };
 		887C3EC71D1124DE00CC0E32 /* Projektil.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Projektil.cpp; path = src/Projektil.cpp; sourceTree = "<group>"; };
 		887C3EC81D1124DE00CC0E32 /* Projektil.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Projektil.hpp; path = src/Projektil.hpp; sourceTree = "<group>"; };
 		887F7C151D0F0D0C001C0651 /* Camera.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Camera.hpp; path = src/Camera.hpp; sourceTree = "<group>"; };
@@ -95,6 +95,11 @@
 		88E77F281D11A81100E045A6 /* ObjParser.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ObjParser.hpp; path = src/ObjParser.hpp; sourceTree = "<group>"; };
 		88E77F2A1D11C4E900E045A6 /* libboost_filesystem.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_filesystem.a; path = ../../../../../usr/local/Cellar/boost/1.60.0_2/lib/libboost_filesystem.a; sourceTree = "<group>"; };
 		88E77F2C1D11C51700E045A6 /* libboost_system.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_system.a; path = ../../../../../usr/local/Cellar/boost/1.60.0_2/lib/libboost_system.a; sourceTree = "<group>"; };
+		88E77F751D11D93000E045A6 /* ShaderManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ShaderManager.cpp; path = src/ShaderManager.cpp; sourceTree = "<group>"; };
+		88E77F761D11D93000E045A6 /* ShaderManager.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ShaderManager.hpp; path = src/ShaderManager.hpp; sourceTree = "<group>"; };
+		88E77F781D11D99700E045A6 /* Exception.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Exception.hpp; path = src/Exception.hpp; sourceTree = "<group>"; };
+		88E77F791D11DA2100E045A6 /* LightManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = LightManager.cpp; path = src/LightManager.cpp; sourceTree = "<group>"; };
+		88E77F7A1D11DA2100E045A6 /* LightManager.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = LightManager.hpp; path = src/LightManager.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -135,7 +140,6 @@
 		881053EE1D0B0CA700AF3EDC /* CG_HA_SS16 */ = {
 			isa = PBXGroup;
 			children = (
-				886D28441D10D3310047659B /* fragment_blin.glsl */,
 				881DF5601D10BB26006A0D83 /* Game */,
 				881DF5611D10BB3E006A0D83 /* Geometry */,
 				887F7C201D0F0D0C001C0651 /* main.cpp */,
@@ -143,7 +147,6 @@
 				881DF55F1D10BAF8006A0D83 /* Model */,
 				881DF55E1D10BAEB006A0D83 /* Shader */,
 				881DF5621D10BB59006A0D83 /* Utility */,
-				886D28451D10D3310047659B /* vertex.glsl */,
 			);
 			path = CG_HA_SS16;
 			sourceTree = "<group>";
@@ -166,6 +169,8 @@
 			children = (
 				887F7C241D0F0D0C001C0651 /* ShaderProgram.cpp */,
 				887F7C1A1D0F0D0C001C0651 /* ShaderProgram.hpp */,
+				88E77F751D11D93000E045A6 /* ShaderManager.cpp */,
+				88E77F761D11D93000E045A6 /* ShaderManager.hpp */,
 			);
 			name = Shader;
 			sourceTree = "<group>";
@@ -226,6 +231,9 @@
 				881DF5431D10A3F4006A0D83 /* RGBImage.hpp */,
 				888CB0BD1D107EE5002F6FB0 /* Timer.cpp */,
 				888CB0BE1D107EE5002F6FB0 /* Timer.hpp */,
+				88E77F781D11D99700E045A6 /* Exception.hpp */,
+				88E77F791D11DA2100E045A6 /* LightManager.cpp */,
+				88E77F7A1D11DA2100E045A6 /* LightManager.hpp */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -286,7 +294,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				88E77F771D11D93000E045A6 /* ShaderManager.cpp in Sources */,
 				887F7C2B1D0F0D0C001C0651 /* Material.cpp in Sources */,
+				88E77F7B1D11DA2100E045A6 /* LightManager.cpp in Sources */,
 				887F7C281D0F0D0C001C0651 /* Camera.cpp in Sources */,
 				88E77F291D11A81100E045A6 /* ObjParser.cpp in Sources */,
 				887C3EC91D1124DE00CC0E32 /* Projektil.cpp in Sources */,
