@@ -23,6 +23,8 @@
 extern Camera g_Camera;
 extern const Vector g_LightPos;
 
+using namespace std;
+
 struct Vertex {
     Vertex();
     Vertex( const Vector& p, const Vector& n, float TexS, float TexT, Material *material);

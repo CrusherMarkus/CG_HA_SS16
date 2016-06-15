@@ -13,6 +13,10 @@
 #include "Vehicle.hpp"
 #include "Timer.hpp"
 #include "Camera.hpp"
+#include "Projektil.hpp"
+#include <list>
+#include <GLUT/GLUT.h>
+
 
 extern Timer g_Timer;
 extern Camera g_Camera;
@@ -28,8 +32,11 @@ public:
     void initialize();
 	void gameLoop();
     void gameLogic();
-    
+    void spawnProjektil();
     Vehicle m_Vehicle;
+    
+    list<Projektil*> projektils;
+
 protected:
 private:
 

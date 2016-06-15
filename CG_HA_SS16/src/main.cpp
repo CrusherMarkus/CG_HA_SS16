@@ -126,12 +126,22 @@ void DrawGroundGrid()
     
 }
 
-
 void MouseCallback(int Button, int State, int x, int y)
 {
     g_MouseButton = Button;
     g_MouseState = State;
     g_Camera.mouseInput(x,y,Button,State);
+    
+    
+    switch (Button)
+    {
+        case  GLUT_LEFT_BUTTON:
+            if(State != 0)
+            {
+                g_Game.spawnProjektil();
+            }
+            break;
+    }
 }
 
 

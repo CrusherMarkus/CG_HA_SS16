@@ -12,11 +12,14 @@
 #include <stdio.h>
 #include "Model.hpp"
 #include "Matrix.hpp"
+#include "DisplayText.hpp"
+
+using namespace std;
 
 class Vehicle
 {
 public:
-    Vehicle(): model(), position(), speed(0), rotation(0) {}
+    Vehicle();
     ~Vehicle();
     bool load(const char* Model, const Vector& StartPos,
               const char* vertexShader, const char* fragmentShader);
@@ -25,23 +28,21 @@ public:
     void update(float delta);
     void draw();
     
-    const Matrix& getModelViewMatrix() const;
-    
-    void setPosition(const Vector& position);
-    const Vector& getPosition() const;
+    Matrix m_MatrixVehicle;
+    float forwardBackward;
+    Vector& getPosition();
+
 protected:
     Model model;
-    
-    float speed;
-    float rotation;
 
-	Vector position;
-    float left;
-    float right;
-    float steerAngle;
-    float heading;
+    Matrix cannonmatrix;
+    Vector position;
+    double velocity;
+    float leftRight;
+    float drehung;
+    Vector p;
     
-    Matrix m_VehicleMatrix;
+    DisplayText* displayText;
 };
 
 

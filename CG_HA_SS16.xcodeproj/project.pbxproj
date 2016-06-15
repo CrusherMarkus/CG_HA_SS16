@@ -11,6 +11,7 @@
 		881053F91D0B0D2200AF3EDC /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 881053F81D0B0D2200AF3EDC /* GLUT.framework */; };
 		881DF5411D1095F0006A0D83 /* Vehicle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 881DF53F1D1095F0006A0D83 /* Vehicle.cpp */; };
 		881DF5441D10A3F4006A0D83 /* RGBImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 881DF5421D10A3F4006A0D83 /* RGBImage.cpp */; };
+		887C3EC91D1124DE00CC0E32 /* Projektil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 887C3EC71D1124DE00CC0E32 /* Projektil.cpp */; };
 		887F7C281D0F0D0C001C0651 /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 887F7C1E1D0F0D0C001C0651 /* Camera.cpp */; };
 		887F7C291D0F0D0C001C0651 /* Color.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 887F7C1F1D0F0D0C001C0651 /* Color.cpp */; };
 		887F7C2A1D0F0D0C001C0651 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 887F7C201D0F0D0C001C0651 /* main.cpp */; };
@@ -46,6 +47,8 @@
 		881DF5431D10A3F4006A0D83 /* RGBImage.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = RGBImage.hpp; path = src/RGBImage.hpp; sourceTree = "<group>"; };
 		886D28441D10D3310047659B /* fragment_blin.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = fragment_blin.glsl; path = shader/fragment_blin.glsl; sourceTree = "<group>"; };
 		886D28451D10D3310047659B /* vertex.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = vertex.glsl; path = shader/vertex.glsl; sourceTree = "<group>"; };
+		887C3EC71D1124DE00CC0E32 /* Projektil.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Projektil.cpp; path = src/Projektil.cpp; sourceTree = "<group>"; };
+		887C3EC81D1124DE00CC0E32 /* Projektil.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Projektil.hpp; path = src/Projektil.hpp; sourceTree = "<group>"; };
 		887F7C151D0F0D0C001C0651 /* Camera.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Camera.hpp; path = src/Camera.hpp; sourceTree = "<group>"; };
 		887F7C161D0F0D0C001C0651 /* Color.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Color.hpp; path = src/Color.hpp; sourceTree = "<group>"; };
 		887F7C171D0F0D0C001C0651 /* Material.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Material.hpp; path = src/Material.hpp; sourceTree = "<group>"; };
@@ -156,6 +159,8 @@
 				888CB0B51D106DAB002F6FB0 /* Game.hpp */,
 				881DF53F1D1095F0006A0D83 /* Vehicle.cpp */,
 				881DF5401D1095F0006A0D83 /* Vehicle.hpp */,
+				887C3EC71D1124DE00CC0E32 /* Projektil.cpp */,
+				887C3EC81D1124DE00CC0E32 /* Projektil.hpp */,
 			);
 			name = Game;
 			sourceTree = "<group>";
@@ -240,6 +245,7 @@
 			files = (
 				887F7C2B1D0F0D0C001C0651 /* Material.cpp in Sources */,
 				887F7C281D0F0D0C001C0651 /* Camera.cpp in Sources */,
+				887C3EC91D1124DE00CC0E32 /* Projektil.cpp in Sources */,
 				881DF5411D1095F0006A0D83 /* Vehicle.cpp in Sources */,
 				887F7C291D0F0D0C001C0651 /* Color.cpp in Sources */,
 				881DF5441D10A3F4006A0D83 /* RGBImage.cpp in Sources */,

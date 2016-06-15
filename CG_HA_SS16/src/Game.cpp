@@ -21,7 +21,31 @@ Game::~Game()
 void Game::initialize(){
     cout << "Game::initialize" << endl;
     
-    m_Vehicle.load("objs/tank-camou.obj", Vector(0,0,0), "shader/vertex.glsl", "shader/fragment_blin.glsl");
+    m_Vehicle.load("objs/tank-camou.obj", Vector(0,0,-3), "shader/vertex.glsl", "shader/fragment_blin.glsl");
+}
+
+
+
+void Game::spawnProjektil()
+{
+    
+    Vector playerPosition = m_Vehicle.getPosition();
+    cout << "playerPosition->X: " << playerPosition.X << endl;
+    cout << "playerPosition->Y: " << playerPosition.Y << endl;
+    cout << "playerPosition->Z: " << playerPosition.Z << endl;
+    
+    
+    Vector* projectilePosition = new Vector(playerPosition.X, playerPosition.Y, playerPosition.Z);
+    Vector* direction = new Vector(0,0,1);
+    *direction = direction->normalize();
+    
+    projectilePosition->Z += direction->Z;
+    
+    cout << "projectilePosition->X: " << projectilePosition->X << endl;
+    cout << "projectilePosition->Y: " << projectilePosition->Y << endl;
+    cout << "projectilePosition->Z: " << projectilePosition->Z << endl;
+    
+    projektils.push_back(new Projektil(*projectilePosition, *direction));
 }
 
 void Game::gameLoop() {
@@ -33,14 +57,23 @@ void Game::gameLoop() {
     g_Timer.calcTime();
     float deltaTimeInSeconds = g_Timer.getDeltaTimeInSeconds();
     
-
+    
     m_Vehicle.update(deltaTimeInSeconds);
     m_Vehicle.draw();
 
     g_Camera.apply();
-    /*Camera Position updaten*/
-    /*m_Camera.update(m_Vehicle.getPosition(), m_Vehicle.getModelViewMatrix().forward(), 7.0f, m_Vehicle.getPosition().Y + 3.0f, 4.0f, deltaTimeInSeconds);
-    m_Camera.apply();*/
+    
+    
+    glColor3d(0,1,0);
+    for (list<Projektil*>::const_iterator it = (projektils).begin(); it != (projektils).end();)
+    {
+
+        (**it).getPosition().X;
+        (**it).draw(deltaTimeInSeconds);
+        ++it;
+    }
+    
+    
 }
 
 void Game::gameLogic() {

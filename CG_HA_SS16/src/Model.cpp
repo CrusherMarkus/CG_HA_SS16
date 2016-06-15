@@ -734,7 +734,7 @@ void Model::drawTriangles() const
 }
 
 void Model::loadMaterial(const char* filename, std::map<std::string, int> &materialMap) {
-    std::cout << "Model::loadMaterial: " << filename << " " << &materialMap << std::endl;
+    std::cout << "Model::loadMaterial: " << filename << std::endl;
     Material material;
     std::fstream inStream(filename, std::ios::in);
     std::string noun, junk;
