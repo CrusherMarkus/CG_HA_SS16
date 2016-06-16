@@ -16,30 +16,29 @@ Vehicle::~Vehicle() {
 
 }
 
-bool Vehicle::load(const char* Model, const Vector& StartPos) {
+bool Vehicle::load(const char* Model, const Vector& StartPos, float scale) {
     
     
     ModelBuilder modelBuilder;
-    
-    model = modelBuilder.buildModel("hallo", Model);
+    model = modelBuilder.buildModel("Vehicle", Model);
 
     
     Matrix m;
     m.translation(StartPos);
-    m.scale(0.1);
-
     m_MatrixVehicle *=m;
     position = StartPos;
     
     
-
+    
     
     return true;
 }
 
 void Vehicle::steer(float ForwardBackward, float LeftRight) {
+    /*
     cout << "ForwardBackward: " << ForwardBackward << endl;
     cout << "LeftRight: " << LeftRight << endl;
+    */
     forwardBackward = ForwardBackward;
     leftRight = LeftRight;
 }
@@ -49,17 +48,14 @@ void Vehicle::steer(float ForwardBackward, float LeftRight) {
 void Vehicle::update(float delta){
     
     this->position = m_MatrixVehicle.translation();
-    /*
-    cout << "m_MatrixVehicle.translation().X:" << m_MatrixVehicle.translation().X << endl;
-    cout << "m_MatrixVehicle.translation().Y:" << m_MatrixVehicle.translation().Y << endl;
-    cout << "m_MatrixVehicle.translation().Z:" << m_MatrixVehicle.translation().Z << endl;
+    
     cout << "this->position.X:" << this->position.X << endl;
     cout << "this->position.Y:" << this->position.Y << endl;
-    cout << "this->position.Z:" << this->position.Z << endl;*/
+    cout << "this->position.Z:" << this->position.Z << endl;
     
     Matrix m;
     
-    if((m_MatrixVehicle.translation().Z>=0 && forwardBackward == 1) || (m_MatrixVehicle.translation().Z<=-3 && forwardBackward ==-1)){
+    if((this->position.Z>=0 && forwardBackward == 1) || (this->position.Z<=-3 && forwardBackward ==-1)){
         cout << "Z-Grenze erreicht!" << endl;
         
     }else{
@@ -67,7 +63,7 @@ void Vehicle::update(float delta){
         m_MatrixVehicle *= m;
     }
     
-    if((m_MatrixVehicle.translation().X>3 && leftRight == 1) || (m_MatrixVehicle.translation().X<=-3 && leftRight ==-1)){
+    if((this->position.X>3 && leftRight == 1) || (this->position.X<=-3 && leftRight ==-1)){
         cout << "X-Grenze erreicht!" << endl;
         
     }else{
@@ -80,9 +76,17 @@ Vector& Vehicle::getPosition(){
     return this->position;
 }
 
+void Vehicle::setPositionX(float x){
+    this->position.X = x;
+}
+void Vehicle::setPositionY(float y){
+    this->position.Y = y;
+}
+void Vehicle::setPositionZ(float z){
+    this->position.Z = z;
+}
+
 void Vehicle::draw() {
-    Matrix m = m_MatrixVehicle;
-        
     
     glPointSize(10);
     glBegin(GL_POINTS);
@@ -90,7 +94,7 @@ void Vehicle::draw() {
     glVertex3f(p.X, p.Y, p.Z);
     glEnd();
     glPushMatrix();
-    glMultMatrixf(m);
+    glMultMatrixf(m_MatrixVehicle);
     model->draw();
     glPopMatrix();
 }

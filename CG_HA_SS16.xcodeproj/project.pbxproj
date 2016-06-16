@@ -23,6 +23,7 @@
 		887F7C311D0F0D0C001C0651 /* Vector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 887F7C271D0F0D0C001C0651 /* Vector.cpp */; };
 		888CB0B61D106DAB002F6FB0 /* Game.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 888CB0B41D106DAB002F6FB0 /* Game.cpp */; };
 		888CB0BF1D107EE5002F6FB0 /* Timer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 888CB0BD1D107EE5002F6FB0 /* Timer.cpp */; };
+		88CACC111D12F2E5003540CF /* GLUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88CACC101D12F2E5003540CF /* GLUI.framework */; };
 		88E77F171D119ED200E045A6 /* Vertex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88E77F151D119ED200E045A6 /* Vertex.cpp */; };
 		88E77F1A1D119F7200E045A6 /* BoundingBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88E77F181D119F7200E045A6 /* BoundingBox.cpp */; };
 		88E77F1D1D11A1CA00E045A6 /* ObjModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88E77F1B1D11A1CA00E045A6 /* ObjModel.cpp */; };
@@ -79,6 +80,7 @@
 		888CB0B51D106DAB002F6FB0 /* Game.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Game.hpp; path = src/Game.hpp; sourceTree = "<group>"; };
 		888CB0BD1D107EE5002F6FB0 /* Timer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Timer.cpp; path = src/Timer.cpp; sourceTree = "<group>"; };
 		888CB0BE1D107EE5002F6FB0 /* Timer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Timer.hpp; path = src/Timer.hpp; sourceTree = "<group>"; };
+		88CACC101D12F2E5003540CF /* GLUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUI.framework; path = ../../../../../Library/Frameworks/GLUI.framework; sourceTree = "<group>"; };
 		88E77F151D119ED200E045A6 /* Vertex.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Vertex.cpp; path = src/Vertex.cpp; sourceTree = "<group>"; };
 		88E77F161D119ED200E045A6 /* Vertex.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Vertex.hpp; path = src/Vertex.hpp; sourceTree = "<group>"; };
 		88E77F181D119F7200E045A6 /* BoundingBox.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BoundingBox.cpp; path = src/BoundingBox.cpp; sourceTree = "<group>"; };
@@ -107,6 +109,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				88CACC111D12F2E5003540CF /* GLUI.framework in Frameworks */,
 				88E77F2D1D11C51700E045A6 /* libboost_system.a in Frameworks */,
 				88E77F2B1D11C4E900E045A6 /* libboost_filesystem.a in Frameworks */,
 				881053F91D0B0D2200AF3EDC /* GLUT.framework in Frameworks */,
@@ -120,6 +123,7 @@
 		881053E31D0B0CA700AF3EDC = {
 			isa = PBXGroup;
 			children = (
+				88CACC101D12F2E5003540CF /* GLUI.framework */,
 				88E77F2C1D11C51700E045A6 /* libboost_system.a */,
 				88E77F2A1D11C4E900E045A6 /* libboost_filesystem.a */,
 				881053F81D0B0D2200AF3EDC /* GLUT.framework */,
@@ -407,6 +411,10 @@
 		881053F41D0B0CA700AF3EDC /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LOCAL_LIBRARY_DIR)/Frameworks",
+				);
 				HEADER_SEARCH_PATHS = /usr/local/include/;
 				LIBRARY_SEARCH_PATHS = (
 					/usr/local/lib/,
@@ -419,6 +427,10 @@
 		881053F51D0B0CA700AF3EDC /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(LOCAL_LIBRARY_DIR)/Frameworks",
+				);
 				HEADER_SEARCH_PATHS = /usr/local/include/;
 				LIBRARY_SEARCH_PATHS = (
 					/usr/local/lib/,

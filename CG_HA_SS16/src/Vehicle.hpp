@@ -22,7 +22,7 @@ class Vehicle
 public:
     Vehicle();
     ~Vehicle();
-    bool load(const char* Model, const Vector& StartPos);
+    bool load(const char* Model, const Vector& StartPos, float scale);
     void steer(float ForwardBackward, float LeftRight);
 
     void update(float delta);
@@ -31,6 +31,9 @@ public:
     Matrix m_MatrixVehicle;
     float forwardBackward;
     Vector& getPosition();
+    void setPositionX(float x);
+    void setPositionY(float y);
+    void setPositionZ(float z);
 
 protected:
     

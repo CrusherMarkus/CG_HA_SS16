@@ -39,8 +39,6 @@ Model::~Model() {
     //delete [] this->materials;
 }
 
-#pragma mark - Getter/Setter
-
 std::string &Model::getName() {
     return this->name;
 }

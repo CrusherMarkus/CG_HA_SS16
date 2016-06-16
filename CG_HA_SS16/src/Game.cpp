@@ -27,7 +27,7 @@ void Game::initialize(){
     "shader/vertex.glsl", "shader/fragment_blin.glsl"
     */
  
-    m_Vehicle.load("objs/lego.obj", Vector(0,0,-3));
+    m_Vehicle.load("objs/tank-camou.obj", Vector(0,0,-3),0.5);
 }
 
 
@@ -36,9 +36,9 @@ void Game::spawnProjektil()
 {
     
     Vector playerPosition = m_Vehicle.getPosition();
-    cout << "playerPosition->X: " << playerPosition.X << endl;
+    /*cout << "playerPosition->X: " << playerPosition.X << endl;
     cout << "playerPosition->Y: " << playerPosition.Y << endl;
-    cout << "playerPosition->Z: " << playerPosition.Z << endl;
+    cout << "playerPosition->Z: " << playerPosition.Z << endl;*/
     
     
     Vector* projectilePosition = new Vector(playerPosition.X, playerPosition.Y, playerPosition.Z);

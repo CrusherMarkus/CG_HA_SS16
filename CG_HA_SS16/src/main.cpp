@@ -14,21 +14,21 @@
 #include "Model.hpp"
 #include "Matrix.hpp"
 #include "Game.hpp"
-
+#include <GLUI/GLUI.h>
 
 const unsigned int g_WindowWidth=1024;
 const unsigned int g_WindowHeight=768;
-const Vector g_LightPos = Vector( 0,15,0);
-
-float timeNow;
 
 Game g_Game;
 Timer g_Timer;
 Camera g_Camera;
+GLUI g_Glui;
 
 int g_MouseButton = 0;
 int g_MouseState = 0;
+int g_MainWindow = 0;
 
+void SetupGLUI();
 void SetupDefaultGLSettings();
 void DrawScene();
 void MouseCallback(int Button, int State, int x, int y);
@@ -44,7 +44,7 @@ int main(int argc, char * argv[])
     glutInitWindowSize(g_WindowWidth, g_WindowHeight);
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_RGB | GLUT_DEPTH | GLUT_DOUBLE);
-    glutCreateWindow("CG Praktikum");
+    g_MainWindow = glutCreateWindow("CG Praktikum");
     
     SetupDefaultGLSettings();
     
@@ -56,13 +56,23 @@ int main(int argc, char * argv[])
     glutSpecialFunc(SpecialKeyboardCallback);
     glutSpecialUpFunc(SpecialKeyboardUpCallback);
     
+    
     g_Game.initialize();
     
+    SetupGLUI();
     
     glutMainLoop();
     
 }
 
+void SetupGLUI() {
+    GLUI *glui = GLUI_Master.create_glui_subwindow(g_MainWindow, GLUI_SUBWINDOW_RIGHT);
+    GLUI_Panel* model_panel = glui->add_panel("Vehicle");
+    GLUI_StaticText* gluiStaticText;
+
+    
+
+}
 
 void SetupDefaultGLSettings()
 {
@@ -189,14 +199,7 @@ void SpecialKeyboardUpCallback( int key, int x, int y)
 void DrawScene()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    GLfloat lpos[4];
-    
-    lpos[0] = g_LightPos.X;
-    lpos[1] = g_LightPos.Y;
-    lpos[2] = g_LightPos.Z;
-    lpos[3] = 1;
-    
-    glLightfv(GL_LIGHT0, GL_POSITION, lpos);
+
     
     
     g_Game.gameLoop();
