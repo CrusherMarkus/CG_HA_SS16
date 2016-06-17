@@ -18,6 +18,8 @@
 
 const unsigned int g_WindowWidth=1024;
 const unsigned int g_WindowHeight=768;
+const Vector g_LightPos = Vector( 0,100,10);
+
 
 Game g_Game;
 Timer g_Timer;

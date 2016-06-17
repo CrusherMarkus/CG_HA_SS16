@@ -19,15 +19,11 @@ Game::~Game()
 }
 
 void Game::initialize(){
-    cout << "Game::initialize" << endl;
+    cout << "Game::initialize()" << endl;
     
-    /*
-    ShaderProgram* shader;
-    shader
-    "shader/vertex.glsl", "shader/fragment_blin.glsl"
-    */
- 
-    m_Vehicle.load("objs/tank-camou.obj", Vector(0,0,-3),0.5);
+    m_Vehicle.load("objs/tank-camou.obj", Vector(0,0,-3),"shader/Basic_vertexshader.glsl", "shader/Blinn_fragmentshader.glsl");
+    m_Vehicle.load("objs/tank-camou.obj", Vector(0,0,3),"shader/Basic_vertexshader.glsl", "shader/Blinn_fragmentshader.glsl");
+
 }
 
 

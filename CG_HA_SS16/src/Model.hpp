@@ -2,7 +2,7 @@
 //  Model.hpp
 //  CG_HA_SS16
 //
-//  Created by Markus Klemann on 13.06.16.
+//  Created by Markus Klemann on 17.06.16.
 //  Copyright © 2016 Markus Klemann. All rights reserved.
 //
 
@@ -18,46 +18,60 @@
 #include <map>
 #include "Material.hpp"
 #include "ShaderProgram.hpp"
-#include "ShaderManager.hpp"
 #include "Camera.hpp"
-#include "Vertex.hpp"
-#include "BoundingBox.hpp"
-#include "ObjModel.hpp"
-#include "AbstractModel.hpp"
-#include "FaceGroup.hpp"
 
-using namespace std;
+extern Camera g_Camera;
+extern const Vector g_LightPos;
 
-class Model : public AbstractModel {
-protected:
-    string name;
-    vector<Vertex> vertices;
-    Material *materials;
-    int materialCount;
-    Texture whiteTexture;
-    BoundingBox boundingBox;
-    bool selected;
-    //vector<FaceGroup> faceGroups;
-    
+struct Vertex {
+    Vertex();
+    Vertex( const Vector& p, const Vector& n, float TexS, float TexT, Material *material);
+    Vector Position;
+    Vector Normal;
+    float TexcoordS;
+    float TexcoordT;
+    Material *Material;
+};
+
+class BoundingBox {
 public:
-    Model(const std::string &name);
+    BoundingBox();
+    BoundingBox(const Vector& min, const Vector &max);
+    Vector Min;
+    Vector Max;
+};
+
+class Model {
+public:
+    Model();
     ~Model();
-    
-    std::string &getName();
-    std::vector<Vertex> &getVertices();
-    void setVertices(std::vector<Vertex> &vertices);
-    void setMaterials(Material *materials, int materialCount);
-    const BoundingBox &getBoundingBox();
-    void setBoundingBox(const BoundingBox &boundingBox);
+    const BoundingBox& boundingBox() const;
+    bool load(const char* Filename, bool FitSize, const char *vertexShader, const char *fragmentShader);
+    void drawTriangles() const;
+    void showBox() const;
+    void createRectangle(Vector size, Vector pos, const char* VertexShader, const char* FragmentShader, const char* wallpaper);
+    void loadTexture(const char* t);
+    void setTiling(int u, int v);
     bool isSelected() const;
     void setSelected(bool isSelected);
     
-    void draw() const;
-    
 protected:
-    void drawLines() const;
-    void drawTriangles() const;
+    Material *m_pMaterials;
+    unsigned int m_MaterialCount;
+    Vertex *m_pVertices;
+    unsigned int m_VertexCount;
+    BoundingBox m_Box;
+    ShaderProgram *shader;
+    Texture whiteTexture;
+    Texture texture;
+    int tilingU;
+    int tilingV;
+    bool selected;
+    
+    void createCube();
+    void createModel(const char* filename, bool fitSize);
+    void loadMaterial(const char* filename, std::map<std::string, int> &materialMap);
+    void createBoundingBox(std::vector<Vector> vertices);
 };
-
 
 #endif /* Model_hpp */

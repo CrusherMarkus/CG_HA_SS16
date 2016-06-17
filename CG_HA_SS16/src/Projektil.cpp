@@ -43,6 +43,5 @@ void Projektil::draw(float time){
     
     glutSolidCone(0.5, 1, 20, 2);
     glPopMatrix();
-    //    }
     
 }

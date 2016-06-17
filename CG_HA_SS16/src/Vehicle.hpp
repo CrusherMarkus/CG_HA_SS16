@@ -12,8 +12,6 @@
 #include <stdio.h>
 #include "Model.hpp"
 #include "Matrix.hpp"
-#include "DisplayText.hpp"
-#include "ModelBuilder.hpp"
 
 using namespace std;
 
@@ -22,7 +20,7 @@ class Vehicle
 public:
     Vehicle();
     ~Vehicle();
-    bool load(const char* Model, const Vector& StartPos, float scale);
+    bool load(const char* Model,const Vector& StartPos, const char* vertexShader, const char* fragmentShader);
     void steer(float ForwardBackward, float LeftRight);
 
     void update(float delta);
@@ -37,7 +35,7 @@ public:
 
 protected:
     
-    Model *model;
+    Model model;
     
     Matrix cannonmatrix;
     Vector position;
@@ -46,7 +44,6 @@ protected:
     float drehung;
     Vector p;
     
-    DisplayText* displayText;
 };
 
 
