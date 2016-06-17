@@ -93,8 +93,12 @@ void Vehicle::draw() {
     glColor3f(1.0f,0,0);
     glVertex3f(p.X, p.Y, p.Z);
     glEnd();
+    
+    
     glPushMatrix();
     glMultMatrixf(m_MatrixVehicle);
     model.drawTriangles();
     glPopMatrix();
 }
+
+

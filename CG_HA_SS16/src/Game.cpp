@@ -22,38 +22,33 @@ void Game::initialize(){
     cout << "Game::initialize()" << endl;
     
     m_Vehicle.load("objs/tank-camou.obj", Vector(0,0,-3),"shader/Basic_vertexshader.glsl", "shader/Blinn_fragmentshader.glsl");
-    m_Vehicle.load("objs/tank-camou.obj", Vector(0,0,3),"shader/Basic_vertexshader.glsl", "shader/Blinn_fragmentshader.glsl");
-
 }
 
-
+list<Projektil*> Game::getProjektils() {
+    return projektils;
+}
 
 void Game::spawnProjektil()
 {
+    cout << "Game::spawnProjektil()" << endl;
+
+    // Aktuelle Position des Vehicles
+    Vector vehiclePosition = m_Vehicle.getPosition();
     
-    Vector playerPosition = m_Vehicle.getPosition();
-    /*cout << "playerPosition->X: " << playerPosition.X << endl;
-    cout << "playerPosition->Y: " << playerPosition.Y << endl;
-    cout << "playerPosition->Z: " << playerPosition.Z << endl;*/
+    // Startposition des Projektils
+    Vector projektilPosition = *new Vector(vehiclePosition.X, vehiclePosition.Y+1.5, vehiclePosition.Z+3);
     
-    
-    Vector* projectilePosition = new Vector(playerPosition.X, playerPosition.Y, playerPosition.Z);
-    Vector* direction = new Vector(0,0,1);
-    *direction = direction->normalize();
-    
-    projectilePosition->Z += direction->Z;
-    
-    cout << "projectilePosition->X: " << projectilePosition->X << endl;
-    cout << "projectilePosition->Y: " << projectilePosition->Y << endl;
-    cout << "projectilePosition->Z: " << projectilePosition->Z << endl;
-    
-    projektils.push_back(new Projektil(*projectilePosition, *direction));
+    // Richtung der Z-Achse
+    Vector direction = *new Vector(0,0,1);
+    direction = direction.normalize();
+    //projektilPosition.Z += direction.Z;
+    projektils.push_back(new Projektil(projektilPosition, direction));
 }
 
 void Game::gameLoop() {
    
     /*Spiellogik*/
-    //gameLogic();
+    gameLogic();
     
     /*Timer aktualisieren*/
     g_Timer.calcTime();
@@ -65,21 +60,28 @@ void Game::gameLoop() {
 
     g_Camera.apply();
     
-    
-    glColor3d(0,1,0);
+    // Projektile
     for (list<Projektil*>::const_iterator it = (projektils).begin(); it != (projektils).end();)
     {
-
-        (**it).getPosition().X;
         (**it).draw(deltaTimeInSeconds);
+        
+      /*
+        cout << "(**it).getPosition().length()" << (**it).getPosition().length() << endl;
+        cout << "(**it).getMaxDistance()" << (**it).getMaxDistance() << endl;
+     */
+        
+        if((**it).getPosition().length() >= (**it).getMaxDistance()) {
+            projektils.pop_front();
+        }
         ++it;
     }
     
     
 }
 
+
 void Game::gameLogic() {
-    
+
 
     
 

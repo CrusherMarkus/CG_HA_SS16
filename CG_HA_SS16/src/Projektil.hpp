@@ -10,9 +10,13 @@
 #define Projektil_hpp
 
 #include <stdio.h>
+#include <iostream>
 #include "Vector.hpp"
 #include <math.h>
 #include <GLUT/GLUT.h>
+#include "Model.hpp"
+
+using namespace std;
 
 class Projektil
 {
@@ -23,13 +27,15 @@ public:
     void draw(float time);
     Vector getPosition();
     Vector getDirection();
+    float getMaxDistance();
     
 protected:
 private:
-    
+    float maxDistance;
     Vector* startPosition;
     Vector* position;
     Vector* direction;
+    Model model;
 };
 
 #endif /* Projektil_hpp */

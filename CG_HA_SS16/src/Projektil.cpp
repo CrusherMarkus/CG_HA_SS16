@@ -10,6 +10,7 @@
 
 Projektil::Projektil()
 {
+    
 }
 
 Projektil::~Projektil()
@@ -18,7 +19,7 @@ Projektil::~Projektil()
 }
 
 Vector Projektil::getPosition(){
-    return *position;
+    return *this->position;
 }
 
 Vector Projektil::getDirection(){
@@ -29,19 +30,24 @@ Vector Projektil::getDirection(){
 
 Projektil::Projektil(Vector position, Vector direction){
     this->position = new Vector(position.X,position.Y,position.Z);
-    this->direction = new Vector(direction.X,direction.Y,direction.Z );
+    this->direction = new Vector(direction.X,direction.Y,direction.Z);
+    this->maxDistance = 10.0f;
 }
 
+float Projektil::getMaxDistance() {
+    return maxDistance;
+}
 
 void Projektil::draw(float time){
-    time = time* 5;
-    this->position->Z += this->direction->Z * time;
+    time = time;
     
+    this->position->Z += this->direction->Z * time;
 
     glPushMatrix();
     glTranslatef(this->position->X,this->position->Y,this->position->Z);
     
-    glutSolidCone(0.5, 1, 20, 2);
+    // built-in (glut library) function , draw you a sphere.
+    glutSolidSphere(0.1,25,25);
     glPopMatrix();
-    
+
 }

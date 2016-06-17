@@ -15,11 +15,17 @@
 #include "Matrix.hpp"
 #include "Game.hpp"
 #include <GLUI/GLUI.h>
+#include <iomanip>
 
+//  define the window position on screen
+int window_x;
+int window_y;
+
+//  variables representing the window size
 const unsigned int g_WindowWidth=1024;
 const unsigned int g_WindowHeight=768;
-const Vector g_LightPos = Vector( 0,100,10);
 
+const Vector g_LightPos = Vector( 0,100,10);
 
 Game g_Game;
 Timer g_Timer;
@@ -28,11 +34,23 @@ GLUI g_Glui;
 
 int g_MouseButton = 0;
 int g_MouseState = 0;
-int g_MainWindow = 0;
+
+//  The id of the main window
+GLuint g_MainWindow;
+
+GLUI_StaticText* gluiStaticText_Time;
+GLUI_StaticText* gluiStaticText_VehiclePositionX;
+GLUI_StaticText* gluiStaticText_VehiclePositionY;
+GLUI_StaticText* gluiStaticText_VehiclePositionZ;
+GLUI_StaticText* gluiStaticText_ProjectilesSize;
+
 
 void SetupGLUI();
+void drawAxes(GLdouble length);
+void centerOnScreen();
+void idle();
 void SetupDefaultGLSettings();
-void DrawScene();
+void display();
 void MouseCallback(int Button, int State, int x, int y);
 void MouseMoveCallback(int x, int y);
 void KeyboardCallback( unsigned char key, int x, int y);
@@ -40,17 +58,27 @@ void MousePassiveMoveCallback( int x, int y);
 void SpecialKeyboardCallback( int key, int x, int y);
 void SpecialKeyboardUpCallback( int key, int x, int y);
 
+
+
 int main(int argc, char * argv[])
 {
-    // initialize the glut system and create a window
-    glutInitWindowSize(g_WindowWidth, g_WindowHeight);
+    
+    //  Set the window x and y coordinates such that the
+    //  window becomes centered
+    centerOnScreen ();
+    
+    //  Connect to the windowing system + create a window
+    //  with the specified dimensions and position
+    //  + set the display mode + specify the window title.
     glutInit(&argc, argv);
+    glutInitWindowSize(g_WindowWidth, g_WindowHeight);
+    glutInitWindowPosition (window_x, window_y);
     glutInitDisplayMode(GLUT_RGB | GLUT_DEPTH | GLUT_DOUBLE);
-    g_MainWindow = glutCreateWindow("CG Praktikum");
+    g_MainWindow = glutCreateWindow("CG Hausarbeit");
     
     SetupDefaultGLSettings();
     
-    glutDisplayFunc(DrawScene);
+    glutDisplayFunc(display);
     glutMouseFunc(MouseCallback);
     glutKeyboardFunc(KeyboardCallback);
     glutMotionFunc(MouseMoveCallback);
@@ -61,19 +89,47 @@ int main(int argc, char * argv[])
     
     g_Game.initialize();
     
+    //  Setup all GLUI stuff
     SetupGLUI();
     
+    //  Start GLUT event processing loop
     glutMainLoop();
     
 }
 
 void SetupGLUI() {
     GLUI *glui = GLUI_Master.create_glui_subwindow(g_MainWindow, GLUI_SUBWINDOW_RIGHT);
-    GLUI_Panel* model_panel = glui->add_panel("Vehicle");
-    GLUI_StaticText* gluiStaticText;
+    GLUI_Panel* gameinfo_panel = glui->add_panel("Spielinformationen");
+    
+    glui->add_statictext_to_panel(gameinfo_panel, "Zeit");
+    gluiStaticText_Time = glui->add_statictext_to_panel(gameinfo_panel, "- Sekunden");
+    
+    GLUI_Panel* vehicle_panel = glui->add_panel("Vehicle");
+    glui->add_statictext_to_panel(vehicle_panel, "Position");
+    gluiStaticText_VehiclePositionX = glui->add_statictext_to_panel(vehicle_panel, "-");
+    gluiStaticText_VehiclePositionY = glui->add_statictext_to_panel(vehicle_panel, "-");
+    gluiStaticText_VehiclePositionZ = glui->add_statictext_to_panel(vehicle_panel, "-");
+    
+    gluiStaticText_ProjectilesSize = glui->add_statictext_to_panel(vehicle_panel, "-");
 
     
+    //  Let the GLUI window know where its main graphics window is
+    glui->set_main_gfx_window(g_MainWindow);
+    
+    //  Set idle function
+    GLUI_Master.set_glutIdleFunc(idle);
+    
+    GLUI_Master.sync_live_all();
+}
 
+//-------------------------------------------------------------------------
+//  This function sets the window x and y coordinates
+//  such that the window becomes centered
+//-------------------------------------------------------------------------
+void centerOnScreen ()
+{
+    window_x = (glutGet (GLUT_SCREEN_WIDTH) - g_WindowWidth)/2;
+    window_y = (glutGet (GLUT_SCREEN_HEIGHT) - g_WindowHeight)/2;
 }
 
 void SetupDefaultGLSettings()
@@ -133,6 +189,19 @@ void DrawGroundGrid()
         glVertex3f(GridOrigin+GridSize, 0, itpos);
         
     }
+    
+    
+    // x-axis
+    glColor3f(0.5f, 0, 0);
+    glVertex3f(-10, 0, 0);
+    glVertex3f( 10, 0, 0);
+    
+    // z-axis
+    glColor3f(0,0,0.5f);
+    glVertex3f(0, 0, -10);
+    glVertex3f(0, 0,  10);
+    
+    
     glEnd();
     glEnable( GL_LIGHTING);
     
@@ -198,18 +267,57 @@ void SpecialKeyboardUpCallback( int key, int x, int y)
     g_Game.m_Vehicle.steer(0, 0);
 }
 
-void DrawScene()
+void updateGlui() {
+    float gameTime = (float)g_Timer.getLastFrameTime()/1000;
+    string s = to_string(gameTime);
+    s.append(" Sekunden");
+    gluiStaticText_Time->set_text(s.c_str());
+    
+    
+    Vector position = g_Game.m_Vehicle.getPosition();
+    gluiStaticText_VehiclePositionX->set_text((to_string(position.X).insert(0, "X:")).c_str());
+    gluiStaticText_VehiclePositionY->set_text((to_string(position.Y).insert(0, "Y:")).c_str());
+    gluiStaticText_VehiclePositionZ->set_text((to_string(position.Z).insert(0, "Z:")).c_str());
+    
+    
+    int projectileSize = g_Game.getProjektils().size();
+    gluiStaticText_ProjectilesSize->set_text((to_string(projectileSize).insert(0, "Anzahl Projektile:")).c_str());
+}
+
+//-------------------------------------------------------------------------
+//  This function is passed to glutDisplayFunc in order to display
+//	OpenGL contents on the window.
+//-------------------------------------------------------------------------
+void display()
 {
+    //  Clear the window
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     
     
     g_Game.gameLoop();
+
     
+    updateGlui();
+    
+
     
     DrawGroundGrid();
-
-    glutSwapBuffers();
-    glutPostRedisplay();
     
+    //  Swap contents of backward and forward frame buffers
+    glutSwapBuffers();
+}
+
+//-------------------------------------------------------------------------
+//  Idle Callback function.
+//
+//  Set the main_window as the current window to avoid sending the
+//  redisplay to the GLUI window rather than the GLUT window.
+//  Call the Sleep function to stop the GLUI program from causing
+//  starvation.
+//-------------------------------------------------------------------------
+void idle ()
+{
+    glutSetWindow (g_MainWindow);
+    glutPostRedisplay ();
 }

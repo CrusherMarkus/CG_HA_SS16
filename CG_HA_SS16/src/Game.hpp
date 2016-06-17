@@ -33,13 +33,17 @@ public:
 	void gameLoop();
     void gameLogic();
     void spawnProjektil();
+    
+    list<Projektil*> getProjektils();
+    
     Vehicle m_Vehicle;
     
-    list<Projektil*> projektils;
 
 
 protected:
 private:
+    list<Projektil*> projektils;
+
 
 };
 #endif /* Game_hpp */
