@@ -9,25 +9,21 @@
 #include "Vehicle.hpp"
 
 Vehicle::Vehicle() {
-    m_MatrixVehicle = m_MatrixVehicle.identity();
 }
 
 Vehicle::~Vehicle() {
 
 }
 
-bool Vehicle::load(const char* Model,const Vector& StartPos, const char* vertexShader, const char* fragmentShader) {
+bool Vehicle::load(const char* Model, const char* vertexShader, const char* fragmentShader) {
     
     
 
-    model.load(Model, false, vertexShader, fragmentShader);
-
     
-    Matrix m;
-    m.translation(StartPos);
-    m_MatrixVehicle *=m;
-    position = StartPos;
-    
+    sceneObj.setScaling(Vector(0.7,0.7,0.7));
+    sceneObj.setLocalTransform(Vector(0,0,-3), Vector(0,1,0), 0);
+    model = sceneObj.loadModel(Model, false, vertexShader, fragmentShader);
+    position = Vector (0,0,-3);
     
     
     
@@ -35,70 +31,59 @@ bool Vehicle::load(const char* Model,const Vector& StartPos, const char* vertexS
 }
 
 void Vehicle::steer(float ForwardBackward, float LeftRight) {
-    /*
-    cout << "ForwardBackward: " << ForwardBackward << endl;
-    cout << "LeftRight: " << LeftRight << endl;
-    */
+
     forwardBackward = ForwardBackward;
     leftRight = LeftRight;
 }
 
-
-
 void Vehicle::update(float delta){
     
+    m_MatrixVehicle = sceneObj.getLocalTransform();
     this->position = m_MatrixVehicle.translation();
     
-    cout << "this->position.X:" << this->position.X << endl;
-    cout << "this->position.Y:" << this->position.Y << endl;
-    cout << "this->position.Z:" << this->position.Z << endl;
     
-    Matrix m;
-    
-    if((this->position.Z>=0 && forwardBackward == 1) || (this->position.Z<=-3 && forwardBackward ==-1)){
-        cout << "Z-Grenze erreicht!" << endl;
-        
-    }else{
-        m.translation(0,0,forwardBackward*3*delta);
-        m_MatrixVehicle *= m;
-    }
-    
-    if((this->position.X>3 && leftRight == 1) || (this->position.X<=-3 && leftRight ==-1)){
+    // Begrenzung links/rechts
+    if((m_MatrixVehicle.translation().X > 3 && leftRight == 1) || (m_MatrixVehicle.translation().X < -3 && leftRight == -1)){
         cout << "X-Grenze erreicht!" << endl;
-        
-    }else{
-        m.translation(leftRight*3*delta, 0,0);
+    } else {
+        Matrix m;
+        m.translation(leftRight*3*delta, 0, 0);
+        m_MatrixVehicle *= m;
+        m.translation(0, 0, forwardBackward*3*delta);
         m_MatrixVehicle *= m;
     }
+    
+    Matrix MH, RM, RTM;
+    
+    sceneObj.setLocalTransform(m_MatrixVehicle);
+    
+
 }
 
 Vector& Vehicle::getPosition(){
     return this->position;
 }
 
-void Vehicle::setPositionX(float x){
-    this->position.X = x;
-}
-void Vehicle::setPositionY(float y){
-    this->position.Y = y;
-}
-void Vehicle::setPositionZ(float z){
-    this->position.Z = z;
-}
-
 void Vehicle::draw() {
     
+    Matrix m;
     glPointSize(10);
     glBegin(GL_POINTS);
     glColor3f(1.0f,0,0);
     glVertex3f(p.X, p.Y, p.Z);
     glEnd();
     
-    
     glPushMatrix();
-    glMultMatrixf(m_MatrixVehicle);
+    glMultMatrixf(sceneObj.getLocalTransform() * m.scale(sceneObj.getScaling()));
     model.drawTriangles();
     glPopMatrix();
+    
 }
 
+float Vehicle::getForwardBackward() {
+    return forwardBackward;
+}
+float Vehicle::getLeftRight() {
+    return leftRight;
+}
 

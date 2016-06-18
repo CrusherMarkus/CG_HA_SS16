@@ -23,6 +23,7 @@
 		888CB0B61D106DAB002F6FB0 /* Game.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 888CB0B41D106DAB002F6FB0 /* Game.cpp */; };
 		888CB0BF1D107EE5002F6FB0 /* Timer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 888CB0BD1D107EE5002F6FB0 /* Timer.cpp */; };
 		88C58DB01D145C50001384AC /* Model.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88C58DAE1D145C50001384AC /* Model.cpp */; };
+		88C58DB31D14BE2C001384AC /* SceneObj.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88C58DB11D14BE2C001384AC /* SceneObj.cpp */; };
 		88CACC111D12F2E5003540CF /* GLUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88CACC101D12F2E5003540CF /* GLUI.framework */; };
 		88E77F2B1D11C4E900E045A6 /* libboost_filesystem.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 88E77F2A1D11C4E900E045A6 /* libboost_filesystem.a */; };
 		88E77F2D1D11C51700E045A6 /* libboost_system.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 88E77F2C1D11C51700E045A6 /* libboost_system.a */; };
@@ -71,6 +72,8 @@
 		888CB0BE1D107EE5002F6FB0 /* Timer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Timer.hpp; path = src/Timer.hpp; sourceTree = "<group>"; };
 		88C58DAE1D145C50001384AC /* Model.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Model.cpp; path = src/Model.cpp; sourceTree = "<group>"; };
 		88C58DAF1D145C50001384AC /* Model.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Model.hpp; path = src/Model.hpp; sourceTree = "<group>"; };
+		88C58DB11D14BE2C001384AC /* SceneObj.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SceneObj.cpp; path = src/SceneObj.cpp; sourceTree = "<group>"; };
+		88C58DB21D14BE2C001384AC /* SceneObj.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = SceneObj.hpp; path = src/SceneObj.hpp; sourceTree = "<group>"; };
 		88CACC101D12F2E5003540CF /* GLUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUI.framework; path = ../../../../../Library/Frameworks/GLUI.framework; sourceTree = "<group>"; };
 		88E77F2A1D11C4E900E045A6 /* libboost_filesystem.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_filesystem.a; path = ../../../../../usr/local/Cellar/boost/1.60.0_2/lib/libboost_filesystem.a; sourceTree = "<group>"; };
 		88E77F2C1D11C51700E045A6 /* libboost_system.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_system.a; path = ../../../../../usr/local/Cellar/boost/1.60.0_2/lib/libboost_system.a; sourceTree = "<group>"; };
@@ -154,6 +157,8 @@
 			children = (
 				88C58DAE1D145C50001384AC /* Model.cpp */,
 				88C58DAF1D145C50001384AC /* Model.hpp */,
+				88C58DB11D14BE2C001384AC /* SceneObj.cpp */,
+				88C58DB21D14BE2C001384AC /* SceneObj.hpp */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -254,6 +259,7 @@
 				887F7C2B1D0F0D0C001C0651 /* Material.cpp in Sources */,
 				887F7C281D0F0D0C001C0651 /* Camera.cpp in Sources */,
 				887C3EC91D1124DE00CC0E32 /* Projektil.cpp in Sources */,
+				88C58DB31D14BE2C001384AC /* SceneObj.cpp in Sources */,
 				881DF5411D1095F0006A0D83 /* Vehicle.cpp in Sources */,
 				887F7C291D0F0D0C001C0651 /* Color.cpp in Sources */,
 				881DF5441D10A3F4006A0D83 /* RGBImage.cpp in Sources */,

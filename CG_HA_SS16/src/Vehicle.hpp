@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include "Model.hpp"
 #include "Matrix.hpp"
+#include "SceneObj.hpp"
 
 using namespace std;
 
@@ -20,28 +21,29 @@ class Vehicle
 public:
     Vehicle();
     ~Vehicle();
-    bool load(const char* Model,const Vector& StartPos, const char* vertexShader, const char* fragmentShader);
+    bool load(const char* Model, const char* vertexShader, const char* fragmentShader);
     void steer(float ForwardBackward, float LeftRight);
-
     void update(float delta);
     void draw();
     
-    Matrix m_MatrixVehicle;
-    float forwardBackward;
     Vector& getPosition();
-    void setPositionX(float x);
-    void setPositionY(float y);
-    void setPositionZ(float z);
+    
+    float getForwardBackward();
+    float getLeftRight();
+    
+    Matrix m_MatrixVehicle;
 
 protected:
     
     Model model;
+
+    SceneObj sceneObj;
     
-    Matrix cannonmatrix;
     Vector position;
-    double velocity;
+    
+    float forwardBackward;
     float leftRight;
-    float drehung;
+    float angle;
     Vector p;
     
 };

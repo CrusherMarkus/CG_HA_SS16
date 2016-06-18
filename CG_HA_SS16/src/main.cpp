@@ -42,6 +42,8 @@ GLUI_StaticText* gluiStaticText_Time;
 GLUI_StaticText* gluiStaticText_VehiclePositionX;
 GLUI_StaticText* gluiStaticText_VehiclePositionY;
 GLUI_StaticText* gluiStaticText_VehiclePositionZ;
+GLUI_StaticText* gluiStaticText_VehicleForwardBackward;
+GLUI_StaticText* gluiStaticText_VehicleLeftRight;
 GLUI_StaticText* gluiStaticText_ProjectilesSize;
 
 
@@ -106,6 +108,10 @@ void SetupGLUI() {
     
     GLUI_Panel* vehicle_panel = glui->add_panel("Vehicle");
     glui->add_statictext_to_panel(vehicle_panel, "Position");
+    
+    gluiStaticText_VehicleForwardBackward = glui->add_statictext_to_panel(vehicle_panel, "-");
+    gluiStaticText_VehicleLeftRight = glui->add_statictext_to_panel(vehicle_panel, "-");
+
     gluiStaticText_VehiclePositionX = glui->add_statictext_to_panel(vehicle_panel, "-");
     gluiStaticText_VehiclePositionY = glui->add_statictext_to_panel(vehicle_panel, "-");
     gluiStaticText_VehiclePositionZ = glui->add_statictext_to_panel(vehicle_panel, "-");
@@ -234,7 +240,7 @@ void MouseMoveCallback( int x, int y)
 
 void MousePassiveMoveCallback( int x, int y)
 {
-
+    // function is called if the mouse moves without pressing any button.
 }
 
 void KeyboardCallback( unsigned char key, int x, int y)
@@ -279,6 +285,11 @@ void updateGlui() {
     gluiStaticText_VehiclePositionY->set_text((to_string(position.Y).insert(0, "Y:")).c_str());
     gluiStaticText_VehiclePositionZ->set_text((to_string(position.Z).insert(0, "Z:")).c_str());
     
+    float forwardBackward = g_Game.m_Vehicle.getForwardBackward();
+    float leftRight = g_Game.m_Vehicle.getLeftRight();
+    gluiStaticText_VehicleForwardBackward->set_text((to_string(forwardBackward).insert(0, "forwardBackward:")).c_str());
+    gluiStaticText_VehicleLeftRight->set_text((to_string(leftRight).insert(0, "leftRight:")).c_str());
+
     
     int projectileSize = g_Game.getProjektils().size();
     gluiStaticText_ProjectilesSize->set_text((to_string(projectileSize).insert(0, "Anzahl Projektile:")).c_str());

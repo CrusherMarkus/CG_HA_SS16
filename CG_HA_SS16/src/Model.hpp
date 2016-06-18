@@ -52,8 +52,7 @@ public:
     void createRectangle(Vector size, Vector pos, const char* VertexShader, const char* FragmentShader, const char* wallpaper);
     void loadTexture(const char* t);
     void setTiling(int u, int v);
-    bool isSelected() const;
-    void setSelected(bool isSelected);
+
     
 protected:
     Material *m_pMaterials;
@@ -66,9 +65,7 @@ protected:
     Texture texture;
     int tilingU;
     int tilingV;
-    bool selected;
     
-    void createCube();
     void createModel(const char* filename, bool fitSize);
     void loadMaterial(const char* filename, std::map<std::string, int> &materialMap);
     void createBoundingBox(std::vector<Vector> vertices);

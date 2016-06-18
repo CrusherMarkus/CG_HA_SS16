@@ -69,14 +69,6 @@ Model::~Model()
     delete this->shader;
 }
 
-bool Model::isSelected() const {
-    return this->selected;
-}
-
-void Model::setSelected(bool isSelected) {
-    this->selected = isSelected;
-}
-
 bool Model::load(const char* Filename, bool FitSize, const char *vertexShader, const char *fragmentShader) {
     createModel(Filename, FitSize);
     

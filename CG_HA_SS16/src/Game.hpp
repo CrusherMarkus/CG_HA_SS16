@@ -18,6 +18,7 @@
 #include <GLUT/GLUT.h>
 
 
+
 extern Timer g_Timer;
 extern Camera g_Camera;
 
@@ -38,12 +39,10 @@ public:
     
     Vehicle m_Vehicle;
     
-
-
 protected:
 private:
     list<Projektil*> projektils;
-
+    
 
 };
 #endif /* Game_hpp */

@@ -21,7 +21,8 @@ Game::~Game()
 void Game::initialize(){
     cout << "Game::initialize()" << endl;
     
-    m_Vehicle.load("objs/tank-camou.obj", Vector(0,0,-3),"shader/Basic_vertexshader.glsl", "shader/Blinn_fragmentshader.glsl");
+    m_Vehicle.load("objs/tank-camou.obj","shader/Basic_vertexshader.glsl", "shader/Blinn_fragmentshader.glsl");
+    
 }
 
 list<Projektil*> Game::getProjektils() {
@@ -30,13 +31,11 @@ list<Projektil*> Game::getProjektils() {
 
 void Game::spawnProjektil()
 {
-    cout << "Game::spawnProjektil()" << endl;
-
     // Aktuelle Position des Vehicles
     Vector vehiclePosition = m_Vehicle.getPosition();
     
     // Startposition des Projektils
-    Vector projektilPosition = *new Vector(vehiclePosition.X, vehiclePosition.Y+1.5, vehiclePosition.Z+3);
+    Vector projektilPosition = *new Vector(vehiclePosition.X, vehiclePosition.Y+1.1, vehiclePosition.Z+2.1);
     
     // Richtung der Z-Achse
     Vector direction = *new Vector(0,0,1);
