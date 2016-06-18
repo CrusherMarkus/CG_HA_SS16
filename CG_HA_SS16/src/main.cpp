@@ -35,6 +35,9 @@ GLUI g_Glui;
 int g_MouseButton = 0;
 int g_MouseState = 0;
 
+int forwardbackward =0;
+int leftright =0;
+
 //  The id of the main window
 GLuint g_MainWindow;
 
@@ -45,7 +48,9 @@ GLUI_StaticText* gluiStaticText_VehiclePositionZ;
 GLUI_StaticText* gluiStaticText_VehicleForwardBackward;
 GLUI_StaticText* gluiStaticText_VehicleLeftRight;
 GLUI_StaticText* gluiStaticText_ProjectilesSize;
-
+GLUI_StaticText* gluiStaticText_CameraPositionX;
+GLUI_StaticText* gluiStaticText_CameraPositionY;
+GLUI_StaticText* gluiStaticText_CameraPositionZ;
 
 void SetupGLUI();
 void drawAxes(GLdouble length);
@@ -117,7 +122,13 @@ void SetupGLUI() {
     gluiStaticText_VehiclePositionZ = glui->add_statictext_to_panel(vehicle_panel, "-");
     
     gluiStaticText_ProjectilesSize = glui->add_statictext_to_panel(vehicle_panel, "-");
-
+    
+    GLUI_Panel* camera_panel = glui->add_panel("Camera");
+    glui->add_statictext_to_panel(camera_panel, "Position");
+    
+    gluiStaticText_CameraPositionX = glui->add_statictext_to_panel(camera_panel, "-");
+    gluiStaticText_CameraPositionY = glui->add_statictext_to_panel(camera_panel, "-");
+    gluiStaticText_CameraPositionZ = glui->add_statictext_to_panel(camera_panel, "-");
     
     //  Let the GLUI window know where its main graphics window is
     glui->set_main_gfx_window(g_MainWindow);
@@ -252,16 +263,24 @@ void SpecialKeyboardCallback( int key, int x, int y)
 {
     switch (key) {
         case GLUT_KEY_UP:
-            g_Game.m_Vehicle.steer(1.f, 0);
+            forwardbackward = 1;
+            g_Game.m_Vehicle.steer(forwardbackward, leftright);
+            g_Camera.neuePos(forwardbackward,leftright);
             break;
         case GLUT_KEY_DOWN:
-            g_Game.m_Vehicle.steer(-1.f, 0);
+            forwardbackward = -1;
+            g_Game.m_Vehicle.steer(forwardbackward, leftright);
+            g_Camera.neuePos(forwardbackward,leftright);
             break;
         case GLUT_KEY_LEFT:
-            g_Game.m_Vehicle.steer(0, 1.f);
+            leftright = 1;
+            g_Game.m_Vehicle.steer(forwardbackward, leftright);
+            g_Camera.neuePos(forwardbackward,leftright);
             break;
         case GLUT_KEY_RIGHT:
-            g_Game.m_Vehicle.steer(0, -1.f);
+            leftright = -1;
+            g_Game.m_Vehicle.steer(forwardbackward, leftright);
+            g_Camera.neuePos(forwardbackward,leftright);
             break;
         default:
             break;
@@ -270,7 +289,31 @@ void SpecialKeyboardCallback( int key, int x, int y)
 
 void SpecialKeyboardUpCallback( int key, int x, int y)
 {
-    g_Game.m_Vehicle.steer(0, 0);
+    switch (key) {
+        case GLUT_KEY_UP:
+            forwardbackward = 0;
+            g_Game.m_Vehicle.steer(forwardbackward, leftright);
+            g_Camera.neuePos(forwardbackward,leftright);
+            break;
+        case GLUT_KEY_DOWN:
+            forwardbackward = 0;
+            g_Game.m_Vehicle.steer(forwardbackward, leftright);
+            g_Camera.neuePos(forwardbackward,leftright);
+            break;
+        case GLUT_KEY_LEFT:
+            leftright = 0;
+            g_Game.m_Vehicle.steer(forwardbackward, leftright);
+            g_Camera.neuePos(forwardbackward,leftright);
+            break;
+        case GLUT_KEY_RIGHT:
+            leftright = 0;
+            g_Game.m_Vehicle.steer(forwardbackward, leftright);
+            g_Camera.neuePos(forwardbackward,leftright);
+            break;
+        default:
+            break;
+    }
+
 }
 
 void updateGlui() {
@@ -280,10 +323,10 @@ void updateGlui() {
     gluiStaticText_Time->set_text(s.c_str());
     
     
-    Vector position = g_Game.m_Vehicle.getPosition();
-    gluiStaticText_VehiclePositionX->set_text((to_string(position.X).insert(0, "X:")).c_str());
-    gluiStaticText_VehiclePositionY->set_text((to_string(position.Y).insert(0, "Y:")).c_str());
-    gluiStaticText_VehiclePositionZ->set_text((to_string(position.Z).insert(0, "Z:")).c_str());
+    Vector vehiclePosition = g_Game.m_Vehicle.getPosition();
+    gluiStaticText_VehiclePositionX->set_text((to_string(vehiclePosition.X).insert(0, "X:")).c_str());
+    gluiStaticText_VehiclePositionY->set_text((to_string(vehiclePosition.Y).insert(0, "Y:")).c_str());
+    gluiStaticText_VehiclePositionZ->set_text((to_string(vehiclePosition.Z).insert(0, "Z:")).c_str());
     
     float forwardBackward = g_Game.m_Vehicle.getForwardBackward();
     float leftRight = g_Game.m_Vehicle.getLeftRight();
@@ -293,6 +336,12 @@ void updateGlui() {
     
     int projectileSize = g_Game.getProjektils().size();
     gluiStaticText_ProjectilesSize->set_text((to_string(projectileSize).insert(0, "Anzahl Projektile:")).c_str());
+    
+    Vector cameraPosition = g_Camera.getPosition();
+    gluiStaticText_CameraPositionX->set_text((to_string(cameraPosition.X).insert(0, "X:")).c_str());
+    gluiStaticText_CameraPositionY->set_text((to_string(cameraPosition.Y).insert(0, "Y:")).c_str());
+    gluiStaticText_CameraPositionZ->set_text((to_string(cameraPosition.Z).insert(0, "Z:")).c_str());
+
 }
 
 //-------------------------------------------------------------------------
@@ -307,7 +356,7 @@ void display()
     
     
     g_Game.gameLoop();
-
+    g_Camera.update(g_Timer.getDeltaTime());
     
     updateGlui();
     

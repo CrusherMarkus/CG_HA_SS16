@@ -17,6 +17,8 @@
 extern const unsigned int g_WindowWidth;
 extern const unsigned int g_WindowHeight;
 
+using namespace std;
+
 class Camera
 {
 public:
@@ -32,10 +34,16 @@ public:
     void setUp( const Vector& Up);
 
     void mouseInput( int x, int y, int Button, int State);
+
     
     void apply();
     const Matrix& getViewMatrix() const;
     const Matrix& getProjectionMatrix() const;
+    
+    void update(float delta);
+    void neuePos(int forwardbackward, int leftright);
+    float forwardBackward;
+    float leftRight;
 protected:
     void pan( float dx, float dy);
     void zoom( float dz);

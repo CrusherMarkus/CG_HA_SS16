@@ -88,7 +88,11 @@ void Camera::mouseInput( int x, int y, int Button, int State)
 
     }
 }
+void Camera::neuePos(int forwarbackward, int leftright){
 
+    forwardBackward = forwarbackward;
+    leftRight = leftright;
+}
 void Camera::pan( float dx, float dy)
 {
     // calculate panning-plane
@@ -211,5 +215,18 @@ void Camera::apply()
     glLoadIdentity();
     m_ViewMatrix.lookAt(Target, m_Up, Pos);
     glMultMatrixf(m_ViewMatrix);
+    
+}
+
+void Camera::update(float delta){
+    
+    // Begrenzung links/rechts
+    if((getPosition().X > 4 && leftRight == 1) || (getPosition().X < -4 && leftRight == -1)){
+        cout << "X-Camera Grenze erreicht!" << endl;
+    } else {
+        
+        m_Panning.X += leftRight*0.003*delta;
+        m_Panning.Z +=forwardBackward*0.003*delta;
+    }
     
 }

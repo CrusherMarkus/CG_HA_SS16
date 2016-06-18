@@ -41,7 +41,10 @@ void Game::spawnProjektil()
     Vector direction = *new Vector(0,0,1);
     direction = direction.normalize();
     //projektilPosition.Z += direction.Z;
+    
+    if(projektils.size() < 5) {
     projektils.push_back(new Projektil(projektilPosition, direction));
+    }
 }
 
 void Game::gameLoop() {

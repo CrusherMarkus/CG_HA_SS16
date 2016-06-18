@@ -43,7 +43,7 @@ void Vehicle::update(float delta){
     
     
     // Begrenzung links/rechts
-    if((m_MatrixVehicle.translation().X > 3 && leftRight == 1) || (m_MatrixVehicle.translation().X < -3 && leftRight == -1)){
+    if((m_MatrixVehicle.translation().X > 4 && leftRight == 1) || (m_MatrixVehicle.translation().X < -4 && leftRight == -1)){
         cout << "X-Grenze erreicht!" << endl;
     } else {
         Matrix m;
@@ -53,7 +53,6 @@ void Vehicle::update(float delta){
         m_MatrixVehicle *= m;
     }
     
-    Matrix MH, RM, RTM;
     
     sceneObj.setLocalTransform(m_MatrixVehicle);
     

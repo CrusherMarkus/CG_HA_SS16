@@ -39,7 +39,7 @@ float Projektil::getMaxDistance() {
 }
 
 void Projektil::draw(float time){
-    time = time;
+    time = time*5;
     
     this->position->Z += this->direction->Z * time;
 
