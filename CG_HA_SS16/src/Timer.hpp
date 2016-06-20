@@ -10,6 +10,9 @@
 #define Timer_hpp
 
 #include <stdio.h>
+#include <iostream>
+
+using namespace std;
 
 class Timer
 {

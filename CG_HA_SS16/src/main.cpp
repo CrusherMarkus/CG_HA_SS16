@@ -17,6 +17,7 @@
 #include <GLUI/GLUI.h>
 #include <iomanip>
 
+
 //  define the window position on screen
 int window_x;
 int window_y;
@@ -51,6 +52,8 @@ GLUI_StaticText* gluiStaticText_ProjectilesSize;
 GLUI_StaticText* gluiStaticText_CameraPositionX;
 GLUI_StaticText* gluiStaticText_CameraPositionY;
 GLUI_StaticText* gluiStaticText_CameraPositionZ;
+GLUI_StaticText* gluiStaticText_FPS;
+
 
 void SetupGLUI();
 void drawAxes(GLdouble length);
@@ -110,6 +113,9 @@ void SetupGLUI() {
     
     glui->add_statictext_to_panel(gameinfo_panel, "Zeit");
     gluiStaticText_Time = glui->add_statictext_to_panel(gameinfo_panel, "- Sekunden");
+    glui->add_statictext_to_panel(gameinfo_panel, "FPS");
+    gluiStaticText_FPS = glui->add_statictext_to_panel(gameinfo_panel, "-");
+
     
     GLUI_Panel* vehicle_panel = glui->add_panel("Vehicle");
     glui->add_statictext_to_panel(vehicle_panel, "Position");
@@ -323,6 +329,11 @@ void updateGlui() {
     gluiStaticText_Time->set_text(s.c_str());
     
     
+    float fps = (float) g_Timer.getFPS();
+    s = to_string(fps);
+    gluiStaticText_FPS->set_text(s.c_str());
+    
+    
     Vector vehiclePosition = g_Game.m_Vehicle.getPosition();
     gluiStaticText_VehiclePositionX->set_text((to_string(vehiclePosition.X).insert(0, "X:")).c_str());
     gluiStaticText_VehiclePositionY->set_text((to_string(vehiclePosition.Y).insert(0, "Y:")).c_str());
@@ -359,9 +370,7 @@ void display()
     g_Camera.update(g_Timer.getDeltaTime());
     
     updateGlui();
-    
-
-    
+        
     DrawGroundGrid();
     
     //  Swap contents of backward and forward frame buffers

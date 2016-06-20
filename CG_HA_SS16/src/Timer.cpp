@@ -35,9 +35,13 @@ float Timer::getDeltaTimeInSeconds() const
 void Timer::calcTime()
 {
     m_PreviousDeltaTime = m_DeltaTime;
+    cout << "m_PreviousDeltaTime" << m_PreviousDeltaTime << endl;
     m_DeltaTime = glutGet(GLUT_ELAPSED_TIME) - m_LastFrameTime;
+    cout << "m_DeltaTime" << m_DeltaTime << endl;
     m_LastFrameTime = glutGet(GLUT_ELAPSED_TIME);
+    cout << "m_LastFrameTime" << m_LastFrameTime << endl;
     m_DeltaTimeInSeconds = m_DeltaTime / 1000.0f;
+    cout << "m_DeltaTimeInSeconds" << m_DeltaTimeInSeconds << endl;
     m_FrameCount++;
     
     if (m_DeltaTime > 1000) {
