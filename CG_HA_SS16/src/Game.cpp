@@ -55,13 +55,6 @@ void Game::gameLoop() {
     /*Timer aktualisieren*/
     g_Timer.calcTime();
     float deltaTimeInSeconds = g_Timer.getDeltaTimeInSeconds();
-    cout << "deltaTimeInSeconds" << deltaTimeInSeconds << endl;
-    
-    float fps = g_Timer.getFPS();
-    cout << "fps" << fps << endl;
-    
-    
-    
     
     m_Vehicle.update(deltaTimeInSeconds);
     m_Vehicle.draw();

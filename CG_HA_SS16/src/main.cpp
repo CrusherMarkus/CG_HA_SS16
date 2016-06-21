@@ -113,8 +113,8 @@ void SetupGLUI() {
     
     glui->add_statictext_to_panel(gameinfo_panel, "Zeit");
     gluiStaticText_Time = glui->add_statictext_to_panel(gameinfo_panel, "- Sekunden");
-    glui->add_statictext_to_panel(gameinfo_panel, "FPS");
-    gluiStaticText_FPS = glui->add_statictext_to_panel(gameinfo_panel, "-");
+    /*glui->add_statictext_to_panel(gameinfo_panel, "FPS");
+    gluiStaticText_FPS = glui->add_statictext_to_panel(gameinfo_panel, "-");*/
 
     
     GLUI_Panel* vehicle_panel = glui->add_panel("Vehicle");
@@ -329,9 +329,9 @@ void updateGlui() {
     gluiStaticText_Time->set_text(s.c_str());
     
     
-    float fps = (float) g_Timer.getFPS();
+    /*float fps = (float) g_Timer.getFPS();
     s = to_string(fps);
-    gluiStaticText_FPS->set_text(s.c_str());
+    gluiStaticText_FPS->set_text(s.c_str());*/
     
     
     Vector vehiclePosition = g_Game.m_Vehicle.getPosition();
