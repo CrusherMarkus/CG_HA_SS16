@@ -242,7 +242,7 @@ void MouseCallback(int Button, int State, int x, int y)
         case  GLUT_LEFT_BUTTON:
             if(State != 0)
             {
-                g_Game.spawnProjektil();
+                g_Game.m_Vehicle.spawnProjektil();
             }
             break;
     }
@@ -345,7 +345,7 @@ void updateGlui() {
     gluiStaticText_VehicleLeftRight->set_text((to_string(leftRight).insert(0, "leftRight:")).c_str());
 
     
-    int projectileSize = g_Game.getProjektils().size();
+    int projectileSize = g_Game.m_Vehicle.getProjektils().size();
     gluiStaticText_ProjectilesSize->set_text((to_string(projectileSize).insert(0, "Anzahl Projektile:")).c_str());
     
     Vector cameraPosition = g_Camera.getPosition();

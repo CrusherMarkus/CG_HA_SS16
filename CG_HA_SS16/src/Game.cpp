@@ -22,31 +22,13 @@ Game::~Game()
 void Game::initialize(){
     cout << "Game::initialize()" << endl;
     
-    m_Vehicle.load("objs/tank-camou.obj");
+    Vector *startpos = new Vector(0, 0, 0);
+    
+    m_Vehicle.load("objs/tank_bottom.obj","objs/tank_top.obj",*startpos);
     
 }
 
-list<Projektil*> Game::getProjektils() {
-    return projektils;
-}
 
-void Game::spawnProjektil()
-{
-    // Aktuelle Position des Vehicles
-    Vector vehiclePosition = m_Vehicle.getPosition();
-    
-    // Startposition des Projektils
-    Vector projektilPosition = *new Vector(vehiclePosition.X, vehiclePosition.Y+1.1, vehiclePosition.Z+2.1);
-    
-    // Richtung der Z-Achse
-    Vector direction = *new Vector(0,0,1);
-    direction = direction.normalize();
-    //projektilPosition.Z += direction.Z;
-    
-    if(projektils.size() < 5) {
-    projektils.push_back(new Projektil(projektilPosition, direction));
-    }
-}
 
 void Game::gameLoop() {
    
@@ -58,26 +40,13 @@ void Game::gameLoop() {
     float deltaTimeInSeconds = g_Timer.getDeltaTimeInSeconds();
     
     m_Vehicle.update(deltaTimeInSeconds);
+    m_Vehicle.updateProjektils(deltaTimeInSeconds);
     m_Vehicle.draw();
 
     g_Camera.apply();
     
-    // Projektile
-    for (list<Projektil*>::const_iterator it = (projektils).begin(); it != (projektils).end();)
-    {
-        (**it).draw(deltaTimeInSeconds);
-        
-      /*
-        cout << "(**it).getPosition().length()" << (**it).getPosition().length() << endl;
-        cout << "(**it).getMaxDistance()" << (**it).getMaxDistance() << endl;
-     */
-        
-        if((**it).getPosition().length() >= (**it).getMaxDistance()) {
-            projektils.pop_front();
-        }
-        ++it;
-    }
-    spawnEnemies(deltaTimeInSeconds);
+
+    //spawnEnemies(deltaTimeInSeconds);
     
 }
 

@@ -12,82 +12,98 @@ Vehicle::Vehicle() {
 }
 
 Vehicle::~Vehicle() {
-
+    
 }
 
-bool Vehicle::load(const char* modelName) {
-    
+bool Vehicle::load(const char* ChassisModel, const char* CanonModel, const Vector& StartPos){
     ModelBuilder modelBuilder;
     
-    //sceneObj->setScaling(Vector(0.7,0.7,0.7));
-    //sceneObj->setLocalTransform(Vector(0,0,-3), Vector(0,1,0), 0);
-    std::cout << "modelName " << modelName << std::endl;
+    std::cout << "ChassisModel " << ChassisModel << std::endl;
+    std::cout << "CanonModel " << CanonModel << std::endl;
     
     
+    Model *chassisModel = modelBuilder.buildModel(ChassisModel);
+    sceneObjChassisModel->setModel(chassisModel);
+    sceneObjChassisModel->setScaling(Vector(0.5, 0.5, 0.5));
+    
+    Model *canonModel = modelBuilder.buildModel(CanonModel);
+    sceneObjCanonModel->setModel(canonModel);
+    sceneObjCanonModel->setScaling(Vector(0.5, 0.5, 0.5));
+    
+    
+	this->position = StartPos;
 
-    
-    Model *newModel = modelBuilder.buildModel(modelName);
-    sceneObj->setModel(newModel);
-   
-    sceneObj->setLocalTransform(Vector(), Vector(0, 1, 0), 0);
-    sceneObj->setScaling(Vector(0.5, 0.5, 0.5));
-    
-    sceneObj->computeBoundingBox();
-    
     
     return true;
 }
 
 void Vehicle::steer(float ForwardBackward, float LeftRight) {
-
-    forwardBackward = ForwardBackward;
-    leftRight = LeftRight;
+    this->forwardBackward = ForwardBackward;
+    this->leftRight = LeftRight;
 }
 
 void Vehicle::update(float delta){
     
-    m_MatrixVehicle = sceneObj->getLocalTransform();
+    
+    // Chassis
+    m_MatrixVehicle = sceneObjChassisModel->getLocalTransform();
     this->position = m_MatrixVehicle.translation();
-    Matrix rm;
-    Matrix m;
     
-    m.translation(leftRight*3*delta, 0, 0);
-    m_MatrixVehicle *= m;
-    m.translation(0, 0, forwardBackward*3*delta);
-    m_MatrixVehicle *= m;
+    Matrix TM;
+    TM.identity();
+    Matrix RM;
+    RM.identity();
+    Matrix RTM, MH;
     
-    this->angle += this->leftRight *delta/ 1000;
+    static float distanceX = 0;
+    static float distanceZ = 0;
+    static float ang = 0;
     
-    if(this->angle >= M_PI * 2 || this->angle <= -M_PI * 2)
-        this->angle = 0;
+    // Kurve
+    ang += this->leftRight * delta;
+    RM.rotationY(ang);
     
-    if (leftRight == 1){
-        this->angle = this->angle +0.1;
-        if(this->angle > 360){
-            this->angle = 0;
+    // Vorne und zurück
+    distanceX += this->forwardBackward * RM.right().X * delta;
+    distanceZ += this->forwardBackward * RM.right().Z  * delta;
+    
+    std::cout << "distanceX " << distanceX << std::endl;
+    std::cout << "distanceZ " << distanceZ << std::endl;
+    
+    TM.translation(distanceX, 0, distanceZ);
+    
+    // Translationmatrix * Rotationsmatrix
+    RTM = TM * RM;
+    
+    m_MatrixVehicle = RTM;
+
+    // Chassis und Cannon gleiche Position
+    sceneObjChassisModel->setLocalTransform(m_MatrixVehicle);
+    sceneObjCanonModel->setLocalTransform(m_MatrixVehicle);
+    
+}
+
+void Vehicle::updateProjektils(float deltaTimeInSeconds){
+    
+    // Projektile
+    for (list<Projektil*>::const_iterator it = (projektils).begin(); it != (projektils).end();)
+    {
+        (**it).draw(deltaTimeInSeconds);
+        
+        /*
+         cout << "(**it).getPosition().length()" << (**it).getPosition().length() << endl;
+         cout << "(**it).getMaxDistance()" << (**it).getMaxDistance() << endl;
+         */
+        
+        if((**it).getPosition().length() >= (**it).getMaxDistance()) {
+            projektils.pop_front();
         }
-        
-        m.translation(this->position.X,this->position.Y,this->position.Z);
-        
-        rm.rotationY(this->angle);
-        m_MatrixVehicle = m*rm;
-        
-    }else if(leftRight == -1){
-        this->angle = this->angle -0.1;
-        if(this->angle < 0){
-            this->angle= 360;
-        }
-        rm.rotationY(this->angle);
-        m.translation(this->position.X,this->position.Y,this->position.Z);
-        m_MatrixVehicle = m*rm;
+        ++it;
     }
-    //cout << "angle:"<<this->angle << endl;
-    
-    
-    sceneObj->setLocalTransform(m_MatrixVehicle);
-    
 
 }
+
+
 
 Vector& Vehicle::getPosition(){
     return this->position;
@@ -103,16 +119,51 @@ void Vehicle::draw() {
     glEnd();
     
     glPushMatrix();
-    glMultMatrixf(sceneObj->getGlobalTransform() * m.scale(sceneObj->getScaling()));
-    sceneObj->getModel()->draw();
+    glMultMatrixf(sceneObjChassisModel->getLocalTransform() * m.scale(sceneObjChassisModel->getScaling()));
+    sceneObjChassisModel->getModel()->draw();
+    glPopMatrix();
+    
+    glPushMatrix();
+    glMultMatrixf(sceneObjCanonModel->getLocalTransform() * m.scale(sceneObjCanonModel->getScaling()));
+    sceneObjCanonModel->getModel()->draw();
     glPopMatrix();
     
 }
 
 float Vehicle::getForwardBackward() {
-    return forwardBackward;
+    return this->forwardBackward;
 }
 float Vehicle::getLeftRight() {
-    return leftRight;
+    return this->leftRight;
+}
+
+list<Projektil*> Vehicle::getProjektils() {
+    return projektils;
+}
+
+void Vehicle::spawnProjektil()
+{
+    
+    // Startposition des Projektils
+    Vector projektilPosition = *new Vector(this->position.X, this->position.Y+1.1, this->position.Z+2.1);
+    
+    
+    Vector rotationAxis = sceneObjCanonModel->getRotationAxis();
+    cout << "rotationAxis.X:"<< rotationAxis.X << endl;
+    cout << "rotationAxis.Y:"<< rotationAxis.Y << endl;
+    cout << "rotationAxis.Z:"<< rotationAxis.Z << endl;
+    
+    // Richtung der Z-Achse
+    Vector direction = *new Vector(0,0,1);
+    direction = direction.normalize();
+    //projektilPosition.Z += direction.Z;
+    
+    
+
+    
+    
+    //if(projektils.size() < 5) {
+        projektils.push_back(new Projektil(projektilPosition, direction));
+    //}
 }
 

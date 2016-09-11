@@ -14,6 +14,12 @@
 #include "Matrix.hpp"
 #include "SceneObj.hpp"
 #include "Model.hpp"
+#include <list>
+#include "Projektil.hpp"
+
+extern Camera g_Camera;
+extern const unsigned int g_WindowWidth;
+extern const unsigned int g_WindowHeight;
 
 using namespace std;
 
@@ -22,28 +28,35 @@ class Vehicle
 public:
     Vehicle();
     ~Vehicle();
-    bool load(const char* Modelname);
+    bool load(const char* ChassisModel, const char* CanonModel, const Vector& StartPos);
     void steer(float ForwardBackward, float LeftRight);
     void update(float delta);
+    void updateProjektils(float delta);
     void draw();
     
     Vector& getPosition();
-    
     float getForwardBackward();
     float getLeftRight();
     
+    void spawnProjektil();
+    
+    list<Projektil*> getProjektils();
+    
     Matrix m_MatrixVehicle;
+    Matrix m_MatrixCannon;
 
 protected:
     
-    SceneObj *sceneObj = new SceneObj();
+    SceneObj *sceneObjChassisModel = new SceneObj();
+    SceneObj *sceneObjCanonModel = new SceneObj();
     
     Vector position;
     
-    float forwardBackward;
-    float leftRight;
-    float angle;
+    float forwardBackward = 0.0;
+    float leftRight = 0.0;
     Vector p;
+    
+    list<Projektil*> projektils;
     
 };
 

@@ -13,7 +13,6 @@
 #include "Vehicle.hpp"
 #include "Timer.hpp"
 #include "Camera.hpp"
-#include "Projektil.hpp"
 #include "Enemy.hpp"
 #include <list>
 #include <GLUT/GLUT.h>
@@ -40,18 +39,13 @@ public:
     void initialize();
 	void gameLoop();
     void gameLogic();
-    void spawnProjektil();
     void spawnEnemies(float deltatime);
     bool gameOver;
-    
-    list<Projektil*> getProjektils();
     
     Vehicle m_Vehicle;
     
 protected:
 private:
-    list<Projektil*> projektils;
-    
 
 };
 #endif /* Game_hpp */
