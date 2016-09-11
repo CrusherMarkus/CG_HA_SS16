@@ -14,26 +14,35 @@
 #include "Timer.hpp"
 #include "Camera.hpp"
 #include "Projektil.hpp"
+#include "Enemy.hpp"
 #include <list>
 #include <GLUT/GLUT.h>
-
+#include <chrono>
+#include <iostream>
+#include <random>
 
 
 extern Timer g_Timer;
 extern Camera g_Camera;
 
 using namespace std;
+using namespace std::chrono;
 
 class Game
 {
 public:
+    int enemySpawnTime;
+    float spawnTime;
+    float spawnTimer;
     Game();
     ~Game();
-
+    vector<Enemy*> enemies;
     void initialize();
 	void gameLoop();
     void gameLogic();
     void spawnProjektil();
+    void spawnEnemies(float deltatime);
+    bool gameOver;
     
     list<Projektil*> getProjektils();
     

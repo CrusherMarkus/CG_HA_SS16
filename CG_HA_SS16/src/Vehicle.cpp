@@ -40,18 +40,46 @@ void Vehicle::update(float delta){
     
     m_MatrixVehicle = sceneObj.getLocalTransform();
     this->position = m_MatrixVehicle.translation();
+    Matrix rm;
+    Matrix m;
     
     
-    // Begrenzung links/rechts
+    /*/ Begrenzung links/rechts
     if((m_MatrixVehicle.translation().X > 4 && leftRight == 1) || (m_MatrixVehicle.translation().X < -4 && leftRight == -1)){
         cout << "X-Grenze erreicht!" << endl;
     } else {
-        Matrix m;
+      */
         m.translation(leftRight*3*delta, 0, 0);
         m_MatrixVehicle *= m;
         m.translation(0, 0, forwardBackward*3*delta);
         m_MatrixVehicle *= m;
+    
+    this->angle += this->leftRight *delta/ 1000;
+    
+    if(this->angle >= M_PI * 2 || this->angle <= -M_PI * 2)
+        this->angle = 0;
+    
+    if (leftRight == 1){
+        this->angle = this->angle +0.1;
+        if(this->angle > 360){
+            this->angle = 0;
+        }
+        
+        m.translation(this->position.X,this->position.Y,this->position.Z);
+        
+        rm.rotationY(this->angle);
+        m_MatrixVehicle = m*rm;
+        
+    }else if(leftRight == -1){
+        this->angle = this->angle -0.1;
+        if(this->angle < 0){
+            this->angle= 360;
+        }
+        rm.rotationY(this->angle);
+        m.translation(this->position.X,this->position.Y,this->position.Z);
+        m_MatrixVehicle = m*rm;
     }
+    //cout << "angle:"<<this->angle << endl;
     
     
     sceneObj.setLocalTransform(m_MatrixVehicle);
