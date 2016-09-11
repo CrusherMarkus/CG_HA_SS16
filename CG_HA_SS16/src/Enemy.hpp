@@ -28,11 +28,12 @@ class Enemy{
         bool getIsHit();
         float angleFacingMid;
         Matrix m_MatrixEnemy;
+        SceneObj *enemy = new SceneObj();
+        void setIsHit(bool);
     
 protected:
     
-    SceneObj *enemy = new SceneObj();
-    
+        
     Vector position;
     
     Vector p;

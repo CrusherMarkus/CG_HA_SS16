@@ -178,3 +178,4 @@ bool Vector::triangleIntersection(const Vector &d, const Vector &a, const Vector
     
     return result > -epsilon && result < epsilon;
 }
+

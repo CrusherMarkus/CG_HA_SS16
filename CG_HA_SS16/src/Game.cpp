@@ -10,7 +10,7 @@
 
 Game::Game()
 {
-    this->spawnTime = 20;
+    this->spawnTime = 60;
     this->spawnTimer = 0;
 }
 
@@ -50,13 +50,13 @@ void Game::gameLoop() {
     m_Vehicle.draw();
     m_Enemy.update(deltaTimeInSeconds);
     m_Enemy.draw();
-
+    
     // Terrain erstellen
     
     g_Camera.apply();
     terrain->draw();
-
-    //spawnEnemies(deltaTimeInSeconds);
+    collision();
+    spawnEnemies(deltaTimeInSeconds);
     
 }
 
@@ -96,11 +96,11 @@ void Game::spawnEnemies(float deltatime){
             int x = 0;
             int z = 0;
             
-            while(x > -5 && x <= 5 ){
+            while(x > -15 && x <= 15 ){
                 x = distr(eng);
                 cout << "x: "<< x<< endl;
             }
-            while (z > -5 && z <= 5 ){
+            while (z > -15 && z <= 15 ){
                 z = distr(eng);
                 cout << "z: "<< z<< endl;
             }
@@ -115,6 +115,21 @@ void Game::spawnEnemies(float deltatime){
         }
         
     }
+    
         
 }
 
+void Game::collision(){
+    BoundingBox tank = m_Vehicle.sceneObjChassisModel->getModel()->getBoundingBox();
+    
+    for(int i=0; i < enemies.size(); i++){
+       BoundingBox tmp = enemies.at(i)->enemy->getModel()->getBoundingBox();
+       enemies.at(i)->setIsHit(!(tank.getMin().X <= tmp.getMax().X && tank.getMax().X >= tmp.getMin().X) &&
+        (tank.getMin().Y <= tmp.getMax().Y && tank.getMax().Y >= tmp.getMin().Y) &&
+        (tank.getMin().Z <= tmp.getMax().Z && tank.getMax().Z >= tmp.getMin().Z));
+       cout << enemies.at(i)->getIsHit() << endl;
+    }
+    
+    
+    
+}

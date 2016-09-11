@@ -41,6 +41,7 @@ public:
 	void gameLoop();
     void gameLogic();
     void spawnEnemies(float deltatime);
+    void collision();
     bool gameOver;
     Vehicle m_Vehicle;
     

@@ -32,7 +32,7 @@ bool Vehicle::load(const char* ChassisModel, const char* CanonModel, const Vecto
     
     
 	this->position = StartPos;
-
+    sceneObjChassisModel->computeBoundingBox();
     
     return true;
 }
@@ -81,6 +81,7 @@ void Vehicle::update(float delta){
     sceneObjChassisModel->setLocalTransform(m_MatrixVehicle);
     sceneObjCanonModel->setLocalTransform(m_MatrixVehicle);
     this->position = m_MatrixVehicle.translation();
+    sceneObjChassisModel->computeBoundingBox();
 }
 
 void Vehicle::updateProjektils(float deltaTimeInSeconds){
@@ -110,7 +111,8 @@ Vector& Vehicle::getPosition(){
 }
 
 void Vehicle::draw() {
-    
+    BoundingBox lol = sceneObjChassisModel->getModel()->getBoundingBox();
+    drawBB(lol);
     Matrix m;
     glPointSize(10);
     glBegin(GL_POINTS);
@@ -169,3 +171,33 @@ void Vehicle::spawnProjektil()
     //}
 }
 
+void Vehicle::drawBB(BoundingBox &b){
+    glColor3f(1,1,1);
+    glBegin(GL_LINE_LOOP);
+    glVertex3f(b.getMax().X,b.getMax().Y,b.getMin().Z);
+    glVertex3f(b.getMin().X,b.getMax().Y,b.getMin().Z);
+    glVertex3f(b.getMin().X,b.getMin().Y,b.getMin().Z);
+    glVertex3f(b.getMax().X,b.getMin().Y,b.getMin().Z);
+    glEnd();
+    
+    glBegin(GL_LINE_LOOP);
+    glVertex3f(b.getMax().X,b.getMin().Y,b.getMax().Z);
+    glVertex3f(b.getMax().X,b.getMax().Y,b.getMax().Z);
+    glVertex3f(b.getMin().X,b.getMax().Y,b.getMax().Z);
+    glVertex3f(b.getMin().X,b.getMin().Y,b.getMax().Z);
+    glEnd();
+    
+    glBegin(GL_LINE_LOOP);
+    glVertex3f(b.getMax().X,b.getMax().Y,b.getMin().Z);
+    glVertex3f(b.getMax().X,b.getMax().Y,b.getMax().Z);
+    glVertex3f(b.getMin().X,b.getMax().Y,b.getMax().Z);
+    glVertex3f(b.getMin().X,b.getMax().Y,b.getMin().Z);
+    glEnd();
+    
+    glBegin(GL_LINE_LOOP);
+    glVertex3f(b.getMax().X,b.getMin().Y,b.getMax().Z);
+    glVertex3f(b.getMin().X,b.getMin().Y,b.getMax().Z);
+    glVertex3f(b.getMin().X,b.getMin().Y,b.getMin().Z);
+    glVertex3f(b.getMax().X,b.getMin().Y,b.getMin().Z);
+    glEnd();
+}
