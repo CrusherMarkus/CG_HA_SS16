@@ -14,6 +14,8 @@
 #include "Model.hpp"
 #include "Matrix.hpp"
 #include "SceneObj.hpp"
+#include <list>
+#include "Projektil.hpp"
 
 using namespace std;
 
@@ -25,13 +27,18 @@ class Enemy{
         void update(float delta);
         void draw();
         Vector& getPosition();
+        void updateProjektils(float delta);
         bool getIsHit();
         float angleFacingMid;
         Matrix m_MatrixEnemy;
     
+        void spawnProjektil();
+    
 protected:
     
     SceneObj *enemy = new SceneObj();
+    
+    list<Projektil*> projektils;
     
     Vector position;
     
