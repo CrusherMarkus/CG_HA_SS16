@@ -43,6 +43,9 @@ bool Enemy::load(const char* modelname, const Vector& v) {
     enemy->setModel(newModel);
     enemy->computeBoundingBox();
 
+    
+    enemy->setScaling(Vector(0.5, 0.5, 0.5));
+
     this->position = v;
     return true;
 
@@ -52,6 +55,7 @@ bool Enemy::load(const char* modelname, const Vector& v) {
 
 void Enemy::update(float delta){
     if (isHit) {
+
         return;
     }
     if (this->position.length() > 5){
@@ -61,7 +65,7 @@ void Enemy::update(float delta){
         Matrix tm;
         //tm.translation(this->position);
         Matrix rm;
-        cout << this->angleFacingMid << endl;
+        //cout << this->angleFacingMid << endl;
         rm = rm.rotationY(angleFacingMid);
         //m_MatrixEnemy.rotationY(this->angleFacingMid);
         Vector moveVec = m_MatrixEnemy.forward();
@@ -84,7 +88,36 @@ void Enemy::update(float delta){
         //this->position = m_MatrixEnemy.translation();
         
         //cout << "position:" << this->position.X << "," << this->position.Y << "," << this->position.Z << endl;
+        
+    } else {
+        
+ 
+            updateProjektils(delta*0.01);
+        if(this->projektils.size() < 1 ){
+            spawnProjektil();
+        }
+        
+        
     }
+}
+
+
+void Enemy::updateProjektils(float deltaTimeInSeconds){
+    
+    //cout << "updateProjektils" << endl;
+
+    
+    // Projektile
+    for (list<Projektil*>::const_iterator it = (projektils).begin(); it != (projektils).end();)
+    {
+        (**it).draw(deltaTimeInSeconds*0.0001);
+        
+        if((**it).getPosition().length() >= (**it).getMaxDistance()) {
+            projektils.pop_front();
+        }
+        ++it;
+    }
+    
 }
     
 Vector& Enemy::getPosition(){
@@ -114,6 +147,22 @@ void Enemy::draw() {
 }
 
 
+void Enemy::spawnProjektil()
+{
+    //cout << "spawnProjektil" << endl;
+
+
+    Vector projektilPosition = *new Vector(this->position.X, this->position.Y+1.1, this->position.Z+2.1);
+    
+    Matrix direction = this->enemy->getLocalTransform();
+    Vector directionZ = direction.forward();
+    //cout << "x: "<< directionZ.X << "y: " <<directionZ.Y<<"z: "<<directionZ.Z << endl;
+    directionZ.normalize();
+
+    
+    projektils.push_back(new Projektil(this->position, directionZ));
+
+}
 
 void Enemy::setIsHit(bool isHit){
     this->isHit = isHit;
