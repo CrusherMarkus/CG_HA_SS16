@@ -18,8 +18,8 @@ Vehicle::~Vehicle() {
 bool Vehicle::load(const char* ChassisModel, const char* CanonModel, const Vector& StartPos){
     ModelBuilder modelBuilder;
     
-    std::cout << "ChassisModel " << ChassisModel << std::endl;
-    std::cout << "CanonModel " << CanonModel << std::endl;
+    std::cout << "ChassisModel:" << ChassisModel << std::endl;
+    std::cout << "CanonModel:" << CanonModel << std::endl;
     
     
     Model *chassisModel = modelBuilder.buildModel(ChassisModel);
@@ -147,23 +147,11 @@ void Vehicle::spawnProjektil()
     // Startposition des Projektils
     Vector projektilPosition = *new Vector(this->position.X, this->position.Y+1.1, this->position.Z+2.1);
     
-    
-    //cout << "rotationAxis.X:"<< rotationAxis.X << endl;
-    //cout << "rotationAxis.Y:"<< rotationAxis.Y << endl;
-    //cout << "rotationAxis.Z:"<< rotationAxis.Z << endl;
-    
     // Richtung der Z-Achse
     Matrix direction = this->sceneObjCanonModel->getLocalTransform();
     Vector directionZ = direction.right();
-    cout << "x: "<< directionZ.X << "y: " <<directionZ.Y<<"z: "<<directionZ.Z << endl;
-   // directionZ = *new Vector(this->position.X, this->position.Y, this->position.Z+1);
     directionZ.normalize();
-    //projektilPosition.Z += direction.Z;
-    
-    
-
-    
-    
+ 
     //if(projektils.size() < 5) {
         projektils.push_back(new Projektil(this->position, directionZ));
     //}

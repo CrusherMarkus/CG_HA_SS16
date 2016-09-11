@@ -20,7 +20,7 @@
 #include <chrono>
 #include <iostream>
 #include <random>
-
+#include "DefenseObject.hpp"
 
 extern Timer g_Timer;
 extern Camera g_Camera;
@@ -46,6 +46,9 @@ public:
     
     Enemy m_Enemy;
     Terrain *terrain;
+    
+    DefenseObject m_DefenseObject;
+    
     
 protected:
 private:
