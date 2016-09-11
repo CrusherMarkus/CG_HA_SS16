@@ -47,7 +47,7 @@ void Vehicle::update(float delta){
     
     // Chassis
     m_MatrixVehicle = sceneObjChassisModel->getLocalTransform();
-    this->position = m_MatrixVehicle.translation();
+    
     
     Matrix TM;
     TM.identity();
@@ -67,8 +67,8 @@ void Vehicle::update(float delta){
     distanceX += this->forwardBackward * RM.right().X * delta;
     distanceZ += this->forwardBackward * RM.right().Z  * delta;
     
-    std::cout << "distanceX " << distanceX << std::endl;
-    std::cout << "distanceZ " << distanceZ << std::endl;
+   // std::cout << "distanceX " << distanceX << std::endl;
+   // std::cout << "distanceZ " << distanceZ << std::endl;
     
     TM.translation(distanceX, 0, distanceZ);
     
@@ -80,7 +80,7 @@ void Vehicle::update(float delta){
     // Chassis und Cannon gleiche Position
     sceneObjChassisModel->setLocalTransform(m_MatrixVehicle);
     sceneObjCanonModel->setLocalTransform(m_MatrixVehicle);
-    
+    this->position = m_MatrixVehicle.translation();
 }
 
 void Vehicle::updateProjektils(float deltaTimeInSeconds){
@@ -148,14 +148,17 @@ void Vehicle::spawnProjektil()
     Vector projektilPosition = *new Vector(this->position.X, this->position.Y+1.1, this->position.Z+2.1);
     
     
-    Vector rotationAxis = sceneObjCanonModel->getRotationAxis();
-    cout << "rotationAxis.X:"<< rotationAxis.X << endl;
-    cout << "rotationAxis.Y:"<< rotationAxis.Y << endl;
-    cout << "rotationAxis.Z:"<< rotationAxis.Z << endl;
+    //Vector rotationAxis = sceneObjCanonModel->getRotationAxis();
+    //cout << "rotationAxis.X:"<< rotationAxis.X << endl;
+    //cout << "rotationAxis.Y:"<< rotationAxis.Y << endl;
+    //cout << "rotationAxis.Z:"<< rotationAxis.Z << endl;
     
     // Richtung der Z-Achse
-    Vector direction = *new Vector(0,0,1);
-    direction = direction.normalize();
+    Matrix direction = this->sceneObjCanonModel->getLocalTransform();
+    Vector directionZ = direction.right();
+    cout << "x: "<< directionZ.X << "y: " <<directionZ.Y<<"z: "<<directionZ.Z << endl;
+   // directionZ = *new Vector(this->position.X, this->position.Y, this->position.Z+1);
+    directionZ.normalize();
     //projektilPosition.Z += direction.Z;
     
     
@@ -163,7 +166,7 @@ void Vehicle::spawnProjektil()
     
     
     //if(projektils.size() < 5) {
-        projektils.push_back(new Projektil(projektilPosition, direction));
+        projektils.push_back(new Projektil(this->position, directionZ));
     //}
 }
 

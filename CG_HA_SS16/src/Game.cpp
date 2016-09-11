@@ -22,9 +22,10 @@ Game::~Game()
 void Game::initialize(){
     cout << "Game::initialize()" << endl;
     
-    Vector *startpos = new Vector(0, 0, 0);
+    Vector *startpos = new Vector(0, 0, -3);
     
     m_Vehicle.load("objs/tank_bottom.obj","objs/tank_top.obj",*startpos);
+    m_Enemy.load("objs/tank-camou.obj",*new Vector(20,0,20));
     
 }
 
@@ -42,7 +43,9 @@ void Game::gameLoop() {
     m_Vehicle.update(deltaTimeInSeconds);
     m_Vehicle.updateProjektils(deltaTimeInSeconds);
     m_Vehicle.draw();
-
+    
+    m_Enemy.update(deltaTimeInSeconds);
+    m_Enemy.draw();
     g_Camera.apply();
     
 

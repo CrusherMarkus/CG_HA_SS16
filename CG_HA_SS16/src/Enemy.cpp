@@ -102,7 +102,7 @@ void Enemy::draw() {
     glColor3f(1.0f,0,0);
     glVertex3f(p.X, p.Y, p.Z);
     glEnd();
-    glMatrixMode(GL_MODELVIEW);
+    //glMatrixMode(GL_MODELVIEW);
     
     glPushMatrix();
     glMultMatrixf(enemy->getGlobalTransform() * m.scale(enemy->getScaling()));

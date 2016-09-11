@@ -43,6 +43,7 @@ public:
     bool gameOver;
     
     Vehicle m_Vehicle;
+    Enemy m_Enemy;
     
 protected:
 private:

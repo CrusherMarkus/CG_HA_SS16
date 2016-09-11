@@ -35,8 +35,6 @@
 		88C58DB01D145C50001384AC /* Model.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88C58DAE1D145C50001384AC /* Model.cpp */; };
 		88C58DB31D14BE2C001384AC /* SceneObj.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88C58DB11D14BE2C001384AC /* SceneObj.cpp */; };
 		88CACC111D12F2E5003540CF /* GLUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88CACC101D12F2E5003540CF /* GLUI.framework */; };
-		88E77F2B1D11C4E900E045A6 /* libboost_filesystem.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 88E77F2A1D11C4E900E045A6 /* libboost_filesystem.a */; };
-		88E77F2D1D11C51700E045A6 /* libboost_system.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 88E77F2C1D11C51700E045A6 /* libboost_system.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -106,8 +104,6 @@
 		88C58DB11D14BE2C001384AC /* SceneObj.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SceneObj.cpp; path = src/SceneObj.cpp; sourceTree = "<group>"; };
 		88C58DB21D14BE2C001384AC /* SceneObj.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = SceneObj.hpp; path = src/SceneObj.hpp; sourceTree = "<group>"; };
 		88CACC101D12F2E5003540CF /* GLUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUI.framework; path = ../../../../../Library/Frameworks/GLUI.framework; sourceTree = "<group>"; };
-		88E77F2A1D11C4E900E045A6 /* libboost_filesystem.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_filesystem.a; path = ../../../../../usr/local/Cellar/boost/1.60.0_2/lib/libboost_filesystem.a; sourceTree = "<group>"; };
-		88E77F2C1D11C51700E045A6 /* libboost_system.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_system.a; path = ../../../../../usr/local/Cellar/boost/1.60.0_2/lib/libboost_system.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,8 +112,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				88CACC111D12F2E5003540CF /* GLUI.framework in Frameworks */,
-				88E77F2D1D11C51700E045A6 /* libboost_system.a in Frameworks */,
-				88E77F2B1D11C4E900E045A6 /* libboost_filesystem.a in Frameworks */,
 				881053F91D0B0D2200AF3EDC /* GLUT.framework in Frameworks */,
 				881053F71D0B0D1600AF3EDC /* OpenGL.framework in Frameworks */,
 			);
@@ -130,8 +124,6 @@
 			isa = PBXGroup;
 			children = (
 				88CACC101D12F2E5003540CF /* GLUI.framework */,
-				88E77F2C1D11C51700E045A6 /* libboost_system.a */,
-				88E77F2A1D11C4E900E045A6 /* libboost_filesystem.a */,
 				881053F81D0B0D2200AF3EDC /* GLUT.framework */,
 				881053F61D0B0D1600AF3EDC /* OpenGL.framework */,
 				881053EE1D0B0CA700AF3EDC /* CG_HA_SS16 */,
