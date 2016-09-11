@@ -139,7 +139,6 @@ void SetupGLUI() {
     
     
     GLUI_Panel* enemy_panel = glui->add_panel("Gegner");
-    glui->add_statictext_to_panel(enemy_panel, "Anzahl");
     gluiStaticText_EnemySize = glui->add_statictext_to_panel(enemy_panel, "-");
 
     

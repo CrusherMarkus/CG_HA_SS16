@@ -42,10 +42,12 @@ Model *ModelBuilder::buildModel(const char* Filename) {
         unsigned int TexIdx1 = objModel->faces[i].tidx[1] - 1;
         unsigned int TexIdx2 = objModel->faces[i].tidx[2] - 1;
         
+        // Positionen der Vertices setzen
         Vector a = vertices[i * 3].position = objModel->positions[PosIdx0];
         Vector b = vertices[i * 3 + 1].position = objModel->positions[PosIdx1];
         Vector c = vertices[i * 3 + 2].position = objModel->positions[PosIdx2];
         
+        // Wenn aktuelles Objekt Textkoordinaten enthaelt, eben diese setzen
         vertices[i * 3].texCoordS = objModel->textureCoordinates[TexIdx0].s;
         vertices[i * 3 + 1].texCoordS = objModel->textureCoordinates[TexIdx1].s;
         vertices[i * 3 + 2].texCoordS = objModel->textureCoordinates[TexIdx2].s;
@@ -54,6 +56,8 @@ Model *ModelBuilder::buildModel(const char* Filename) {
         vertices[i * 3 + 1].texCoordT = objModel->textureCoordinates[TexIdx1].t;
         vertices[i * 3 + 2].texCoordT = objModel->textureCoordinates[TexIdx2].t;
         
+        // Normalen berechnen
+
         Vector normal = (b - a).cross(c - a);
         normal.normalize();
         
