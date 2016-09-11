@@ -94,7 +94,7 @@ void SceneObj::setScaling(const Vector &scaling) {
 
 void SceneObj::computeBoundingBox() {
     std::vector<Vertex> vertices = this->getModel()->getVertices();
-    Camera::getInstance().apply();
+    //Camera::getInstance().apply();
     
     BoundingBox boundingBox;
     boundingBox.getMax().X = boundingBox.getMin().X = vertices[0].position.X;

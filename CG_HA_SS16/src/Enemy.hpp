@@ -31,15 +31,13 @@ class Enemy{
         bool getIsHit();
         float angleFacingMid;
         Matrix m_MatrixEnemy;
+        SceneObj *enemy = new SceneObj();
+        void setIsHit(bool);
     
         void spawnProjektil();
     
 protected:
-    
-    SceneObj *enemy = new SceneObj();
-    
     list<Projektil*> projektils;
-    
     Vector position;
     
     Vector p;

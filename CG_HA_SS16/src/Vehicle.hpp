@@ -46,11 +46,12 @@ public:
     
     Matrix m_MatrixVehicle;
     Matrix m_MatrixCannon;
+    SceneObj *sceneObjChassisModel = new SceneObj();
+    void drawBB(BoundingBox& b );
 
 protected:
     
-    SceneObj *sceneObjChassisModel = new SceneObj();
-    SceneObj *sceneObjCanonModel = new SceneObj();
+        SceneObj *sceneObjCanonModel = new SceneObj();
     
     Vector position;
     

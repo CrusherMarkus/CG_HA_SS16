@@ -41,6 +41,8 @@ bool Enemy::load(const char* modelname, const Vector& v) {
 
     Model *newModel = modelBuilder.buildModel(modelname);
     enemy->setModel(newModel);
+    enemy->computeBoundingBox();
+
     
     enemy->setScaling(Vector(0.5, 0.5, 0.5));
 
@@ -82,6 +84,7 @@ void Enemy::update(float delta){
         //m_MatrixEnemy *= tm;
         // m_MatrixEnemy *= rm;
         enemy->setLocalTransform(tm);
+        enemy->computeBoundingBox();
         //this->position = m_MatrixEnemy.translation();
         
         //cout << "position:" << this->position.X << "," << this->position.Y << "," << this->position.Z << endl;
@@ -161,7 +164,9 @@ void Enemy::spawnProjektil()
 
 }
 
-
+void Enemy::setIsHit(bool isHit){
+    this->isHit = isHit;
+}
 
 
 
