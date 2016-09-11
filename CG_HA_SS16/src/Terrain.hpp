@@ -15,6 +15,8 @@
 #include "Texture.hpp"
 #include <vector>
 #include <math.h>
+#include "ShaderManager.hpp"
+#include "ShaderProgram.hpp"
 
 struct TerrainVertex {
     Vector Pos;

@@ -67,8 +67,8 @@ void Vehicle::update(float delta){
     distanceX += this->forwardBackward * RM.right().X * delta;
     distanceZ += this->forwardBackward * RM.right().Z  * delta;
     
-   // std::cout << "distanceX " << distanceX << std::endl;
-   // std::cout << "distanceZ " << distanceZ << std::endl;
+    //std::cout << "distanceX " << distanceX << std::endl;
+    //std::cout << "distanceZ " << distanceZ << std::endl;
     
     TM.translation(distanceX, 0, distanceZ);
     
@@ -148,7 +148,6 @@ void Vehicle::spawnProjektil()
     Vector projektilPosition = *new Vector(this->position.X, this->position.Y+1.1, this->position.Z+2.1);
     
     
-    //Vector rotationAxis = sceneObjCanonModel->getRotationAxis();
     //cout << "rotationAxis.X:"<< rotationAxis.X << endl;
     //cout << "rotationAxis.Y:"<< rotationAxis.Y << endl;
     //cout << "rotationAxis.Z:"<< rotationAxis.Z << endl;

@@ -14,6 +14,7 @@
 #include "Timer.hpp"
 #include "Camera.hpp"
 #include "Enemy.hpp"
+#include "Terrain.hpp"
 #include <list>
 #include <GLUT/GLUT.h>
 #include <chrono>
@@ -41,9 +42,10 @@ public:
     void gameLogic();
     void spawnEnemies(float deltatime);
     bool gameOver;
-    
     Vehicle m_Vehicle;
+    
     Enemy m_Enemy;
+    Terrain *terrain;
     
 protected:
 private:

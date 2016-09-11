@@ -22,8 +22,6 @@ Terrain::~Terrain() {
     
 }
 
-#pragma mark - Getter/Setter
-
 std::vector<TerrainVertex> &Terrain::getVertices() {
     return this->vertices;
 }
@@ -76,8 +74,6 @@ void Terrain::setHeightMapImageHeight(unsigned int heightMapImageHeight) {
     this->heightMapImageHeight = heightMapImageHeight;
 }
 
-#pragma mark - Public methods
-
 void Terrain::draw() const {
     glBindBuffer(GL_ARRAY_BUFFER, this->vertexBufferIdentififer);
     glEnableClientState(GL_VERTEX_ARRAY);
@@ -114,9 +110,10 @@ void Terrain::draw() const {
     /*ShaderProgram *shader = ShaderManager::getInstance().getShader("terrain");
     
     shader->activate();
-    shader->setParameter(shader->getParameterIdentifier("DetailMap1"), 0);
-    shader->setParameter(shader->getParameterIdentifier("DetailMap2"), 1);
+    shader->setParameter(shader->getParameterIdentifier("DetailMap1"), 1);
+    shader->setParameter(shader->getParameterIdentifier("DetailMap2"), 0);
     shader->setParameter(shader->getParameterIdentifier("MixMap"), 2);
+    
     glDrawElements(GL_TRIANGLES, this->numberOfIndices, GL_UNSIGNED_INT, 0);
     shader->deactivate();*/
 

@@ -27,6 +27,11 @@ void Game::initialize(){
     m_Vehicle.load("objs/tank_bottom.obj","objs/tank_top.obj",*startpos);
     m_Enemy.load("objs/tank-camou.obj",*new Vector(20,0,20));
     
+    ModelBuilder modelBuilder;
+
+    terrain = modelBuilder.buildTerrain("tex/heightmap.bmp", "tex/sand.bmp", "tex/grass.bmp", "tex/mixmap.bmp", 60, 60, 0);
+
+
 }
 
 
@@ -43,11 +48,13 @@ void Game::gameLoop() {
     m_Vehicle.update(deltaTimeInSeconds);
     m_Vehicle.updateProjektils(deltaTimeInSeconds);
     m_Vehicle.draw();
-    
     m_Enemy.update(deltaTimeInSeconds);
     m_Enemy.draw();
-    g_Camera.apply();
+
+    // Terrain erstellen
     
+    g_Camera.apply();
+    terrain->draw();
 
     //spawnEnemies(deltaTimeInSeconds);
     
