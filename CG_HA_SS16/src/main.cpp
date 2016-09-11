@@ -271,22 +271,22 @@ void SpecialKeyboardCallback( int key, int x, int y)
         case GLUT_KEY_UP:
             forwardbackward = 1;
             g_Game.m_Vehicle.steer(forwardbackward, leftright);
-            g_Camera.neuePos(forwardbackward,leftright);
+            //g_Camera.neuePos(forwardbackward,leftright);
             break;
         case GLUT_KEY_DOWN:
             forwardbackward = -1;
             g_Game.m_Vehicle.steer(forwardbackward, leftright);
-            g_Camera.neuePos(forwardbackward,leftright);
+            //g_Camera.neuePos(forwardbackward,leftright);
             break;
         case GLUT_KEY_LEFT:
             leftright = 1;
             g_Game.m_Vehicle.steer(forwardbackward, leftright);
-            g_Camera.neuePos(forwardbackward,leftright);
+            //g_Camera.neuePos(forwardbackward,leftright);
             break;
         case GLUT_KEY_RIGHT:
             leftright = -1;
             g_Game.m_Vehicle.steer(forwardbackward, leftright);
-            g_Camera.neuePos(forwardbackward,leftright);
+            //g_Camera.neuePos(forwardbackward,leftright);
             break;
         default:
             break;
@@ -299,22 +299,22 @@ void SpecialKeyboardUpCallback( int key, int x, int y)
         case GLUT_KEY_UP:
             forwardbackward = 0;
             g_Game.m_Vehicle.steer(forwardbackward, leftright);
-            g_Camera.neuePos(forwardbackward,leftright);
+            //g_Camera.neuePos(forwardbackward,leftright);
             break;
         case GLUT_KEY_DOWN:
             forwardbackward = 0;
             g_Game.m_Vehicle.steer(forwardbackward, leftright);
-            g_Camera.neuePos(forwardbackward,leftright);
+            //g_Camera.neuePos(forwardbackward,leftright);
             break;
         case GLUT_KEY_LEFT:
             leftright = 0;
             g_Game.m_Vehicle.steer(forwardbackward, leftright);
-            g_Camera.neuePos(forwardbackward,leftright);
+            //g_Camera.neuePos(forwardbackward,leftright);
             break;
         case GLUT_KEY_RIGHT:
             leftright = 0;
             g_Game.m_Vehicle.steer(forwardbackward, leftright);
-            g_Camera.neuePos(forwardbackward,leftright);
+            //g_Camera.neuePos(forwardbackward,leftright);
             break;
         default:
             break;
