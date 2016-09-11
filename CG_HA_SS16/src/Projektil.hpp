@@ -31,9 +31,12 @@ public:
 protected:
 private:
     float maxDistance;
+    float distance;
+
     Vector* startPosition;
     Vector* position;
     Vector* direction;
+
 };
 
 #endif /* Projektil_hpp */

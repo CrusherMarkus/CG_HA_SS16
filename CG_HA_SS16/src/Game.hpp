@@ -49,6 +49,8 @@ public:
     
     DefenseObject m_DefenseObject;
     
+    int getEnemySize();
+    
     
 protected:
 private:

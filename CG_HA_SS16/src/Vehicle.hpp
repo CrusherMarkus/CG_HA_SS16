@@ -16,6 +16,7 @@
 #include "Model.hpp"
 #include <list>
 #include "Projektil.hpp"
+#include "Explosion.hpp"
 
 extern Camera g_Camera;
 extern const unsigned int g_WindowWidth;
@@ -32,6 +33,7 @@ public:
     void steer(float ForwardBackward, float LeftRight);
     void update(float delta);
     void updateProjektils(float delta);
+    void updateExplosions(float delta);
     void draw();
     
     Vector& getPosition();
@@ -57,6 +59,7 @@ protected:
     Vector p;
     
     list<Projektil*> projektils;
+    list<Explosion*> explosions;
     
 };
 

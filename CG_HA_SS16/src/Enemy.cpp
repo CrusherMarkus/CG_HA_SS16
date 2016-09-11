@@ -107,7 +107,7 @@ void Enemy::updateProjektils(float deltaTimeInSeconds){
     // Projektile
     for (list<Projektil*>::const_iterator it = (projektils).begin(); it != (projektils).end();)
     {
-        (**it).draw(deltaTimeInSeconds*0.0001);
+        (**it).draw(deltaTimeInSeconds);
         
         if((**it).getPosition().length() >= (**it).getMaxDistance()) {
             projektils.pop_front();

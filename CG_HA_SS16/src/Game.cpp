@@ -44,23 +44,25 @@ void Game::gameLoop() {
     g_Timer.calcTime();
     float deltaTimeInSeconds = g_Timer.getDeltaTimeInSeconds();
     
+    // Vehicle
     m_Vehicle.update(deltaTimeInSeconds);
     m_Vehicle.updateProjektils(deltaTimeInSeconds);
+    m_Vehicle.updateExplosions(deltaTimeInSeconds);
     m_Vehicle.draw();
     
+    // Gegner
     m_Enemy.update(deltaTimeInSeconds);
     m_Enemy.draw();
-
-    // Terrain erstellen
-    
-    g_Camera.apply();
-    
+    //spawnEnemies(deltaTimeInSeconds);
+   
+    // Verteidigung
     m_DefenseObject.update(deltaTimeInSeconds);
     m_DefenseObject.draw();
     
+    // Terrain erstellen
     //terrain->draw();
 
-    //spawnEnemies(deltaTimeInSeconds);
+    g_Camera.apply();
     
 }
 
@@ -71,6 +73,12 @@ void Game::gameLogic() {
     
 
 }
+
+int Game::getEnemySize(){
+    return this->enemies.size();
+}
+
+
 void Game::spawnEnemies(float deltatime){
     this->spawnTimer -= deltatime*3;
     //cout << "spawntimer:"<< this->spawnTimer << endl;

@@ -21,7 +21,7 @@ Model::Model() {
 }
 
 Model::~Model() {
-    //delete [] this->materials;f
+    delete [] this->materials;
 }
 
 

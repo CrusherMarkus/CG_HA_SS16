@@ -53,6 +53,7 @@ GLUI_StaticText* gluiStaticText_CameraPositionX;
 GLUI_StaticText* gluiStaticText_CameraPositionY;
 GLUI_StaticText* gluiStaticText_CameraPositionZ;
 GLUI_StaticText* gluiStaticText_FPS;
+GLUI_StaticText* gluiStaticText_EnemySize;
 
 
 void SetupGLUI();
@@ -135,6 +136,12 @@ void SetupGLUI() {
     gluiStaticText_CameraPositionX = glui->add_statictext_to_panel(camera_panel, "-");
     gluiStaticText_CameraPositionY = glui->add_statictext_to_panel(camera_panel, "-");
     gluiStaticText_CameraPositionZ = glui->add_statictext_to_panel(camera_panel, "-");
+    
+    
+    GLUI_Panel* enemy_panel = glui->add_panel("Gegner");
+    glui->add_statictext_to_panel(enemy_panel, "Anzahl");
+    gluiStaticText_EnemySize = glui->add_statictext_to_panel(enemy_panel, "-");
+
     
     //  Let the GLUI window know where its main graphics window is
     glui->set_main_gfx_window(g_MainWindow);
@@ -352,6 +359,9 @@ void updateGlui() {
     gluiStaticText_CameraPositionX->set_text((to_string(cameraPosition.X).insert(0, "X:")).c_str());
     gluiStaticText_CameraPositionY->set_text((to_string(cameraPosition.Y).insert(0, "Y:")).c_str());
     gluiStaticText_CameraPositionZ->set_text((to_string(cameraPosition.Z).insert(0, "Z:")).c_str());
+    
+    int enemySize = g_Game.getEnemySize();
+    gluiStaticText_EnemySize->set_text((to_string(enemySize).insert(0, "Anzahl Gegner:")).c_str());
 
 }
 

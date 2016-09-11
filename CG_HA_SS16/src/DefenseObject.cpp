@@ -20,7 +20,7 @@ bool DefenseObject::load(const char* modelname, const Vector& StartPos) {
     
     ModelBuilder modelBuilder;
     
-        std::cout << "DefenseObject: " << modelname << std::endl;
+        //std::cout << "DefenseObject: " << modelname << std::endl;
     
     Model *newModel = modelBuilder.buildModel(modelname);
 
@@ -36,7 +36,7 @@ bool DefenseObject::load(const char* modelname, const Vector& StartPos) {
 
 
 void DefenseObject::update(float delta){
-    std::cout << "DefenseObject-delta " << delta << std::endl;
+    //std::cout << "DefenseObject-delta " << delta << std::endl;
     
     this->m_MatrixDefenseObject = defenseObject->getLocalTransform();
     
