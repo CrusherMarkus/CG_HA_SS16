@@ -18,8 +18,6 @@ ShaderManager::~ShaderManager() {
     this->shaders.clear();
 }
 
-#pragma mark - Getter/setter
-
 ShaderProgram *ShaderManager::getShader(const char *shaderName) {
     if (!this->isInitialized) {
         this->initializeShaders();

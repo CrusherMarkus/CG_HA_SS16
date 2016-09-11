@@ -14,6 +14,7 @@
 #include "Timer.hpp"
 #include "Camera.hpp"
 #include "Enemy.hpp"
+#include "Terrain.hpp"
 #include <list>
 #include <GLUT/GLUT.h>
 #include <chrono>
@@ -43,6 +44,7 @@ public:
     bool gameOver;
     
     Vehicle m_Vehicle;
+    Terrain *terrain;
     
 protected:
 private:
