@@ -10,9 +10,10 @@
 #define Vehicle_hpp
 
 #include <stdio.h>
-#include "Model.hpp"
+#include "ModelBuilder.hpp"
 #include "Matrix.hpp"
 #include "SceneObj.hpp"
+#include "Model.hpp"
 
 using namespace std;
 
@@ -21,7 +22,7 @@ class Vehicle
 public:
     Vehicle();
     ~Vehicle();
-    bool load(const char* Model, const char* vertexShader, const char* fragmentShader);
+    bool load(const char* Modelname);
     void steer(float ForwardBackward, float LeftRight);
     void update(float delta);
     void draw();
@@ -35,9 +36,7 @@ public:
 
 protected:
     
-    Model model;
-
-    SceneObj sceneObj;
+    SceneObj *sceneObj = new SceneObj();
     
     Vector position;
     

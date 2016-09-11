@@ -15,16 +15,24 @@ Vehicle::~Vehicle() {
 
 }
 
-bool Vehicle::load(const char* Model, const char* vertexShader, const char* fragmentShader) {
+bool Vehicle::load(const char* modelName) {
+    
+    ModelBuilder modelBuilder;
+    
+    //sceneObj->setScaling(Vector(0.7,0.7,0.7));
+    //sceneObj->setLocalTransform(Vector(0,0,-3), Vector(0,1,0), 0);
+    std::cout << "modelName " << modelName << std::endl;
     
     
 
     
-    sceneObj.setScaling(Vector(0.7,0.7,0.7));
-    sceneObj.setLocalTransform(Vector(0,0,-3), Vector(0,1,0), 0);
-    model = sceneObj.loadModel(Model, false, vertexShader, fragmentShader);
-    position = Vector (0,0,-3);
+    Model *newModel = modelBuilder.buildModel(modelName);
+    sceneObj->setModel(newModel);
+   
+    sceneObj->setLocalTransform(Vector(), Vector(1, 0, 0), 0);
+    sceneObj->setScaling(Vector(1, 1, 1));
     
+    sceneObj->computeBoundingBox();
     
     
     return true;
@@ -38,7 +46,7 @@ void Vehicle::steer(float ForwardBackward, float LeftRight) {
 
 void Vehicle::update(float delta){
     
-    m_MatrixVehicle = sceneObj.getLocalTransform();
+    m_MatrixVehicle = sceneObj->getLocalTransform();
     this->position = m_MatrixVehicle.translation();
     Matrix rm;
     Matrix m;
@@ -82,7 +90,7 @@ void Vehicle::update(float delta){
     //cout << "angle:"<<this->angle << endl;
     
     
-    sceneObj.setLocalTransform(m_MatrixVehicle);
+    sceneObj->setLocalTransform(m_MatrixVehicle);
     
 
 }
@@ -101,8 +109,8 @@ void Vehicle::draw() {
     glEnd();
     
     glPushMatrix();
-    glMultMatrixf(sceneObj.getLocalTransform() * m.scale(sceneObj.getScaling()));
-    model.drawTriangles();
+    glMultMatrixf(sceneObj->getGlobalTransform() * m.scale(sceneObj->getScaling()));
+    sceneObj->getModel()->draw();
     glPopMatrix();
     
 }

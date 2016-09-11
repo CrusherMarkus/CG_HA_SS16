@@ -22,6 +22,11 @@ using namespace std;
 class Camera
 {
 public:
+    static Camera &getInstance() {
+        static Camera instance;
+        return instance;
+    }
+    
     Camera();
     Camera(Vector& Pos, Vector& Target, Vector& Up);
     

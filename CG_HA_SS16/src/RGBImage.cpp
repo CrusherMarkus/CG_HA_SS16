@@ -13,146 +13,150 @@
 #include <stdio.h>
 #include <string.h>
 
-RGBImage::RGBImage(unsigned int width, unsigned int height)
-{
-    this->m_Width = width;
-    this->m_Height = height;
-    this->m_Image = new Color[width*height]();
+using namespace std;
+
+struct BITMAPFILEHEADER {
+    uint16_t bfType;
+    uint32_t bfSize;
+    uint32_t bfReserved;
+    uint32_t bfOffBits;
+};
+
+struct BITMAPINFOHEADER {
+    uint32_t bfSize;
+    int32_t biWidth;
+    int32_t biHeight;
+    uint16_t biPlanes;
+    uint16_t biBitCount;
+    uint32_t biCompression;
+    uint32_t biSizeImage;
+    int32_t biXPelsPerMeter;
+    int32_t biYPelsPerMeter;
+    uint32_t biClrUsed;
+    uint32_t biClrImportant;
+};
+
+RGBImage::RGBImage(unsigned int width, unsigned height) {
+    this->width = width;
+    this->height = height;
+    
+    this->image = new Color[width * height];
 }
 
-void RGBImage::setPixelColor(unsigned int x, unsigned int y,const Color& c)
-{
-    if( x < width() && y < height() )
-    {
-        //Setze Pixelfarbe
-        m_Image[width()*y+x] = c;
-    }
+RGBImage::~RGBImage() {
+    delete [] this->image;
 }
 
-const Color& RGBImage::getPixelColor(unsigned int x, unsigned int y) const
-{
-    if( x < width() && y < height() )
-    {
-        //Setze Pixelfarbe
-        return m_Image[width()*y+x];
+void RGBImage::setPixelColor(unsigned int x, unsigned y, const Color &c) {
+    if (x >= this->width) {
+        x = this->width - 1;
     }
-    return Color();
+    if (x >= this->height) {
+        y = this->height - 1;
+    }
+    
+    this->image[x + y * this->width] = c;
 }
 
-bool RGBImage::saveToDisk(const char* filename)
-{
-    std::string filenameComplete = filename;
-    filenameComplete.append(".bmp");
-    unsigned int headers[16];
-    FILE * outfile;
-    unsigned int extrabytes;
-    unsigned int paddedsize;
-    
-    extrabytes = 4 - width()%4;
-    if(extrabytes == 4)
-    {
-        extrabytes = 0;
+const Color &RGBImage::getPixelColor(unsigned int x, unsigned y) const {
+    if (x >= this->width) {
+        x = this->width - 1;
+    }
+    if (x >= this->height) {
+        y = this->height - 1;
     }
     
-    //Die Größe der Bilddaten beträgt näherungsweise (gilt nur für durch 4 teilbare Bildbreiten) biWidth×biHeight×biBitCount/8, also extrabytes damit width()%4==0 gilt bzw. paddedsize%4==0
-    paddedsize = width()*height()*3+extrabytes;
+    return this->image[x + y * this->width];
+}
+
+unsigned int RGBImage::getWidth() const {
+    return this->width;
+}
+
+unsigned int RGBImage::getHeight() const {
+    return this->height;
+}
+
+bool RGBImage::saveToDisk(const char *filename) const {
+    ofstream outputFile;
+    char buffer[128];
     
-    headers[0]  = paddedsize + 54;      // bfSize
-    headers[1]  = 0;                    // bfReserved (1&2)
-    headers[2]  = 54;                   // bfOffbits
-    
-    headers[3]  = 40;                   // biSize
-    headers[4]  = width();              // biWidth
-    headers[5]  = height();             // biHeight
-    headers[6]  = 1;                    //biPlanes
-    headers[7]  = 0;                    //biPlanes
-    headers[8]  = 24;                   //biBitCount
-    headers[9]  = 0;                    //biBitCount
-    
-    headers[10]  = 0;                    // biCompression
-    headers[11]  = paddedsize;           // biSizeImage
-    headers[12]  = 0;                    // biXPelsPerMeter
-    headers[13] = 0;                    // biYPelsPerMeter
-    headers[14] = 0;                    // biClrUsed
-    headers[15] = 0;                    // biClrImportant
-    
-    outfile = fopen(filenameComplete.c_str(), "wb");
-    
-    fprintf(outfile, "BM"); // bfType (2Byte)
-    
-    //Man schreibt einen character pro Zeile um endian probleme zu vermeiden
-    //char hat größe von 1Byte also bitShiftet man jeweils um 8 bit
-    for (unsigned int n = 0; n <= 5; n++) //(Jeweils 4 Byte)
-    {
-        fprintf(outfile, "%c", headers[n]);
-        fprintf(outfile, "%c", (headers[n]) >> 8);
-        fprintf(outfile, "%c", (headers[n]) >> 16);
-        fprintf(outfile, "%c", (headers[n]) >> 24);
+    outputFile.open(filename, ofstream::out | ofstream::binary);
+    if (!outputFile) {
+        return false;
     }
     
-    fprintf(outfile, "%c", headers[6]); // 6&7 2 Byte
-    fprintf(outfile, "%c", headers[7]);
-    fprintf(outfile, "%c", headers[8]); // 8&7 2 Byte
-    fprintf(outfile, "%c", headers[9]);
+    BITMAPFILEHEADER bmpFileHeader;
+    bmpFileHeader.bfType = 0x4d42;
+    bmpFileHeader.bfSize = 14 + 40 + (this->width * this->height * 3);
+    bmpFileHeader.bfReserved = 0;
+    bmpFileHeader.bfOffBits = 14 + 40;
     
-    for (unsigned int n = 10; n <= 15; n++) //Letzten 6 jeweils wieder 4 Byte
-    {
-        fprintf(outfile, "%c", headers[n]);
-        fprintf(outfile, "%c", (headers[n]) >> 8);
-        fprintf(outfile, "%c", (headers[n]) >> 16);
-        fprintf(outfile, "%c", (headers[n]) >> 24);
-    }
+    BITMAPINFOHEADER bmpInfoHeader;
+    bmpInfoHeader.bfSize = 40;
+    bmpInfoHeader.biWidth = this->width;
+    bmpInfoHeader.biHeight = this->height;
+    bmpInfoHeader.biPlanes = 1;
+    bmpInfoHeader.biBitCount = 24;
+    bmpInfoHeader.biCompression = 0;
+    bmpInfoHeader.biSizeImage = this->width * this->height * 3;
+    bmpInfoHeader.biXPelsPerMeter = 0;
+    bmpInfoHeader.biYPelsPerMeter = 0;
+    bmpInfoHeader.biClrUsed = 0;
+    bmpInfoHeader.biClrImportant = 0;
     
-    // 24 bpp:Die Daten jedes Pixels bestehen aus jeweils einem Byte für den Blau-, Grün- und Rot-Kanal (in dieser Reihenfolge!)
-    for (int y = height()-1; y >= 0; y--)
-    {
-        for (unsigned int x = 0; x < width(); x++)
-        {
-            //Reihenfolge b,g,r ist so definiert warum auch immer ...
-            fprintf(outfile, "%c", convertColorChannel(getPixelColor(x,y).B));
-            fprintf(outfile, "%c", convertColorChannel(getPixelColor(x,y).G));
-            fprintf(outfile, "%c", convertColorChannel(getPixelColor(x,y).R));
+    outputFile.write((char *)&bmpFileHeader.bfType, sizeof(bmpFileHeader.bfType));
+    outputFile.write((char *)&bmpFileHeader.bfSize, sizeof(bmpFileHeader.bfSize));
+    outputFile.write((char *)&bmpFileHeader.bfReserved, sizeof(bmpFileHeader.bfReserved));
+    outputFile.write((char *)&bmpFileHeader.bfOffBits, sizeof(bmpFileHeader.bfOffBits));
+    
+    //outputFile.write((char *)&bmpInfoHeader, sizeof(BITMAPFILEHEADER));
+    outputFile.write((char *)&bmpInfoHeader, sizeof(BITMAPINFOHEADER));
+    
+    int padSize = (4 - 3 * this->width % 4) % 4;
+    
+    // save bitmap upside down (default)
+    for (int y = this->height - 1; y >= 0; y--) {
+        for (int x = 0; x < this->width; x++) {
+            unsigned char pixel[3];
+            Color color = this->getPixelColor(x, y);
+            
+            pixel[0] = RGBImage::convertColorChannel(color.B);
+            pixel[1] = RGBImage::convertColorChannel(color.G);
+            pixel[2] = RGBImage::convertColorChannel(color.R);
+            
+            outputFile.write((char *)&pixel, 3);
         }
         
-        if(extrabytes){
-            for(unsigned int n=1; n <= extrabytes; n++){
-                fprintf(outfile,"%c",0);
-            }
+        for (int i = 0; i < padSize; i++) {
+            outputFile.write(0x00, 1);
         }
     }
     
-    fclose(outfile);
+    outputFile.flush();
+    outputFile.close();
+    
     return true;
 }
 
-unsigned int RGBImage::width() const
-{
-    return m_Width;
-}
-
-unsigned int RGBImage::height() const
-{
-    return m_Height;
-}
-
-unsigned char RGBImage::convertColorChannel(float f)
-{
-    if(f <= 0)
-    {
-        return 0;
+unsigned char RGBImage::convertColorChannel(float f) {
+    if(f < 0.0f) {
+        f = 0.0f;
+    } else if (f > 1.0) {
+        f = 1.0f;
     }
-    else if(f >= 1)
-    {
-        return 255;
-    }
-    else
-    {
-        return f*255;
-    }
+    
+    return f * 255;
 }
 
-RGBImage::~RGBImage()
-{
-    delete [] m_Image;
+void RGBImage::swap2BytesAndWriteToBuffer(int value, char *buffer) {
+    buffer[0] = (value) & 0xff;
+    buffer[1] = (value >> 0x08) & 0xff;
 }
 
+void RGBImage::swap4BytesAndWriteToBuffer(int value, char *buffer) {
+    buffer[0] = (value) & 0xff;
+    buffer[1] = (value >> 0x08) & 0xff;
+    buffer[2] = (value >> 0x10) & 0xff;
+    buffer[3] = (value >> 0x18) & 0xff;
+}

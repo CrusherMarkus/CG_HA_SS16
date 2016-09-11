@@ -16,8 +16,9 @@ Enemy::~Enemy() {
     
 }
 
-bool Enemy::load(const char* Model, const char* vertexShader, const char* fragmentShader, const Vector& v) {
+bool Enemy::load(const char* modelname, const Vector& v) {
     
+    ModelBuilder modelBuilder;
     
     Vector x = v;
     x= x.normalize();
@@ -36,11 +37,18 @@ bool Enemy::load(const char* Model, const char* vertexShader, const char* fragme
     }
 
     cout << angleFacingMid << endl;
-    sceneObj.setScaling(Vector(1.0,1.0,1.0));
-    sceneObj.setLocalTransform(v, Vector(0.0,1.0,0.0), angleFacingMid);
-    model = sceneObj.loadModel(Model, false, vertexShader, fragmentShader);
-    this->position = v;
-       return true;
+    //sceneObj->setScaling(Vector(1.0,1.0,1.0));
+    //sceneObj->setLocalTransform(v, Vector(0.0,1.0,0.0), angleFacingMid);
+    Model *newModel = modelBuilder.buildModel(modelname);
+    
+    sceneObj->setModel(newModel);
+    
+    sceneObj->setLocalTransform(Vector(), Vector(1, 0, 0), 0);
+    sceneObj->setScaling(Vector(1, 1, 1));
+
+    sceneObj->computeBoundingBox();
+
+    return true;
 }
 
 
@@ -51,7 +59,7 @@ void Enemy::update(float delta){
     }
     if (this->position.length() > 5){
         Vector direction(-this->position.X/100,0,-this->position.Z/100);
-        this->m_MatrixEnemy = sceneObj.getLocalTransform();
+        this->m_MatrixEnemy = sceneObj->getLocalTransform();
         this->position += direction;
         Matrix tm;
         //tm.translation(-this->position);
@@ -70,7 +78,7 @@ void Enemy::update(float delta){
         tm.translation(this->position);
         m_MatrixEnemy = rm*tm;
         
-        sceneObj.setLocalTransform(m_MatrixEnemy);
+        sceneObj->setLocalTransform(m_MatrixEnemy);
         //this->position = m_MatrixEnemy.translation();
         
          //cout << "position:" << this->position.X << "," << this->position.Y << "," << this->position.Z << endl;
@@ -125,9 +133,10 @@ void Enemy::draw() {
     glVertex3f(p.X, p.Y, p.Z);
     glEnd();
     glMatrixMode(GL_MODELVIEW);
+    
     glPushMatrix();
-    glMultMatrixf(sceneObj.getLocalTransform() * m.scale(sceneObj.getScaling()));
-    model.drawTriangles();
+    glMultMatrixf(sceneObj->getGlobalTransform() * m.scale(sceneObj->getScaling()));
+    sceneObj->getModel()->draw();
     glPopMatrix();
     
 }

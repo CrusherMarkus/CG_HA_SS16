@@ -14,7 +14,6 @@
 #include "Vector.hpp"
 #include <math.h>
 #include <GLUT/GLUT.h>
-#include "Model.hpp"
 
 using namespace std;
 
@@ -35,7 +34,6 @@ private:
     Vector* startPosition;
     Vector* position;
     Vector* direction;
-    Model model;
 };
 
 #endif /* Projektil_hpp */

@@ -9,66 +9,48 @@
 #ifndef Model_hpp
 #define Model_hpp
 
-#include <iostream>
-#include "Vector.hpp"
-#include "Color.hpp"
-#include <string>
-#include <map>
-#include <vector>
-#include <map>
+#include "AbstractModel.hpp"
+#include "Vertex.hpp"
 #include "Material.hpp"
+#include "Texture.hpp"
+#include "BoundingBox.hpp"
+#include "FaceGroup.hpp"
 #include "ShaderProgram.hpp"
-#include "Camera.hpp"
+#include "ShaderManager.hpp"
 
-extern Camera g_Camera;
-extern const Vector g_LightPos;
 
-struct Vertex {
-    Vertex();
-    Vertex( const Vector& p, const Vector& n, float TexS, float TexT, Material *material);
-    Vector Position;
-    Vector Normal;
-    float TexcoordS;
-    float TexcoordT;
-    Material *Material;
-};
+#include <vector>
 
-class BoundingBox {
-public:
-    BoundingBox();
-    BoundingBox(const Vector& min, const Vector &max);
-    Vector Min;
-    Vector Max;
-};
+class Vertex;
 
-class Model {
+class Model : public AbstractModel {
+protected:
+    std::string name;
+    std::vector<Vertex> vertices;
+    Material *materials;
+    int materialCount;
+    Texture whiteTexture;
+    BoundingBox boundingBox;
+    bool selected;
+    std::vector<FaceGroup> faceGroups;
+    
+    ShaderProgram *shader;
+    
 public:
     Model();
     ~Model();
-    const BoundingBox& boundingBox() const;
-    bool load(const char* Filename, bool FitSize, const char *vertexShader, const char *fragmentShader);
-    void drawTriangles() const;
-    void showBox() const;
-    void createRectangle(Vector size, Vector pos, const char* VertexShader, const char* FragmentShader, const char* wallpaper);
-    void loadTexture(const char* t);
-    void setTiling(int u, int v);
-
+    
+    std::string &getName();
+    std::vector<Vertex> &getVertices();
+    void setVertices(std::vector<Vertex> &vertices);
+    void setMaterials(Material *materials, int materialCount);
+    const BoundingBox &getBoundingBox();
+    void setBoundingBox(const BoundingBox &boundingBox);
+    
+    void draw() const;
     
 protected:
-    Material *m_pMaterials;
-    unsigned int m_MaterialCount;
-    Vertex *m_pVertices;
-    unsigned int m_VertexCount;
-    BoundingBox m_Box;
-    ShaderProgram *shader;
-    Texture whiteTexture;
-    Texture texture;
-    int tilingU;
-    int tilingV;
-    
-    void createModel(const char* filename, bool fitSize);
-    void loadMaterial(const char* filename, std::map<std::string, int> &materialMap);
-    void createBoundingBox(std::vector<Vector> vertices);
+    void drawLines() const;
+    void drawTriangles() const;
 };
-
 #endif /* Model_hpp */

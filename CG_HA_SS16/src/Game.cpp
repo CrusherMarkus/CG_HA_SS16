@@ -22,7 +22,7 @@ Game::~Game()
 void Game::initialize(){
     cout << "Game::initialize()" << endl;
     
-    m_Vehicle.load("objs/tank-camou.obj","shader/Basic_vertexshader.glsl", "shader/Blinn_fragmentshader.glsl");
+    m_Vehicle.load("objs/tank-camou.obj");
     
 }
 
@@ -77,7 +77,7 @@ void Game::gameLoop() {
         }
         ++it;
     }
-    spawnEnemies(deltaTimeInSeconds);
+    //spawnEnemies(deltaTimeInSeconds);
     
 }
 
@@ -89,7 +89,7 @@ void Game::gameLogic() {
 
 }
 void Game::spawnEnemies(float deltatime){
-    this->spawnTimer -= deltatime;
+    this->spawnTimer -= deltatime*3;
     //cout << "spawntimer:"<< this->spawnTimer << endl;
     if (gameOver){
         return;
@@ -130,7 +130,7 @@ void Game::spawnEnemies(float deltatime){
 
             tmp = new Enemy();
             Vector ePos = *new Vector(x,0,z);
-            tmp->load("objs/tank-camou.obj","shader/Basic_vertexshader.glsl", "shader/Blinn_fragmentshader.glsl", ePos);
+            tmp->load("objs/tank-camou.obj", ePos);
             enemies.push_back(tmp);
             
         }

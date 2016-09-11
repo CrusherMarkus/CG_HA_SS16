@@ -7,7 +7,7 @@
 //
 
 #include "Texture.hpp"
-#include <stdint.h>
+
 
 #define DWORD uint32_t
 #define WORD __uint16_t
@@ -37,14 +37,16 @@ typedef struct tagBITMAPINFOHEADER
 }BITMAPINFOHEADER;
 
 
-Texture::Texture() : m_TextureID(0)
+Texture::Texture() : m_TextureID(0), m_pImage(NULL)
 {
     
 }
 
 Texture::~Texture()
 {
-    
+    if(m_pImage)
+        delete m_pImage;
+    m_pImage = NULL;
 }
 
 bool Texture::isValid() const
@@ -60,20 +62,38 @@ bool Texture::LoadFromBMP( const char* Filename )
     if(data==NULL)
         return false;
     
+    if( m_pImage )
+        delete m_pImage;
+    
+    m_pImage = createImage(data, width, height);
     
     glGenTextures(1, &m_TextureID);
     
     glBindTexture(GL_TEXTURE_2D, m_TextureID);
     glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-    
-    
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glGenerateMipmap(GL_TEXTURE_2D);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
     glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
     glBindTexture(GL_TEXTURE_2D, 0);
     
     return true;
+}
+
+RGBImage* Texture::createImage( unsigned char* Data, unsigned int width, unsigned int height )
+{
+    // create CPU accessible image
+    RGBImage* pImage = new RGBImage(width, height);
+    assert(pImage);
+    for( int i=0; i<height; i++)
+        for( int j=0; j<width; j++)
+        {
+            Color c( (float)*(Data)/255.0f, (float)*(Data+1)/255.0f, (float)*(Data+2)/255.0f);
+            pImage->setPixelColor(j, i, c);
+            Data+=3;
+        }
+    return pImage;
 }
 
 void Texture::apply() const
@@ -83,7 +103,11 @@ void Texture::apply() const
     
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, m_TextureID);
-    
+}
+
+const RGBImage* Texture::getRGBImage() const
+{
+    return m_pImage;
 }
 
 unsigned char* Texture::LoadBMP(const char* Filename, unsigned int& width, unsigned int& height)
@@ -141,7 +165,7 @@ unsigned char* Texture::LoadBMP(const char* Filename, unsigned int& width, unsig
     
     //swap the r and b values to get RGB (bitmap is BGR)
     unsigned char tempRGB;
-    for (int imageIdx = 0; imageIdx < bitmapInfoHeader.biSizeImage;imageIdx+=3)
+    for (int imageIdx = 0; imageIdx < bitmapInfoHeader.biSizeImage; imageIdx+=3)
     {
         tempRGB = bitmapImage[imageIdx];
         bitmapImage[imageIdx] = bitmapImage[imageIdx + 2];

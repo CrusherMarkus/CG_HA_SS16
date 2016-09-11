@@ -8,134 +8,157 @@
 
 #include "SceneObj.hpp"
 
-#ifndef DEG2RAD
-#define DEG2RAD(x) ((x)/180.0*M_PI)
-#define RAD2DEG(x) ((x)/M_PI*180.0)
-#endif
-
 SceneObj::SceneObj() {
-    this->m_Scaling = Vector();
-    this->m_LocalTransform = Matrix();
+    this->model = NULL;
 }
 
-SceneObj::SceneObj(string& Name, const Vector& Translation, const Vector& RotationAxis,
-                   const float RotationAngle, const Vector& Scale, Model model) {
-    SceneObj();
+SceneObj::SceneObj(const std::string &name, const Vector &translation, const Vector &rotationAxis, const float rotationAngle, const Vector &scale, Model *model) {
+    this->name = name;
+    this->scaling = scale;
+    this->model = model;
     
-    this->m_Name = Name;
-    this->m_LocalTransform.translation(Translation);
-    this->m_LocalTransform.rotationAxis(RotationAxis, RotationAngle);
-    this->m_Scaling = Scale;
-    this->m_Model = model;
+    this->setLocalTransform(translation, rotationAxis, rotationAngle);
 }
 
 SceneObj::~SceneObj() {
+    delete this->model;
 }
 
-const string& SceneObj::getName() const {
-    return this->m_Name;
+bool SceneObj::operator==(const SceneObj &other) {
+    return this->getName() == other.getName();
 }
 
-const string& SceneObj::getModelName() const {
-    return this->m_ModelName;
+const std::string& SceneObj::getName() const {
+    return this->name;
 }
 
-const Matrix& SceneObj::getLocalTransform() const {
-    return this->m_LocalTransform;
+void SceneObj::setName(const std::string& Name) {
+    this->name = Name;
 }
 
-const Vector& SceneObj::getScaling() const {
-    return this->m_Scaling;
+Model *SceneObj::getModel() const {
+    return this->model;
 }
 
-const Vector& SceneObj::getRotationAxis() const {
-    return this->m_RotationAxis;
-}
-
-float SceneObj::getRotationAngle() const {
-    return this->m_RotationAngle;
-}
-
-const Vector& SceneObj::getOrgTranslation() const {
-    return this->m_OrgTranslation;
+void SceneObj::setModel(Model* pModel) {
+    this->model = pModel;
 }
 
 
-Model& SceneObj::getModel() {
-    return this->m_Model;
+Matrix SceneObj::getGlobalTransform() const {
+    return this->localTransform;
 }
 
-void SceneObj::setName(const string& Name) {
-    this->m_Name = Name;
+const Matrix &SceneObj::getLocalTransform() const {
+    return this->localTransform;
 }
 
-void SceneObj::setModelName(const string& Name) {
-    this->m_ModelName = Name;
+void SceneObj::setLocalTransform(const Vector &translation, const Vector &rotationAxis, const float rotationAngle) {
+    this->translation = translation;
+    this->rotationAxis = rotationAxis;
+    this->rotationAngle = rotationAngle;
+    
+    Matrix translationMatrix;
+    Matrix rotationMatrix;
+    
+    translationMatrix.translation(translation);
+    rotationMatrix.rotationAxis(rotationAxis, rotationAngle);
+    
+    this->localTransform = translationMatrix * rotationMatrix;
 }
 
-Model& SceneObj::loadModel(const char* Filename, bool FitSize, const char *vertexShader, const char *fragmentShader) {
-    // set 'fitSize' to false since scaling is handled via matrix transform
-    // otherwise the bounding box would not fit any more.
-    if(!m_Model.load(Filename, false, vertexShader, fragmentShader)) {
-        cerr << "Could not load model bottom (" << Filename << ")" << endl;
+void SceneObj::setLocalTransform(Matrix &transform) {
+    this->localTransform = transform;
+}
 
+const Vector &SceneObj::getTranslation() const {
+    return this->translation;
+}
+
+const Vector &SceneObj::getRotationAxis() const {
+    return this->rotationAxis;
+}
+
+const float SceneObj::getRotationAngle() const {
+    return this->rotationAngle;
+}
+
+const Vector &SceneObj::getScaling() const {
+    return this->scaling;
+}
+
+void SceneObj::setScaling(const Vector &scaling) {
+    this->scaling = scaling;
+    this->scalingTarget = this->scaling.X;
+}
+
+void SceneObj::computeBoundingBox() {
+    std::vector<Vertex> vertices = this->getModel()->getVertices();
+    Camera::getInstance().apply();
+    
+    BoundingBox boundingBox;
+    boundingBox.getMax().X = boundingBox.getMin().X = vertices[0].position.X;
+    boundingBox.getMax().Y = boundingBox.getMin().Y = vertices[0].position.Y;
+    boundingBox.getMax().Z = boundingBox.getMin().Z = vertices[0].position.Z;
+    
+    for (int i = 0; i < vertices.size(); i++) {
+        Vector position = vertices[i].position;
+        
+        if (boundingBox.getMin().X > position.X) boundingBox.getMin().X = position.X;
+        if (boundingBox.getMin().Y > position.Y) boundingBox.getMin().Y = position.Y;
+        if (boundingBox.getMin().Z > position.Z) boundingBox.getMin().Z = position.Z;
+        
+        if (boundingBox.getMax().X < position.X) boundingBox.getMax().X = position.X;
+        if (boundingBox.getMax().Y < position.Y) boundingBox.getMax().Y = position.Y;
+        if (boundingBox.getMax().Z < position.Z) boundingBox.getMax().Z = position.Z;
     }
     
-    return m_Model;
+    this->getModel()->setBoundingBox(boundingBox);
 }
 
-void SceneObj::setLocalTransform(const Vector& Translation, const Vector& RotationAxis,
-                                 const float RotationAngle) {
-    Matrix trans, rot;
-    
-    m_RotationAxis = RotationAxis;
-    m_RotationAngle = RotationAngle;
-    m_OrgTranslation = Translation;
-    
-    trans.translation(Translation);
-    rot.rotationAxis(RotationAxis, DEG2RAD(RotationAngle));
-    
-    this->m_LocalTransform = trans * rot;
+void SceneObj::scaleTo(float scaling) {
+    if (scaling < 0.0) {
+        scaling = 0.0;
+    }
+    this->scalingTarget = scaling;
 }
 
-void SceneObj::setLocalTransform(const Matrix& LocalTransform) {
-    this->m_LocalTransform = LocalTransform;
+void SceneObj::translateTo(Vector &translation) {
+    this->translationTarget = translation;
 }
 
-void SceneObj::setScaling(const Vector& Scaling) {
-    this->m_Scaling = Scaling;
-}
-
-void SceneObj::move(float x, float y, float z) {
-    // set scaling of movement here, since the GLUI function does not work
-    float scale = .01f;
+bool SceneObj::needsTranslationUpdate() {
+    if (this->translationTarget.X != this->translation.X) {
+        return true;
+    }
+    if (this->translationTarget.Y != this->translation.Y) {
+        return true;
+    }
+    if (this->translationTarget.Z != this->translation.Z) {
+        return true;
+    }
     
-    m_OrgTranslation.X += x * scale;
-    m_OrgTranslation.Y += y * scale;
-    m_OrgTranslation.Z += z * scale;
-}
-
-/*
- axis: 0 = x; 1 = y; 2 = z
- */
-void SceneObj::rotate(float angle, int axis) {
-    m_RotationAngle = angle;
-    
-    m_RotationAxis = Vector();
-    
-    if(axis == 0)
-        m_RotationAxis.X = 1;
-    if(axis == 1)
-        m_RotationAxis.Y = 1;
-    if(axis == 2)
-        m_RotationAxis.Z = 1;
+    return false;
 }
 
 void SceneObj::update(float delta) {
-    Matrix TM, RM;
+    static float scalingPerMilisecond = 1 / 1000;
     
-    RM.rotationAxis(m_RotationAxis, DEG2RAD(m_RotationAngle));
-    TM.translation(m_OrgTranslation.X, m_OrgTranslation.Y, m_OrgTranslation.Z);
+    if (this->scaling.X != this->scalingTarget) {
+        float scalingFactor = scalingPerMilisecond * delta;
+        if (this->scaling.X > this->scalingTarget) {
+            scalingFactor *= -1;
+        }
+        float newScaling = this->scaling.X + scalingFactor;
+        if (newScaling < this->scalingTarget || newScaling > this->scalingTarget) {
+            newScaling = scalingTarget;
+        }
+        this->scaling.X = newScaling;
+        this->scaling.Y = newScaling;
+        this->scaling.Z = newScaling;
+    }
     
-    m_LocalTransform = TM * RM;
+    if (this->needsTranslationUpdate()) {
+        //float rightDirection = this->translationTarget.X < this->translation.X ? : -1.0
+    }
 }

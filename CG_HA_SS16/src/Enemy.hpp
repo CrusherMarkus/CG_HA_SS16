@@ -10,6 +10,7 @@
 #define Enemy_hpp
 
 #include <stdio.h>
+#include "ModelBuilder.hpp"
 #include "Model.hpp"
 #include "Matrix.hpp"
 #include "SceneObj.hpp"
@@ -20,7 +21,7 @@ class Enemy{
     public:
         Enemy();
         ~Enemy();
-        bool load(const char* Model, const char* vertexShader, const char* fragmentShader, const Vector& v);
+        bool load(const char* Model, const Vector& v);
         void update(float delta);
         void draw();
         Vector& getPosition();
@@ -30,9 +31,7 @@ class Enemy{
     
 protected:
     
-    Model model;
-    
-    SceneObj sceneObj;
+    SceneObj *sceneObj = new SceneObj();
     
     Vector position;
     

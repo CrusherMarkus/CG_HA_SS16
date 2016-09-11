@@ -12,22 +12,24 @@
 #include <stdio.h>
 #include "Color.hpp"
 
-class RGBImage
-{
+class RGBImage {
 public:
-    RGBImage(unsigned int width, unsigned int height);
-    virtual ~RGBImage();
-    void setPixelColor(unsigned int x, unsigned int y,const Color& c);
-    const Color& getPixelColor(unsigned int x, unsigned int y) const;
-    bool saveToDisk(const char* filename);
-    unsigned int width() const;
-    unsigned int height() const;
+    RGBImage(unsigned int width, unsigned height);
+    ~RGBImage();
+    void setPixelColor(unsigned int x, unsigned y, const Color &c);
+    const Color &getPixelColor(unsigned int x, unsigned y) const;
+    unsigned int getWidth() const;
+    unsigned int getHeight() const;
     
+    bool saveToDisk(const char *filename) const;
     static unsigned char convertColorChannel(float f);
 protected:
-    Color *m_Image;
-    unsigned int m_Width;
-    unsigned int m_Height;
+    Color *image;
+    unsigned int height;
+    unsigned int width;
+    
+    static void swap4BytesAndWriteToBuffer(int value, char *buffer);
+    static void swap2BytesAndWriteToBuffer(int value, char *buffer);
 };
 
 #endif /* RGBImage_hpp */

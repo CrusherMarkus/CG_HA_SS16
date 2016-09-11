@@ -13,52 +13,52 @@
 #include <iostream>
 #include <set>
 #include "Vector.hpp"
-#include "Matrix.hpp"
 #include "Model.hpp"
-#include <math.h>
-
-using namespace std;
+#include "Matrix.hpp"
+#include "Camera.hpp"
 
 class SceneObj {
+protected:
+    std::string name;
+    Model *model;
+
+    Matrix localTransform;
+    Vector translation;
+    Vector translationTarget;
+    Vector rotationAxis;
+    float rotationAngle;
+    float scalingTarget;
+    Vector scaling;
+    
 public:
     SceneObj();
-    SceneObj(string& Name, const Vector& Translation, const Vector& RotationAxis,
-             const float RotationAngle, const Vector& Scale, Model model);
+    SceneObj(const std::string& Name, const Vector& Translation, const Vector& RotationAxis, const float RotationAngle, const Vector& Scale, Model* pModel);
     ~SceneObj();
     
-    const string& getName() const;
-    const string& getModelName() const;
-    const Matrix& getLocalTransform() const;
+    bool operator==(const SceneObj &other);
+
+    const std::string& getName() const;
+    void setName(const std::string& Name);
+    Model* getModel() const;
+    void setModel(Model* pModel);
+
+    Matrix getGlobalTransform() const;
+    const Matrix &getLocalTransform() const;
+    void setLocalTransform(const Vector& Translation, const Vector& RotationAxis, const float RotationAngle);
+    void setLocalTransform(Matrix &transform);
+    const Vector &getTranslation() const;
+    const Vector &getRotationAxis() const;
+    const float getRotationAngle() const;
     const Vector& getScaling() const;
-    const Vector& getRotationAxis() const;
-    const Vector& getOrgTranslation() const;
-    float getRotationAngle() const;
-
-    Model& getModel();
-    
-    void setName(const string& Name);
-    void setModelName(const string& Name);
-    Model& loadModel(const char* Filename, bool FitSize, const char *vertexShader, const char *fragmentShader);
-
-    void setLocalTransform(const Vector& Translation, const Vector& RotationAxis,
-                           const float RotationAngle);
-    void setLocalTransform(const Matrix& LocalTransform);
     void setScaling(const Vector& Scaling);
-    void move(float x, float y, float z);
-    void rotate(float angle, int axis);
+        
+    void computeBoundingBox();
+    
+    void scaleTo(float scaling);
+    void translateTo(Vector &tranlation);
+    bool needsTranslationUpdate();
+    void rotateTo(float rotationAngle);
     void update(float delta);
-    
-protected:
-    string m_Name;
-    string m_ModelName;
-    Model m_Model;
-    
-    Matrix m_LocalTransform;
-    Vector m_Scaling;
-    Vector m_RotationAxis;
-    Vector m_OrgTranslation;
-    float m_RotationAngle;
-    
 };
 
 
