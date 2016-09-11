@@ -29,8 +29,8 @@ bool Vehicle::load(const char* modelName) {
     Model *newModel = modelBuilder.buildModel(modelName);
     sceneObj->setModel(newModel);
    
-    sceneObj->setLocalTransform(Vector(), Vector(1, 0, 0), 0);
-    sceneObj->setScaling(Vector(1, 1, 1));
+    sceneObj->setLocalTransform(Vector(), Vector(0, 1, 0), 0);
+    sceneObj->setScaling(Vector(0.5, 0.5, 0.5));
     
     sceneObj->computeBoundingBox();
     
@@ -51,16 +51,10 @@ void Vehicle::update(float delta){
     Matrix rm;
     Matrix m;
     
-    
-    /*/ Begrenzung links/rechts
-    if((m_MatrixVehicle.translation().X > 4 && leftRight == 1) || (m_MatrixVehicle.translation().X < -4 && leftRight == -1)){
-        cout << "X-Grenze erreicht!" << endl;
-    } else {
-      */
-        m.translation(leftRight*3*delta, 0, 0);
-        m_MatrixVehicle *= m;
-        m.translation(0, 0, forwardBackward*3*delta);
-        m_MatrixVehicle *= m;
+    m.translation(leftRight*3*delta, 0, 0);
+    m_MatrixVehicle *= m;
+    m.translation(0, 0, forwardBackward*3*delta);
+    m_MatrixVehicle *= m;
     
     this->angle += this->leftRight *delta/ 1000;
     

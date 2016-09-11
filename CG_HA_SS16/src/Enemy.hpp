@@ -31,7 +31,7 @@ class Enemy{
     
 protected:
     
-    SceneObj *sceneObj = new SceneObj();
+    SceneObj *enemy = new SceneObj();
     
     Vector position;
     

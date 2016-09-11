@@ -77,7 +77,7 @@ void Game::gameLoop() {
         }
         ++it;
     }
-    //spawnEnemies(deltaTimeInSeconds);
+    spawnEnemies(deltaTimeInSeconds);
     
 }
 

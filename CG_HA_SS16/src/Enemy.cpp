@@ -24,31 +24,27 @@ bool Enemy::load(const char* modelname, const Vector& v) {
     x= x.normalize();
     
     this->angleFacingMid = acos(x.dot(*new Vector(0.0,0.0,1.0)));
-    //angleFacingMid = angleFacingMid*(180/M_PI);
     if(x.X >= 0.0){
         angleFacingMid = acos(x.dot(*new Vector(0.0,0.0,1.0)));
-        //angleFacingMid = angleFacingMid*(180/M_PI);
-        //angleFacingMid = angleFacingMid -180;
+        angleFacingMid = angleFacingMid*(180/M_PI);
+        angleFacingMid = angleFacingMid +180;
+        angleFacingMid = angleFacingMid/(180/M_PI);
     }
     else {
         angleFacingMid = acos(x.dot(*new Vector(0.0,0.0,-1.0)));
-        //angleFacingMid = angleFacingMid*(180/M_PI);
-  
+        
     }
-
+    
     cout << angleFacingMid << endl;
-    //sceneObj->setScaling(Vector(1.0,1.0,1.0));
-    //sceneObj->setLocalTransform(v, Vector(0.0,1.0,0.0), angleFacingMid);
+    enemy->setScaling(Vector(1.0,1.0,1.0));
+    enemy->setLocalTransform(v, Vector(0.0,1.0,0.0), angleFacingMid);
+
     Model *newModel = modelBuilder.buildModel(modelname);
-    
-    sceneObj->setModel(newModel);
-    
-    sceneObj->setLocalTransform(Vector(), Vector(1, 0, 0), 0);
-    sceneObj->setScaling(Vector(1, 1, 1));
+    enemy->setModel(newModel);
 
-    sceneObj->computeBoundingBox();
-
+    this->position = v;
     return true;
+
 }
 
 
@@ -59,11 +55,12 @@ void Enemy::update(float delta){
     }
     if (this->position.length() > 5){
         Vector direction(-this->position.X/100,0,-this->position.Z/100);
-        this->m_MatrixEnemy = sceneObj->getLocalTransform();
+        this->m_MatrixEnemy = enemy->getLocalTransform();
         this->position += direction;
         Matrix tm;
-        //tm.translation(-this->position);
+        //tm.translation(this->position);
         Matrix rm;
+        cout << this->angleFacingMid << endl;
         rm = rm.rotationY(angleFacingMid);
         //m_MatrixEnemy.rotationY(this->angleFacingMid);
         Vector moveVec = m_MatrixEnemy.forward();
@@ -76,45 +73,18 @@ void Enemy::update(float delta){
         
         //m.translation(this->position.X*0.9,0,this->position.Z*0.9);
         tm.translation(this->position);
-        m_MatrixEnemy = rm*tm;
         
-        sceneObj->setLocalTransform(m_MatrixEnemy);
+        m_MatrixEnemy.rotationY(angleFacingMid);
+        tm *= m_MatrixEnemy;
+        //m_MatrixEnemy *= tm;
+        // m_MatrixEnemy *= rm;
+        enemy->setLocalTransform(tm);
         //this->position = m_MatrixEnemy.translation();
         
-         //cout << "position:" << this->position.X << "," << this->position.Y << "," << this->position.Z << endl;
+        //cout << "position:" << this->position.X << "," << this->position.Y << "," << this->position.Z << endl;
     }
-    /*
-    m_MatrixEnemy = sceneObj.getLocalTransform();
-    
-    Matrix rm;
-    Matrix m;
-    
-    
-    Begrenzung links/rechts
-     if((m_MatrixVehicle.translation().X > 4 && leftRight == 1) || (m_MatrixVehicle.translation().X < -4 && leftRight == -1)){
-     cout << "X-Grenze erreicht!" << endl;
-     } else {
-     
-    m.translation(1*3*delta, 0, 0);
-    m_MatrixEnemy *= m;
-    m.translation(0, 0, 1*3*delta);
-    m_MatrixEnemy *= m;
-    /*
-     this->angle += this->leftRight *delta/ 1000;
-     
-     if(this->angle >= M_PI * 2 || this->angle <= -M_PI * 2){
-     this->angle = 0;
-     }
-     
-     
-    //m_MatrixVehicle = m*rm;
-    
-    //cout << "angle:"<<this->angle << endl;
-    
-    
-    sceneObj.setLocalTransform(m_MatrixEnemy);*/
-
 }
+    
 Vector& Enemy::getPosition(){
     return this->position;
 }
@@ -135,11 +105,16 @@ void Enemy::draw() {
     glMatrixMode(GL_MODELVIEW);
     
     glPushMatrix();
-    glMultMatrixf(sceneObj->getGlobalTransform() * m.scale(sceneObj->getScaling()));
-    sceneObj->getModel()->draw();
+    glMultMatrixf(enemy->getGlobalTransform() * m.scale(enemy->getScaling()));
+    enemy->getModel()->draw();
     glPopMatrix();
     
 }
+
+
+
+
+
 
 
 
