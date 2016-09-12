@@ -367,7 +367,7 @@ void updateGlui() {
     int enemySize = g_Game.getEnemySize();
     gluiStaticText_EnemySize->set_text((to_string(enemySize).insert(0, "Anzahl Gegner:")).c_str());
     
-    int defenceHp = g_Game.m_DefenseObject.getHp();
+    short defenceHp = g_Game.m_DefenseObject.getHp();
     cout << "defenceHp:" << defenceHp << endl;
     gluiStaticText_DefenceHp->set_text((to_string(defenceHp).insert(0, "Lebenpunkte:")).c_str());
 

@@ -102,6 +102,9 @@ void Enemy::update(float delta){
             updateProjektils(delta);
         if(this->projektils.size() < 1 ){
             spawnProjektil();
+            short currentHp = Game::m_DefenseObject.getHp();
+            currentHp -= 10;
+            DefenseObject::DefenseObject().setHp(currentHp);
         }
         
         

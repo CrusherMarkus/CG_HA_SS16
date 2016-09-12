@@ -50,6 +50,7 @@ void Game::gameLoop() {
     m_Vehicle.update(deltaTimeInSeconds);
     m_Vehicle.updateProjektils(deltaTimeInSeconds);
     m_Vehicle.updateExplosions(deltaTimeInSeconds);
+    
     m_Vehicle.draw();
     
     // Gegner
@@ -60,6 +61,8 @@ void Game::gameLoop() {
     // Verteidigung
     m_DefenseObject.update(deltaTimeInSeconds);
     m_DefenseObject.draw();
+    
+    cout << "game hp:"<< m_DefenseObject.getHp() << endl;
     // Terrain erstellen
 
     //terrain->draw();

@@ -26,6 +26,7 @@
 
 extern Timer g_Timer;
 extern Camera g_Camera;
+extern DefenseObject m_DefenseObject;
 
 using namespace std;
 using namespace std::chrono;
