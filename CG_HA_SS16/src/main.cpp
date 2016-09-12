@@ -281,22 +281,18 @@ void SpecialKeyboardCallback( int key, int x, int y)
         case GLUT_KEY_UP:
             forwardbackward = 1;
             g_Game.m_Vehicle.steer(forwardbackward, leftright);
-            //g_Camera.neuePos(forwardbackward,leftright);
             break;
         case GLUT_KEY_DOWN:
             forwardbackward = -1;
             g_Game.m_Vehicle.steer(forwardbackward, leftright);
-            //g_Camera.neuePos(forwardbackward,leftright);
             break;
         case GLUT_KEY_LEFT:
             leftright = 1;
             g_Game.m_Vehicle.steer(forwardbackward, leftright);
-            //g_Camera.neuePos(forwardbackward,leftright);
             break;
         case GLUT_KEY_RIGHT:
             leftright = -1;
             g_Game.m_Vehicle.steer(forwardbackward, leftright);
-            //g_Camera.neuePos(forwardbackward,leftright);
             break;
         default:
             break;
@@ -309,22 +305,18 @@ void SpecialKeyboardUpCallback( int key, int x, int y)
         case GLUT_KEY_UP:
             forwardbackward = 0;
             g_Game.m_Vehicle.steer(forwardbackward, leftright);
-            //g_Camera.neuePos(forwardbackward,leftright);
             break;
         case GLUT_KEY_DOWN:
             forwardbackward = 0;
             g_Game.m_Vehicle.steer(forwardbackward, leftright);
-            //g_Camera.neuePos(forwardbackward,leftright);
             break;
         case GLUT_KEY_LEFT:
             leftright = 0;
             g_Game.m_Vehicle.steer(forwardbackward, leftright);
-            //g_Camera.neuePos(forwardbackward,leftright);
             break;
         case GLUT_KEY_RIGHT:
             leftright = 0;
             g_Game.m_Vehicle.steer(forwardbackward, leftright);
-            //g_Camera.neuePos(forwardbackward,leftright);
             break;
         default:
             break;
@@ -337,12 +329,6 @@ void updateGlui() {
     string s = to_string(gameTime);
     s.append(" Sekunden");
     gluiStaticText_Time->set_text(s.c_str());
-    
-    
-    /*float fps = (float) g_Timer.getFPS();
-     s = to_string(fps);
-     gluiStaticText_FPS->set_text(s.c_str());*/
-    
     
     Vector vehiclePosition = g_Game.m_Vehicle.getPosition();
     gluiStaticText_VehiclePositionX->set_text((to_string(vehiclePosition.X).insert(0, "X:")).c_str());
@@ -358,7 +344,7 @@ void updateGlui() {
     int projectileSize = g_Game.m_Vehicle.getProjektils().size();
     gluiStaticText_ProjectilesSize->set_text((to_string(projectileSize).insert(0, "Anzahl Projektile:")).c_str());
     
-    Vector cameraPosition = g_Camera.getPosition();
+    Vector cameraPosition = g_Game.m_Camera.getPosition();
     gluiStaticText_CameraPositionX->set_text((to_string(cameraPosition.X).insert(0, "X:")).c_str());
     gluiStaticText_CameraPositionY->set_text((to_string(cameraPosition.Y).insert(0, "Y:")).c_str());
     gluiStaticText_CameraPositionZ->set_text((to_string(cameraPosition.Z).insert(0, "Z:")).c_str());

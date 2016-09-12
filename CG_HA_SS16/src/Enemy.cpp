@@ -35,15 +35,13 @@ bool Enemy::load(const char* modelname, const Vector& v) {
         
     }
     
-    enemy->setScaling(Vector(1.0,1.0,1.0));
+    enemy->setScaling(Vector(0.4,0.4,0.4));
     enemy->setLocalTransform(v, Vector(0.0,1.0,0.0), angleFacingMid);
     
     Model *newModel = modelBuilder.buildModel(modelname);
     enemy->setModel(newModel);
     enemy->computeBoundingBox();
     bb = enemy->getModel()->getBoundingBox();
-    
-    enemy->setScaling(Vector(0.5, 0.5, 0.5));
     
     this->maxHp = 100;
     this->hp = 100;
