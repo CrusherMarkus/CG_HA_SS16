@@ -23,7 +23,7 @@
 #include "DefenseObject.hpp"
 #include "VehicleCamera.hpp"
 #include <Math.h>
-
+extern short HP;
 extern Timer g_Timer;
 extern Camera g_Camera;
 extern DefenseObject m_DefenseObject;

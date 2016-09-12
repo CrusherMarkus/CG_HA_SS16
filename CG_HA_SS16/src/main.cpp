@@ -74,7 +74,7 @@ void SpecialKeyboardUpCallback( int key, int x, int y);
 
 int main(int argc, char * argv[])
 {
-    
+    HP = 100;
     //  Set the window x and y coordinates such that the
     //  window becomes centered
     centerOnScreen ();
