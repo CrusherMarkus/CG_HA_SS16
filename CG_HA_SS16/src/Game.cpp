@@ -10,7 +10,7 @@
 
 Game::Game()
 {
-    this->spawnTime = 60;
+    this->spawnTime = 40;
     this->spawnTimer = 0;
 }
 

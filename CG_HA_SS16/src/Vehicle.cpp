@@ -124,7 +124,7 @@ Vector& Vehicle::getPosition(){
 }
 
 void Vehicle::draw() {
-    drawBB(newBB);
+    //drawBB(newBB);
     Matrix m;
     glPointSize(10);
     glBegin(GL_POINTS);

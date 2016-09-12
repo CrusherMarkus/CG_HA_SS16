@@ -109,7 +109,7 @@ bool Enemy::getIsHit(){
 }
 
 void Enemy::draw() {
-    drawBB(newBB);
+    //drawBB(newBB);
     Matrix m;
     glPointSize(10);
     glBegin(GL_POINTS);
