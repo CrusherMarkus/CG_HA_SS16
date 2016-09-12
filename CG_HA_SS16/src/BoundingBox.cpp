@@ -24,3 +24,11 @@ Vector &BoundingBox::getMin() {
 Vector &BoundingBox::getMax() {
     return this->max;
 }
+
+void BoundingBox::setMax(Vector v){
+    this->max = v;
+}
+
+void BoundingBox::setMin(Vector v){
+    this->min = v;
+}

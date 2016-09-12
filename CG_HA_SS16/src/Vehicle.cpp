@@ -33,7 +33,9 @@ bool Vehicle::load(const char* ChassisModel, const char* CanonModel, const Vecto
     
 	this->position = StartPos;
     sceneObjChassisModel->computeBoundingBox();
-    
+
+    this->bb = sceneObjChassisModel->getModel()->getBoundingBox();
+       
     return true;
 }
 
@@ -82,7 +84,13 @@ void Vehicle::update(float delta){
     sceneObjChassisModel->setLocalTransform(m_MatrixVehicle);
     sceneObjCanonModel->setLocalTransform(m_MatrixVehicle);
     this->position = m_MatrixVehicle.translation();
-    sceneObjChassisModel->computeBoundingBox();
+    //sceneObjChassisModel->computeBoundingBox();
+    
+    
+   /* newBB.setMax(*new Vector(m_MatrixVehicle.translation().X+bb.getMax().X,m_MatrixVehicle.translation().Y+bb.getMax().Y,m_MatrixVehicle.translation().Z+bb.getMax().Z));
+    newBB.setMin(*new Vector(m_MatrixVehicle.translation().X+bb.getMax().X,m_MatrixVehicle.translation().Y+bb.getMax().Y,m_MatrixVehicle.translation().Z+bb.getMax().Z));*/
+    newBB.setMax(bb.getMax()+m_MatrixVehicle.translation());
+    newBB.setMin(bb.getMin()+m_MatrixVehicle.translation());
 }
 
 void Vehicle::updateProjektils(float deltaTimeInSeconds){
@@ -134,8 +142,8 @@ Vector& Vehicle::getPosition(){
 }
 
 void Vehicle::draw() {
-    BoundingBox lol = sceneObjChassisModel->getModel()->getBoundingBox();
-    drawBB(lol);
+    //BoundingBox lol = sceneObjChassisModel->getModel()->getBoundingBox();
+    drawBB(newBB);
     Matrix m;
     glPointSize(10);
     glBegin(GL_POINTS);
