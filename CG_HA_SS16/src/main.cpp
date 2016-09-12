@@ -54,6 +54,7 @@ GLUI_StaticText* gluiStaticText_CameraPositionY;
 GLUI_StaticText* gluiStaticText_CameraPositionZ;
 GLUI_StaticText* gluiStaticText_FPS;
 GLUI_StaticText* gluiStaticText_EnemySize;
+GLUI_StaticText* gluiStaticText_DefenceHp;
 
 
 void SetupGLUI();
@@ -140,6 +141,10 @@ void SetupGLUI() {
     
     GLUI_Panel* enemy_panel = glui->add_panel("Gegner");
     gluiStaticText_EnemySize = glui->add_statictext_to_panel(enemy_panel, "-");
+    
+    GLUI_Panel* defence_panel = glui->add_panel("Verteidigung");
+    gluiStaticText_DefenceHp = glui->add_statictext_to_panel(defence_panel, "-");
+    
 
     
     //  Let the GLUI window know where its main graphics window is
@@ -361,6 +366,10 @@ void updateGlui() {
     
     int enemySize = g_Game.getEnemySize();
     gluiStaticText_EnemySize->set_text((to_string(enemySize).insert(0, "Anzahl Gegner:")).c_str());
+    
+    int defenceHp = g_Game.m_DefenseObject.getHp();
+    cout << "defenceHp:" << defenceHp << endl;
+    gluiStaticText_DefenceHp->set_text((to_string(defenceHp).insert(0, "Lebenpunkte:")).c_str());
 
 }
 

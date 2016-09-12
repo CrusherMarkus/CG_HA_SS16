@@ -27,7 +27,7 @@ void Game::initialize(){
     m_Vehicle.load("objs/tank_bottom.obj","objs/tank_top.obj",*startpos);
         
     m_Enemy.load("objs/tank-camou.obj",*new Vector(20,0,20));
-    m_DefenseObject.load("objs/cylinder.obj", *new Vector(0,0,0));
+    m_DefenseObject.load("objs/gingerbreadhouse.obj", *new Vector(0,0,0));
 
     //ModelBuilder modelBuilder;
     //terrain = modelBuilder.buildTerrain("tex/heightmap.bmp", "tex/sand.bmp", "tex/grass.bmp", "tex/mixmap.bmp", 60, 60, 0);

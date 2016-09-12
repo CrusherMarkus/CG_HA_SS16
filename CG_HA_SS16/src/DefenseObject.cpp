@@ -26,11 +26,11 @@ bool DefenseObject::load(const char* modelname, const Vector& StartPos) {
 
     defenseObject->setModel(newModel);
     defenseObject->setLocalTransform(StartPos, *new Vector(0,1,0),0);
-    defenseObject->setScaling(Vector(1, 1, 1));
+    defenseObject->setScaling(Vector(0.5, 0.5, 0.5));
     
     
     this->position = StartPos;
-    
+    this->hp = 100;
     return true;
     
 }
@@ -55,4 +55,14 @@ void DefenseObject::draw(){
     glMultMatrixf(defenseObject->getLocalTransform() * m.scale(defenseObject->getScaling()));
     defenseObject->getModel()->draw();
     glPopMatrix();
+}
+
+short DefenseObject::getHp() const
+{
+    return this->hp;
+}
+
+void DefenseObject::setHp(short hp)
+{
+    this->hp = hp;
 }
