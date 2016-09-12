@@ -45,7 +45,7 @@ public:
     
     void spawnProjektil();
     
-    list<Projektil*> getProjektils();
+    vector<Projektil*> getProjektils();
     BoundingBox bb;
     Matrix m_MatrixVehicle;
     Matrix m_MatrixCannon;
@@ -68,8 +68,8 @@ protected:
     float leftRight = 0.0;
     Vector p;
     
-    list<Projektil*> projektils;
-    list<Explosion*> explosions;
+    vector<Projektil*> projektils;
+    vector<Explosion*> explosions;
     
 };
 

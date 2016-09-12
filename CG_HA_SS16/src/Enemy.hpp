@@ -49,7 +49,7 @@ class Enemy{
     
     
 protected:
-    list<Projektil*> projektils;
+    vector<Projektil*> projektils;
     Vector position;
     Vector p;
     

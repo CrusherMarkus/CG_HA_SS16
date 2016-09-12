@@ -54,7 +54,7 @@ void Game::gameLoop() {
     // Gegner
     m_Enemy.update(deltaTimeInSeconds);
     m_Enemy.draw();
-    //spawnEnemies(deltaTimeInSeconds);
+    spawnEnemies(deltaTimeInSeconds);
     
     // Verteidigung
     m_DefenseObject.update(deltaTimeInSeconds);
@@ -142,16 +142,31 @@ void Game::collision(){
     BoundingBox tank = m_Vehicle.newBB;
     for(int i=0; i < enemies.size(); i++){
         cout << enemies.at(i)->getIsHit() << endl;
-
+        
+        //Check Collision between Tank and Enemies
+        
         BoundingBox tmp = enemies.at(i)->newBB;
        enemies.at(i)->setIsHit((tank.getMin().X <= tmp.getMax().X && tank.getMax().X >= tmp.getMin().X) &&
         (tank.getMin().Y <= tmp.getMax().Y && tank.getMax().Y >= tmp.getMin().Y) &&
         (tank.getMin().Z <= tmp.getMax().Z && tank.getMax().Z >= tmp.getMin().Z));
        cout << enemies.at(i)->getIsHit() << endl;
+        
+        // Check Collision between Projectile Spheres and Enemies
+        
+        if(!enemies.at(i)->getIsHit()){
+            
+          for (int j =0; j< m_Vehicle.getProjektils().size();j++){
+              float a= max(tmp.getMin().X, min(m_Vehicle.getProjektils().at(j)->getPosition().X, tmp.getMax().X));
+              float b = max(tmp.getMin().Y, min(m_Vehicle.getProjektils().at(j)->getPosition().Y,tmp.getMax().Y));
+              float c = max(tmp.getMin().Z,min(m_Vehicle.getProjektils().at(j)->getPosition().Z,tmp.getMax().Z));
+        
+              float distance = sqrt((a - m_Vehicle.getProjektils().at(j)->getPosition().X) * (a - m_Vehicle.getProjektils().at(j)->getPosition().X) +
+                                    (b - m_Vehicle.getProjektils().at(j)->getPosition().Y) * (b - m_Vehicle.getProjektils().at(j)->getPosition().Y) +
+                                    (c - m_Vehicle.getProjektils().at(j)->getPosition().Z) * (c - m_Vehicle.getProjektils().at(j)->getPosition().Z));
+              cout << "Distance: "<< distance << endl;
+              enemies.at(i)->setIsHit(distance < 0.3);
+          }
+        }
+  
     }
-    /*
-    for (int j =0; j< m_Vehicle.getProjektils().size();j++){
-        float a= Math.max(
-    }    
-     */
 }

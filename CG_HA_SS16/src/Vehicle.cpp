@@ -95,7 +95,7 @@ void Vehicle::update(float delta){
 
 void Vehicle::updateProjektils(float deltaTimeInSeconds){
     
-    // Projektile darstellen
+    /*
     for (list<Projektil*>::const_iterator it = projektils.begin(); it != projektils.end();)
     {
 
@@ -104,22 +104,37 @@ void Vehicle::updateProjektils(float deltaTimeInSeconds){
         cout << "(**it).getMaxDistance()" << (**it).getMaxDistance() << endl;
    
         
-        // Wenn die maximale Distance erreichst ist Projektil löschen und Explision
-        if((**it).getPosition().length() >= (**it).getMaxDistance()) {
-            // Explosion hinzufügen
+                if((**it).getPosition().length() >= (**it).getMaxDistance()) {
+           
             Vector tmp = Vector((*it)->getPosition().X,(*it)->getPosition().Y,(*it)->getPosition().Z);
             this->explosions.push_back(new Explosion(tmp));
             ++it;
-            // Projektil löschen
-            this->projektils.pop_front();
+            
+            this->projektils.erase(this->projektils.begin());
         
         }
+    }*/
+    // Projektile darstellen
+    for( int i = 0; i< projektils.size(); i++){
+        Projektil* tmp = projektils.at(i);
+        tmp->draw(deltaTimeInSeconds);
+        // Wenn die maximale Distance erreichst ist Projektil löschen und Explision
+
+        if(tmp->getPosition().length() >= tmp->getMaxDistance()){
+             // Explosion hinzufügen
+            Vector tmp2 = Vector(tmp->getPosition().X,tmp->getPosition().Y,tmp->getPosition().Z);
+            this->explosions.push_back(new Explosion(tmp2));
+            // Projektil löschen
+            projektils.erase(projektils.begin());
+        }
     }
+
+    
 }
 
 void Vehicle::updateExplosions(float deltaTimeInSeconds){
     // Explosions darstellen
-    for (list<Explosion*>::const_iterator it = explosions.begin(); it != explosions.end(); )
+    /*for (list<Explosion*>::const_iterator it = explosions.begin(); it != explosions.end(); )
     {
         
         if (!(*it)->endExplosion)
@@ -132,6 +147,17 @@ void Vehicle::updateExplosions(float deltaTimeInSeconds){
             delete (*it);
             ++it;
             this->explosions.pop_front();
+        }
+    }*/
+    for (int i = 0; i < explosions.size(); i++){
+        Explosion* tmp = explosions.at(i);
+        
+        if(!(tmp->endExplosion)) {
+            tmp->draw(deltaTimeInSeconds);
+        }else {
+            
+            explosions.erase(explosions.begin());
+            delete(tmp);
         }
     }
 }
@@ -170,7 +196,7 @@ float Vehicle::getLeftRight() {
     return this->leftRight;
 }
 
-list<Projektil*> Vehicle::getProjektils() {
+vector<Projektil*> Vehicle::getProjektils() {
     return projektils;
 }
 
