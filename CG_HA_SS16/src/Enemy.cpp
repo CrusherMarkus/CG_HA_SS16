@@ -119,7 +119,7 @@ void Enemy::updateProjektils(float deltaTimeInSeconds){
             Projektil* tmp = projektils.at(i);
             tmp->draw(deltaTimeInSeconds);
             
-            if(tmp->getPosition().length() >= tmp->getMaxDistance()){
+            if(tmp->getDistance() >= tmp->getMaxDistance()){
                   projektils.erase(projektils.begin());
             }
         }

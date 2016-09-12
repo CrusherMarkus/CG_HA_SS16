@@ -120,7 +120,7 @@ void Vehicle::updateProjektils(float deltaTimeInSeconds){
         tmp->draw(deltaTimeInSeconds);
         // Wenn die maximale Distance erreichst ist Projektil löschen und Explision
 
-        if(tmp->getPosition().length() >= tmp->getMaxDistance()){
+        if(tmp->getDistance() >= tmp->getMaxDistance()){
              // Explosion hinzufügen
             Vector tmp2 = Vector(tmp->getPosition().X,tmp->getPosition().Y,tmp->getPosition().Z);
             this->explosions.push_back(new Explosion(tmp2));

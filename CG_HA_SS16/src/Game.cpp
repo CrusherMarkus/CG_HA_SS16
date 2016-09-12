@@ -26,6 +26,7 @@ void Game::initialize(){
     
     m_Vehicle.load("objs/tank_bottom.obj","objs/tank_top.obj",*startpos);
         
+
     m_Enemy.load("objs/tank-camou.obj",*new Vector(20,0,20));
     m_DefenseObject.load("objs/gingerbreadhouse.obj", *new Vector(0,0,0));
 
@@ -52,8 +53,8 @@ void Game::gameLoop() {
     m_Vehicle.draw();
     
     // Gegner
-    m_Enemy.update(deltaTimeInSeconds);
-    m_Enemy.draw();
+    //m_Enemy.update(deltaTimeInSeconds);
+    //m_Enemy.draw();
     spawnEnemies(deltaTimeInSeconds);
     
     // Verteidigung
