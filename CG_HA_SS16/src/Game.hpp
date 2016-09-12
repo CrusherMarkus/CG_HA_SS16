@@ -48,6 +48,9 @@ public:
     bool gameOver;
     Vehicle m_Vehicle;
     
+    void restartGame();
+    void startGame();
+    
     Enemy m_Enemy;
     Terrain *terrain;
     

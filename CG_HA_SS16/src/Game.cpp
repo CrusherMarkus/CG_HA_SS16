@@ -79,10 +79,10 @@ void Game::gameLoop() {
 
 
 void Game::gameLogic() {
-
-
     
-
+    if(m_DefenseObject.getHp() <= 0){
+        restartGame();
+    }
 }
 
 int Game::getEnemySize(){
@@ -138,7 +138,7 @@ void Game::spawnEnemies(float deltatime){
         }
         
     }
-    
+ 
         
 }
 
@@ -173,4 +173,17 @@ void Game::collision(){
         }
   
     }
+}
+
+void Game::restartGame(){
+    std::cout << "Game::restartGame" << std::endl;
+
+    
+    this->startGame();
+    
+}
+
+void Game::startGame(){
+    std::cout << "Game::startGame" << std::endl;
+    this->initialize();
 }
