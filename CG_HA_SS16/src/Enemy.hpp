@@ -16,6 +16,7 @@
 #include "SceneObj.hpp"
 #include <list>
 #include "Projektil.hpp"
+#include "Variables.hpp"
 
 using namespace std;
 

@@ -22,8 +22,8 @@
 #include <random>
 #include "DefenseObject.hpp"
 #include "VehicleCamera.hpp"
-#include <Math.h>
-extern short HP;
+#include "Variables.hpp"
+
 extern Timer g_Timer;
 extern Camera g_Camera;
 extern DefenseObject m_DefenseObject;

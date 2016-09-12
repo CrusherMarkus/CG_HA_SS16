@@ -21,13 +21,11 @@ Game::~Game()
 
 void Game::initialize(){
     cout << "Game::initialize()" << endl;
-    
-    Vector *startpos = new Vector(0, 0, -3);
-    
-    m_Vehicle.load("objs/tank_bottom.obj","objs/tank_top.obj",*startpos);
+    gl::hp = 100;
+    m_Vehicle.load("objs/tank_bottom.obj","objs/tank_top.obj",*new Vector(0, 0, -10));
         
 
-    m_Enemy.load("objs/tank-camou.obj",*new Vector(20,0,20));
+    //m_Enemy.load("objs/tank-camou.obj",*new Vector(0,0,-10));
     m_DefenseObject.load("objs/gingerbreadhouse.obj", *new Vector(0,0,0));
 
     //ModelBuilder modelBuilder;
@@ -62,7 +60,7 @@ void Game::gameLoop() {
     m_DefenseObject.update(deltaTimeInSeconds);
     m_DefenseObject.draw();
     
-    cout << "game hp:"<< m_DefenseObject.getHp() << endl;
+    //cout << "game hp:"<< m_DefenseObject.getHp() << endl;
     // Terrain erstellen
 
     //terrain->draw();
@@ -80,9 +78,9 @@ void Game::gameLoop() {
 
 void Game::gameLogic() {
     
-    if(m_DefenseObject.getHp() <= 0){
-        restartGame();
-    }
+   // if(m_DefenseObject.getHp() <= 0){
+     //   restartGame();
+   // }
 }
 
 int Game::getEnemySize(){
@@ -121,14 +119,12 @@ void Game::spawnEnemies(float deltatime){
             
             while(x > -15 && x <= 15 ){
                 x = distr(eng);
-                cout << "x: "<< x<< endl;
             }
             while (z > -15 && z <= 15 ){
                 z = distr(eng);
-                cout << "z: "<< z<< endl;
-            }
+                            }
 
-            cout << "x:"<<x <<" z="<< z << endl;
+           // cout << "x:"<<x <<" z="<< z << endl;
 
             tmp = new Enemy();
             Vector ePos = *new Vector(x,0,z);
@@ -145,7 +141,6 @@ void Game::spawnEnemies(float deltatime){
 void Game::collision(){
     BoundingBox tank = m_Vehicle.newBB;
     for(int i=0; i < enemies.size(); i++){
-        cout << enemies.at(i)->getIsHit() << endl;
         
         //Check Collision between Tank and Enemies
         
@@ -153,7 +148,7 @@ void Game::collision(){
        enemies.at(i)->setIsHit((tank.getMin().X <= tmp.getMax().X && tank.getMax().X >= tmp.getMin().X) &&
         (tank.getMin().Y <= tmp.getMax().Y && tank.getMax().Y >= tmp.getMin().Y) &&
         (tank.getMin().Z <= tmp.getMax().Z && tank.getMax().Z >= tmp.getMin().Z));
-       cout << enemies.at(i)->getIsHit() << endl;
+    
         
         // Check Collision between Projectile Spheres and Enemies
         
@@ -167,7 +162,7 @@ void Game::collision(){
               float distance = sqrt((a - m_Vehicle.getProjektils().at(j)->getPosition().X) * (a - m_Vehicle.getProjektils().at(j)->getPosition().X) +
                                     (b - m_Vehicle.getProjektils().at(j)->getPosition().Y) * (b - m_Vehicle.getProjektils().at(j)->getPosition().Y) +
                                     (c - m_Vehicle.getProjektils().at(j)->getPosition().Z) * (c - m_Vehicle.getProjektils().at(j)->getPosition().Z));
-              cout << "Distance: "<< distance << endl;
+        
               enemies.at(i)->setIsHit(distance < 0.3);
           }
         }

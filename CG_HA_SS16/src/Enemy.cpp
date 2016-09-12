@@ -7,7 +7,6 @@
 //
 
 #include "Enemy.hpp"
-extern short HP;
 
 Enemy::Enemy() {
     
@@ -36,7 +35,6 @@ bool Enemy::load(const char* modelname, const Vector& v) {
         
     }
     
-    cout << angleFacingMid << endl;
     enemy->setScaling(Vector(1.0,1.0,1.0));
     enemy->setLocalTransform(v, Vector(0.0,1.0,0.0), angleFacingMid);
 
@@ -68,34 +66,15 @@ void Enemy::update(float delta){
         this->m_MatrixEnemy = enemy->getLocalTransform();
         this->position += direction;
         Matrix tm;
-        //tm.translation(this->position);
         Matrix rm;
-        //cout << this->angleFacingMid << endl;
         rm = rm.rotationY(angleFacingMid);
-        //m_MatrixEnemy.rotationY(this->angleFacingMid);
-        Vector moveVec = m_MatrixEnemy.forward();
-        
-        //cout << "position:" << moveVec.X << "," << moveVec.Y << "," << moveVec.Z << endl;
-        
-        //Vector translationV = m_MatrixEnemy.translation();
-        //Vector newTrans = translationV+direction;
-        //m_MatrixEnemy.translation(newTrans);
-        
-        //m.translation(this->position.X*0.9,0,this->position.Z*0.9);
         tm.translation(this->position);
-        
         m_MatrixEnemy.rotationY(angleFacingMid);
         tm *= m_MatrixEnemy;
-        //m_MatrixEnemy *= tm;
-        // m_MatrixEnemy *= rm;
         enemy->setLocalTransform(tm);
-        
         newBB.setMax(bb.getMax()+this->position);
         newBB.setMin(bb.getMin()+this->position);
-        //this->position = m_MatrixEnemy.translation();
-        
-        //cout << "position:" << this->position.X << "," << this->position.Y << "," << this->position.Z << endl;
-        
+
     } else {
         
  
@@ -103,7 +82,7 @@ void Enemy::update(float delta){
         if(this->projektils.size() < 1 ){
             spawnProjektil();
             
-            HP -= 10;
+            gl::hp -= 10;
            
         }
         
@@ -114,9 +93,7 @@ void Enemy::update(float delta){
 
 void Enemy::updateProjektils(float deltaTimeInSeconds){
     
-    //cout << "updateProjektils" << endl;
 
-    
     // Projektile
             for( int i = 0; i< projektils.size(); i++){
             Projektil* tmp = projektils.at(i);

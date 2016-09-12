@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4058FB921D868E3200CAC38E /* Variables.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4058FB901D868E3200CAC38E /* Variables.cpp */; };
 		881053F71D0B0D1600AF3EDC /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 881053F61D0B0D1600AF3EDC /* OpenGL.framework */; };
 		881053F91D0B0D2200AF3EDC /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 881053F81D0B0D2200AF3EDC /* GLUT.framework */; };
 		881DF5411D1095F0006A0D83 /* Vehicle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 881DF53F1D1095F0006A0D83 /* Vehicle.cpp */; };
@@ -53,6 +54,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		4058FB901D868E3200CAC38E /* Variables.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Variables.cpp; path = src/Variables.cpp; sourceTree = "<group>"; };
+		4058FB911D868E3200CAC38E /* Variables.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Variables.hpp; path = src/Variables.hpp; sourceTree = "<group>"; };
 		881053EC1D0B0CA700AF3EDC /* CG_HA_SS16 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CG_HA_SS16; sourceTree = BUILT_PRODUCTS_DIR; };
 		881053F61D0B0D1600AF3EDC /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		881053F81D0B0D2200AF3EDC /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
@@ -228,6 +231,8 @@
 				8869F4051D85FE1B000EC728 /* Explosion.hpp */,
 				8869F40D1D862D41000EC728 /* VehicleCamera.cpp */,
 				8869F40E1D862D41000EC728 /* VehicleCamera.hpp */,
+				4058FB901D868E3200CAC38E /* Variables.cpp */,
+				4058FB911D868E3200CAC38E /* Variables.hpp */,
 			);
 			name = Game;
 			sourceTree = "<group>";
@@ -316,6 +321,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				887F7C2B1D0F0D0C001C0651 /* Material.cpp in Sources */,
+				4058FB921D868E3200CAC38E /* Variables.cpp in Sources */,
 				887F7C281D0F0D0C001C0651 /* Camera.cpp in Sources */,
 				88C44B3B1D855650005F8633 /* ObjParser.cpp in Sources */,
 				887C3EC91D1124DE00CC0E32 /* Projektil.cpp in Sources */,

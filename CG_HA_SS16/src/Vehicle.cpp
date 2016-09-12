@@ -24,11 +24,14 @@ bool Vehicle::load(const char* ChassisModel, const char* CanonModel, const Vecto
     
     Model *chassisModel = modelBuilder.buildModel(ChassisModel);
     sceneObjChassisModel->setModel(chassisModel);
+    sceneObjChassisModel->setLocalTransform(StartPos,*new Vector(0,1,0),0);
     sceneObjChassisModel->setScaling(Vector(0.5, 0.5, 0.5));
-    
+ 
     Model *canonModel = modelBuilder.buildModel(CanonModel);
     sceneObjCanonModel->setModel(canonModel);
+    sceneObjCanonModel->setLocalTransform(StartPos,*new Vector(0,1,0),0);
     sceneObjCanonModel->setScaling(Vector(0.5, 0.5, 0.5));
+    
     
     
 	this->position = StartPos;
