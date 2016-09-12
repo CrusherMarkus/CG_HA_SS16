@@ -30,13 +30,11 @@ public:
     
     Matrix m_MatrixDefenseObject;
 
-    short getHp() const;
-    void setHp(short hp);
+
     
 protected:
     
-    short hp;
-    
+        
     SceneObj *defenseObject = new SceneObj();
     Vector position;
     Vector p;
