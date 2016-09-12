@@ -25,7 +25,8 @@ bool DefenseObject::load(const char* modelname, const Vector& StartPos) {
     Model *newModel = modelBuilder.buildModel(modelname);
 
     defenseObject->setModel(newModel);
-    defenseObject->setScaling(Vector(0, 0, 0));
+    defenseObject->setLocalTransform(StartPos, *new Vector(0,1,0),0);
+    defenseObject->setScaling(Vector(1, 1, 1));
     
     
     this->position = StartPos;

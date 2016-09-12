@@ -95,7 +95,7 @@ void Enemy::update(float delta){
     } else {
         
  
-            updateProjektils(delta*0.01);
+            updateProjektils(delta);
         if(this->projektils.size() < 1 ){
             spawnProjektil();
         }

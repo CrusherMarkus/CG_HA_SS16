@@ -44,7 +44,8 @@ void Projektil::draw(float time){
     time = time *5 ;
     
    // *this->position += *this->direction * time /3000.0f;
-    this->position = new Vector(this->position->X+this->direction->X*time,0,this->position->Z+this->direction->Z*time);
+    
+    this->position = new Vector(this->position->X+this->direction->X*time,0.5,this->position->Z+this->direction->Z*time);
     glPushMatrix();
     glTranslatef(this->position->X,this->position->Y,this->position->Z);
     

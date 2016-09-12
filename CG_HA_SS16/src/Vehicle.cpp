@@ -157,7 +157,7 @@ void Vehicle::updateExplosions(float deltaTimeInSeconds){
         }else {
             
             explosions.erase(explosions.begin());
-            delete(tmp);
+            //delete(tmp);
         }
     }
 }
