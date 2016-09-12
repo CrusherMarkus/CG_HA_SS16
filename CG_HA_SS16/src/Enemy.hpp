@@ -33,8 +33,10 @@ class Enemy{
         Matrix m_MatrixEnemy;
         SceneObj *enemy = new SceneObj();
         void setIsHit(bool);
-    
+        void drawBB(BoundingBox& b );
         void spawnProjektil();
+        BoundingBox bb;
+        BoundingBox newBB;
     
 protected:
     list<Projektil*> projektils;

@@ -41,11 +41,12 @@ public:
     void spawnProjektil();
     
     list<Projektil*> getProjektils();
-    
+    BoundingBox bb;
     Matrix m_MatrixVehicle;
     Matrix m_MatrixCannon;
     SceneObj *sceneObjChassisModel = new SceneObj();
     void drawBB(BoundingBox& b );
+    BoundingBox newBB;
 
 protected:
     

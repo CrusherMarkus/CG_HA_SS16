@@ -42,6 +42,7 @@ bool Enemy::load(const char* modelname, const Vector& v) {
     Model *newModel = modelBuilder.buildModel(modelname);
     enemy->setModel(newModel);
     enemy->computeBoundingBox();
+    bb = enemy->getModel()->getBoundingBox();
 
     
     enemy->setScaling(Vector(0.5, 0.5, 0.5));
@@ -84,7 +85,9 @@ void Enemy::update(float delta){
         //m_MatrixEnemy *= tm;
         // m_MatrixEnemy *= rm;
         enemy->setLocalTransform(tm);
-        enemy->computeBoundingBox();
+        
+        newBB.setMax(bb.getMax()+this->position);
+        newBB.setMin(bb.getMin()+this->position);
         //this->position = m_MatrixEnemy.translation();
         
         //cout << "position:" << this->position.X << "," << this->position.Y << "," << this->position.Z << endl;
@@ -130,7 +133,7 @@ bool Enemy::getIsHit(){
 }
 
 void Enemy::draw() {
-    
+    drawBB(newBB);
     Matrix m;
     glPointSize(10);
     glBegin(GL_POINTS);
@@ -167,7 +170,36 @@ void Enemy::spawnProjektil()
 void Enemy::setIsHit(bool isHit){
     this->isHit = isHit;
 }
-
+void Enemy::drawBB(BoundingBox &b){
+    glColor3f(1,1,1);
+    glBegin(GL_LINE_LOOP);
+    glVertex3f(b.getMax().X,b.getMax().Y,b.getMin().Z);
+    glVertex3f(b.getMin().X,b.getMax().Y,b.getMin().Z);
+    glVertex3f(b.getMin().X,b.getMin().Y,b.getMin().Z);
+    glVertex3f(b.getMax().X,b.getMin().Y,b.getMin().Z);
+    glEnd();
+    
+    glBegin(GL_LINE_LOOP);
+    glVertex3f(b.getMax().X,b.getMin().Y,b.getMax().Z);
+    glVertex3f(b.getMax().X,b.getMax().Y,b.getMax().Z);
+    glVertex3f(b.getMin().X,b.getMax().Y,b.getMax().Z);
+    glVertex3f(b.getMin().X,b.getMin().Y,b.getMax().Z);
+    glEnd();
+    
+    glBegin(GL_LINE_LOOP);
+    glVertex3f(b.getMax().X,b.getMax().Y,b.getMin().Z);
+    glVertex3f(b.getMax().X,b.getMax().Y,b.getMax().Z);
+    glVertex3f(b.getMin().X,b.getMax().Y,b.getMax().Z);
+    glVertex3f(b.getMin().X,b.getMax().Y,b.getMin().Z);
+    glEnd();
+    
+    glBegin(GL_LINE_LOOP);
+    glVertex3f(b.getMax().X,b.getMin().Y,b.getMax().Z);
+    glVertex3f(b.getMin().X,b.getMin().Y,b.getMax().Z);
+    glVertex3f(b.getMin().X,b.getMin().Y,b.getMin().Z);
+    glVertex3f(b.getMax().X,b.getMin().Y,b.getMin().Z);
+    glEnd();
+}
 
 
 
