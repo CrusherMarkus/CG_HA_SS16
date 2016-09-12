@@ -57,7 +57,7 @@ Model *ModelBuilder::buildModel(const char* Filename) {
         vertices[i * 3 + 2].texCoordT = objModel->textureCoordinates[TexIdx2].t;
         
         // Normalen berechnen
-
+        
         Vector normal = (b - a).cross(c - a);
         normal.normalize();
         

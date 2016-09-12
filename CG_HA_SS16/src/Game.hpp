@@ -23,7 +23,7 @@
 #include "DefenseObject.hpp"
 #include "VehicleCamera.hpp"
 #include <Math.h>
-extern short HP;
+
 extern Timer g_Timer;
 extern Camera g_Camera;
 extern DefenseObject m_DefenseObject;
@@ -41,7 +41,7 @@ public:
     ~Game();
     vector<Enemy*> enemies;
     void initialize();
-	void gameLoop();
+    void gameLoop();
     void gameLogic();
     void spawnEnemies(float deltatime);
     void collision();
@@ -53,17 +53,13 @@ public:
     
     Enemy m_Enemy;
     Terrain *terrain;
-    
     VehicleCamera m_Camera;
-
-    
     DefenseObject m_DefenseObject;
     
     int getEnemySize();
     
-    
 protected:
 private:
-
+    
 };
 #endif /* Game_hpp */

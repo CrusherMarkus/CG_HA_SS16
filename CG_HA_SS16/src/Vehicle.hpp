@@ -42,7 +42,6 @@ public:
     
     const Matrix& getModelViewMatrix() const;
 
-    
     void spawnProjektil();
     
     vector<Projektil*> getProjektils();
@@ -52,15 +51,10 @@ public:
     void drawBB(BoundingBox& b );
     BoundingBox newBB;
 
-
-    
     SceneObj *sceneObjCanonModel = new SceneObj();
     SceneObj *sceneObjChassisModel = new SceneObj();
-    SceneObj *sceneObjmodel = new SceneObj();
-    
-protected:
-    
 
+protected:
 
     Vector position;
     

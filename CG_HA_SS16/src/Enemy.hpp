@@ -20,33 +20,31 @@
 using namespace std;
 
 class Enemy{
-    public:
-        Enemy();
-        ~Enemy();
-        bool load(const char* Model, const Vector& v);
-        void update(float delta);
-        void draw();
-        Vector& getPosition();
-        void updateProjektils(float delta);
-        bool getIsHit();
-        float angleFacingMid;
-        Matrix m_MatrixEnemy;
-        SceneObj *enemy = new SceneObj();
-        void setIsHit(bool);
-        void drawBB(BoundingBox& b );
-        void spawnProjektil();
-        BoundingBox bb;
-        BoundingBox newBB;
+public:
+    Enemy();
+    ~Enemy();
+    bool load(const char* Model, const Vector& v);
+    void update(float delta);
+    void draw();
+    Vector& getPosition();
+    void updateProjektils(float delta);
+    bool getIsHit();
+    float angleFacingMid;
+    Matrix m_MatrixEnemy;
+    SceneObj *enemy = new SceneObj();
+    void setIsHit(bool);
+    void drawBB(BoundingBox& b );
+    void spawnProjektil();
+    BoundingBox bb;
+    BoundingBox newBB;
     
-        short getHp() const;
-        void setHp(short hp);
-        short getMaxHp() const;
-        void setMaxHp(short maxHp);
+    short getHp() const;
+    void setHp(short hp);
+    short getMaxHp() const;
+    void setMaxHp(short maxHp);
     
-        bool isAlive() const;
-        void setAlive(bool alive);
-    
-    
+    bool isAlive() const;
+    void setAlive(bool alive);
     
 protected:
     vector<Projektil*> projektils;

@@ -74,7 +74,7 @@ void SpecialKeyboardUpCallback( int key, int x, int y);
 
 int main(int argc, char * argv[])
 {
-    HP = 100;
+    
     //  Set the window x and y coordinates such that the
     //  window becomes centered
     centerOnScreen ();
@@ -116,15 +116,15 @@ void SetupGLUI() {
     glui->add_statictext_to_panel(gameinfo_panel, "Zeit");
     gluiStaticText_Time = glui->add_statictext_to_panel(gameinfo_panel, "- Sekunden");
     /*glui->add_statictext_to_panel(gameinfo_panel, "FPS");
-    gluiStaticText_FPS = glui->add_statictext_to_panel(gameinfo_panel, "-");*/
-
+     gluiStaticText_FPS = glui->add_statictext_to_panel(gameinfo_panel, "-");*/
+    
     
     GLUI_Panel* vehicle_panel = glui->add_panel("Vehicle");
     glui->add_statictext_to_panel(vehicle_panel, "Position");
     
     gluiStaticText_VehicleForwardBackward = glui->add_statictext_to_panel(vehicle_panel, "-");
     gluiStaticText_VehicleLeftRight = glui->add_statictext_to_panel(vehicle_panel, "-");
-
+    
     gluiStaticText_VehiclePositionX = glui->add_statictext_to_panel(vehicle_panel, "-");
     gluiStaticText_VehiclePositionY = glui->add_statictext_to_panel(vehicle_panel, "-");
     gluiStaticText_VehiclePositionZ = glui->add_statictext_to_panel(vehicle_panel, "-");
@@ -145,7 +145,7 @@ void SetupGLUI() {
     GLUI_Panel* defence_panel = glui->add_panel("Verteidigung");
     gluiStaticText_DefenceHp = glui->add_statictext_to_panel(defence_panel, "-");
     
-
+    
     
     //  Let the GLUI window know where its main graphics window is
     glui->set_main_gfx_window(g_MainWindow);
@@ -330,7 +330,7 @@ void SpecialKeyboardUpCallback( int key, int x, int y)
         default:
             break;
     }
-
+    
 }
 
 void updateGlui() {
@@ -341,8 +341,8 @@ void updateGlui() {
     
     
     /*float fps = (float) g_Timer.getFPS();
-    s = to_string(fps);
-    gluiStaticText_FPS->set_text(s.c_str());*/
+     s = to_string(fps);
+     gluiStaticText_FPS->set_text(s.c_str());*/
     
     
     Vector vehiclePosition = g_Game.m_Vehicle.getPosition();
@@ -354,7 +354,7 @@ void updateGlui() {
     float leftRight = g_Game.m_Vehicle.getLeftRight();
     gluiStaticText_VehicleForwardBackward->set_text((to_string(forwardBackward).insert(0, "forwardBackward:")).c_str());
     gluiStaticText_VehicleLeftRight->set_text((to_string(leftRight).insert(0, "leftRight:")).c_str());
-
+    
     
     int projectileSize = g_Game.m_Vehicle.getProjektils().size();
     gluiStaticText_ProjectilesSize->set_text((to_string(projectileSize).insert(0, "Anzahl Projektile:")).c_str());
@@ -367,10 +367,10 @@ void updateGlui() {
     int enemySize = g_Game.getEnemySize();
     gluiStaticText_EnemySize->set_text((to_string(enemySize).insert(0, "Anzahl Gegner:")).c_str());
     
-    short defenceHp = g_Game.m_DefenseObject.getHp();
-    cout << "defenceHp:" << defenceHp << endl;
-    gluiStaticText_DefenceHp->set_text((to_string(defenceHp).insert(0, "Lebenpunkte:")).c_str());
-
+    /*short defenceHp = g_Game.m_DefenseObject.getHp();
+     cout << "defenceHp:" << defenceHp << endl;
+     gluiStaticText_DefenceHp->set_text((to_string(defenceHp).insert(0, "Lebenpunkte:")).c_str());*/
+    
 }
 
 //-------------------------------------------------------------------------
@@ -381,14 +381,14 @@ void display()
 {
     //  Clear the window
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+    
     
     
     g_Game.gameLoop();
     g_Camera.update(g_Timer.getDeltaTime());
     
     updateGlui();
-        
+    
     DrawGroundGrid();
     
     //  Swap contents of backward and forward frame buffers

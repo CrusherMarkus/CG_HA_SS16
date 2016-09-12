@@ -108,15 +108,15 @@ void Terrain::draw() const {
     // initailize shader and draw the triangles
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->indexBufferIdentifier);
     /*ShaderProgram *shader = ShaderManager::getInstance().getShader("terrain");
+     
+     shader->activate();
+     shader->setParameter(shader->getParameterIdentifier("DetailMap1"), 1);
+     shader->setParameter(shader->getParameterIdentifier("DetailMap2"), 0);
+     shader->setParameter(shader->getParameterIdentifier("MixMap"), 2);
+     
+     glDrawElements(GL_TRIANGLES, this->numberOfIndices, GL_UNSIGNED_INT, 0);
+     shader->deactivate();*/
     
-    shader->activate();
-    shader->setParameter(shader->getParameterIdentifier("DetailMap1"), 1);
-    shader->setParameter(shader->getParameterIdentifier("DetailMap2"), 0);
-    shader->setParameter(shader->getParameterIdentifier("MixMap"), 2);
-    
-    glDrawElements(GL_TRIANGLES, this->numberOfIndices, GL_UNSIGNED_INT, 0);
-    shader->deactivate();*/
-
     // disable mixmap
     glBindTexture(GL_TEXTURE_2D, 0);
     glDisable(GL_TEXTURE_2D);

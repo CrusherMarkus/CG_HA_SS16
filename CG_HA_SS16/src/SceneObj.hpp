@@ -21,7 +21,7 @@ class SceneObj {
 protected:
     std::string name;
     Model *model;
-
+    
     Matrix localTransform;
     Vector translation;
     Vector translationTarget;
@@ -36,12 +36,12 @@ public:
     ~SceneObj();
     
     bool operator==(const SceneObj &other);
-
+    
     const std::string& getName() const;
     void setName(const std::string& Name);
     Model* getModel() const;
     void setModel(Model* pModel);
-
+    
     Matrix getGlobalTransform() const;
     const Matrix &getLocalTransform() const;
     void setLocalTransform(const Vector& Translation, const Vector& RotationAxis, const float RotationAngle);
@@ -51,7 +51,7 @@ public:
     const float getRotationAngle() const;
     const Vector& getScaling() const;
     void setScaling(const Vector& Scaling);
-        
+    
     void computeBoundingBox();
     
     void scaleTo(float scaling);

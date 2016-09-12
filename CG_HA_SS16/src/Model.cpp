@@ -95,7 +95,7 @@ void Model::draw() const {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->indexBufferIdentifier);
     glDrawElements(GL_TRIANGLES, this->numberOfIndices, GL_UNSIGNED_INT, 0);
     shader->deactivate();
-
+    
     
     glDisableClientState(GL_VERTEX_ARRAY);
     glDisableClientState(GL_NORMAL_ARRAY);

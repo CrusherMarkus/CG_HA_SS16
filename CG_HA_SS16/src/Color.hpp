@@ -18,7 +18,7 @@ public:
     float B;
     
     Color() : R(0), G(0), B(0) {}
-	Color(float r, float g, float b) : R(r), G(g), B(b) {}
+    Color(float r, float g, float b) : R(r), G(g), B(b) {}
     Color operator*(const Color& c) const;
     Color operator*(const float Factor) const;
     Color operator+(const Color& c) const;

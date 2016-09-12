@@ -37,9 +37,9 @@ public:
     void setPosition( const Vector& Pos);
     void setTarget( const Vector& Target);
     void setUp( const Vector& Up);
-
+    
     void mouseInput( int x, int y, int Button, int State);
-
+    
     
     void apply();
     const Matrix& getViewMatrix() const;

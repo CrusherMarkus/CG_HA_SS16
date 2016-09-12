@@ -16,7 +16,7 @@ Game::Game()
 
 Game::~Game()
 {
-
+    
 }
 
 void Game::initialize(){
@@ -25,24 +25,22 @@ void Game::initialize(){
     Vector *startpos = new Vector(0, 0, -3);
     
     m_Vehicle.load("objs/tank_bottom.obj","objs/tank_top.obj",*startpos);
-        
-
+    
+    
     m_Enemy.load("objs/tank-camou.obj",*new Vector(20,0,20));
     m_DefenseObject.load("objs/gingerbreadhouse.obj", *new Vector(0,0,0));
-
+    
     //ModelBuilder modelBuilder;
     //terrain = modelBuilder.buildTerrain("tex/heightmap.bmp", "tex/sand.bmp", "tex/grass.bmp", "tex/mixmap.bmp", 60, 60, 0);
     
 }
 
-
-
 void Game::gameLoop() {
-   
-    /*Spiellogik*/
+    
+    // Spiellogik
     gameLogic();
     
-    /*Timer aktualisieren*/
+    // Timer aktualisieren
     g_Timer.calcTime();
     float deltaTimeInSeconds = g_Timer.getDeltaTimeInSeconds();
     
@@ -62,27 +60,22 @@ void Game::gameLoop() {
     m_DefenseObject.update(deltaTimeInSeconds);
     m_DefenseObject.draw();
     
-    cout << "game hp:"<< m_DefenseObject.getHp() << endl;
     // Terrain erstellen
-
     //terrain->draw();
+    
     collision();
     
-    /*Camera Position updaten*/
+    // Camera Position updaten
     m_Camera.update(m_Vehicle.getPosition(), m_Vehicle.getModelViewMatrix().right(), 7.0f, m_Vehicle.getPosition().Y + 3.0f, 4.0f, deltaTimeInSeconds);
     m_Camera.apply();
-
-    //g_Camera.apply();
-
-    
 }
 
 
 void Game::gameLogic() {
     
-    if(m_DefenseObject.getHp() <= 0){
-        restartGame();
-    }
+    /*if(m_DefenseObject.getHp() <= 0){
+     restartGame();
+     }*/
 }
 
 int Game::getEnemySize(){
@@ -92,7 +85,6 @@ int Game::getEnemySize(){
 
 void Game::spawnEnemies(float deltatime){
     this->spawnTimer -= deltatime*3;
-    //cout << "spawntimer:"<< this->spawnTimer << endl;
     if (gameOver){
         return;
     }else {
@@ -111,11 +103,11 @@ void Game::spawnEnemies(float deltatime){
             spawnTimer = this->spawnTime;
             Enemy *tmp;
             
-
+            
             random_device rd; // obtain a random number from hardware
             mt19937 eng(rd()); // seed the generator
             uniform_int_distribution<int> distr(-30, 30); // define the range
-        
+            
             int x = 0;
             int z = 0;
             
@@ -127,9 +119,9 @@ void Game::spawnEnemies(float deltatime){
                 z = distr(eng);
                 cout << "z: "<< z<< endl;
             }
-
+            
             cout << "x:"<<x <<" z="<< z << endl;
-
+            
             tmp = new Enemy();
             Vector ePos = *new Vector(x,0,z);
             tmp->load("objs/tank-camou.obj", ePos);
@@ -138,8 +130,8 @@ void Game::spawnEnemies(float deltatime){
         }
         
     }
- 
-        
+    
+    
 }
 
 void Game::collision(){
@@ -148,36 +140,34 @@ void Game::collision(){
         cout << enemies.at(i)->getIsHit() << endl;
         
         //Check Collision between Tank and Enemies
-        
         BoundingBox tmp = enemies.at(i)->newBB;
-       enemies.at(i)->setIsHit((tank.getMin().X <= tmp.getMax().X && tank.getMax().X >= tmp.getMin().X) &&
-        (tank.getMin().Y <= tmp.getMax().Y && tank.getMax().Y >= tmp.getMin().Y) &&
-        (tank.getMin().Z <= tmp.getMax().Z && tank.getMax().Z >= tmp.getMin().Z));
-       cout << enemies.at(i)->getIsHit() << endl;
+        enemies.at(i)->setIsHit((tank.getMin().X <= tmp.getMax().X && tank.getMax().X >= tmp.getMin().X) &&
+                                (tank.getMin().Y <= tmp.getMax().Y && tank.getMax().Y >= tmp.getMin().Y) &&
+                                (tank.getMin().Z <= tmp.getMax().Z && tank.getMax().Z >= tmp.getMin().Z));
+        cout << enemies.at(i)->getIsHit() << endl;
         
         // Check Collision between Projectile Spheres and Enemies
-        
         if(!enemies.at(i)->getIsHit()){
             
-          for (int j =0; j< m_Vehicle.getProjektils().size();j++){
-              float a= max(tmp.getMin().X, min(m_Vehicle.getProjektils().at(j)->getPosition().X, tmp.getMax().X));
-              float b = max(tmp.getMin().Y, min(m_Vehicle.getProjektils().at(j)->getPosition().Y,tmp.getMax().Y));
-              float c = max(tmp.getMin().Z,min(m_Vehicle.getProjektils().at(j)->getPosition().Z,tmp.getMax().Z));
-        
-              float distance = sqrt((a - m_Vehicle.getProjektils().at(j)->getPosition().X) * (a - m_Vehicle.getProjektils().at(j)->getPosition().X) +
-                                    (b - m_Vehicle.getProjektils().at(j)->getPosition().Y) * (b - m_Vehicle.getProjektils().at(j)->getPosition().Y) +
-                                    (c - m_Vehicle.getProjektils().at(j)->getPosition().Z) * (c - m_Vehicle.getProjektils().at(j)->getPosition().Z));
-              cout << "Distance: "<< distance << endl;
-              enemies.at(i)->setIsHit(distance < 0.3);
-          }
+            for (int j =0; j< m_Vehicle.getProjektils().size();j++){
+                float a= max(tmp.getMin().X, min(m_Vehicle.getProjektils().at(j)->getPosition().X, tmp.getMax().X));
+                float b = max(tmp.getMin().Y, min(m_Vehicle.getProjektils().at(j)->getPosition().Y,tmp.getMax().Y));
+                float c = max(tmp.getMin().Z,min(m_Vehicle.getProjektils().at(j)->getPosition().Z,tmp.getMax().Z));
+                
+                float distance = sqrt((a - m_Vehicle.getProjektils().at(j)->getPosition().X) * (a - m_Vehicle.getProjektils().at(j)->getPosition().X) +
+                                      (b - m_Vehicle.getProjektils().at(j)->getPosition().Y) * (b - m_Vehicle.getProjektils().at(j)->getPosition().Y) +
+                                      (c - m_Vehicle.getProjektils().at(j)->getPosition().Z) * (c - m_Vehicle.getProjektils().at(j)->getPosition().Z));
+                cout << "Distance: "<< distance << endl;
+                enemies.at(i)->setIsHit(distance < 0.3);
+            }
         }
-  
+        
     }
 }
 
 void Game::restartGame(){
     std::cout << "Game::restartGame" << std::endl;
-
+    
     
     this->startGame();
     

@@ -18,10 +18,6 @@ Vehicle::~Vehicle() {
 bool Vehicle::load(const char* ChassisModel, const char* CanonModel, const Vector& StartPos){
     ModelBuilder modelBuilder;
     
-    std::cout << "ChassisModel:" << ChassisModel << std::endl;
-    std::cout << "CanonModel:" << CanonModel << std::endl;
-    
-    
     Model *chassisModel = modelBuilder.buildModel(ChassisModel);
     sceneObjChassisModel->setModel(chassisModel);
     sceneObjChassisModel->setScaling(Vector(0.5, 0.5, 0.5));
@@ -30,12 +26,11 @@ bool Vehicle::load(const char* ChassisModel, const char* CanonModel, const Vecto
     sceneObjCanonModel->setModel(canonModel);
     sceneObjCanonModel->setScaling(Vector(0.5, 0.5, 0.5));
     
-    
-	this->position = StartPos;
+    this->position = StartPos;
     sceneObjChassisModel->computeBoundingBox();
-
+    
     this->bb = sceneObjChassisModel->getModel()->getBoundingBox();
-       
+    
     return true;
 }
 
@@ -53,7 +48,6 @@ void Vehicle::update(float delta){
     
     // Chassis
     m_MatrixVehicle = sceneObjChassisModel->getLocalTransform();
-    
     
     Matrix TM;
     TM.identity();
@@ -79,76 +73,36 @@ void Vehicle::update(float delta){
     RTM = TM * RM;
     
     m_MatrixVehicle = RTM;
-
+    
     // Chassis und Cannon gleiche Position
     sceneObjChassisModel->setLocalTransform(m_MatrixVehicle);
     sceneObjCanonModel->setLocalTransform(m_MatrixVehicle);
     this->position = m_MatrixVehicle.translation();
-    //sceneObjChassisModel->computeBoundingBox();
     
-    
-   /* newBB.setMax(*new Vector(m_MatrixVehicle.translation().X+bb.getMax().X,m_MatrixVehicle.translation().Y+bb.getMax().Y,m_MatrixVehicle.translation().Z+bb.getMax().Z));
-    newBB.setMin(*new Vector(m_MatrixVehicle.translation().X+bb.getMax().X,m_MatrixVehicle.translation().Y+bb.getMax().Y,m_MatrixVehicle.translation().Z+bb.getMax().Z));*/
     newBB.setMax(bb.getMax()+m_MatrixVehicle.translation());
     newBB.setMin(bb.getMin()+m_MatrixVehicle.translation());
 }
 
 void Vehicle::updateProjektils(float deltaTimeInSeconds){
     
-    /*
-    for (list<Projektil*>::const_iterator it = projektils.begin(); it != projektils.end();)
-    {
-
-        (**it).draw(deltaTimeInSeconds);
-        cout << "(**it).getPosition().length()" << (**it).getPosition().length() << endl;
-        cout << "(**it).getMaxDistance()" << (**it).getMaxDistance() << endl;
-   
-        
-                if((**it).getPosition().length() >= (**it).getMaxDistance()) {
-           
-            Vector tmp = Vector((*it)->getPosition().X,(*it)->getPosition().Y,(*it)->getPosition().Z);
-            this->explosions.push_back(new Explosion(tmp));
-            ++it;
-            
-            this->projektils.erase(this->projektils.begin());
-        
-        }
-    }*/
     // Projektile darstellen
     for( int i = 0; i< projektils.size(); i++){
         Projektil* tmp = projektils.at(i);
         tmp->draw(deltaTimeInSeconds);
         // Wenn die maximale Distance erreichst ist Projektil löschen und Explision
-
+        
         if(tmp->getDistance() >= tmp->getMaxDistance()){
-             // Explosion hinzufügen
+            // Explosion hinzufügen
             Vector tmp2 = Vector(tmp->getPosition().X,tmp->getPosition().Y,tmp->getPosition().Z);
             this->explosions.push_back(new Explosion(tmp2));
             // Projektil löschen
             projektils.erase(projektils.begin());
         }
     }
-
-    
 }
 
 void Vehicle::updateExplosions(float deltaTimeInSeconds){
     // Explosions darstellen
-    /*for (list<Explosion*>::const_iterator it = explosions.begin(); it != explosions.end(); )
-    {
-        
-        if (!(*it)->endExplosion)
-        {
-            (*it)->draw(deltaTimeInSeconds);
-            ++it;
-        }
-        else
-        {
-            delete (*it);
-            ++it;
-            this->explosions.pop_front();
-        }
-    }*/
     for (int i = 0; i < explosions.size(); i++){
         Explosion* tmp = explosions.at(i);
         
@@ -162,13 +116,11 @@ void Vehicle::updateExplosions(float deltaTimeInSeconds){
     }
 }
 
-
 Vector& Vehicle::getPosition(){
     return this->position;
 }
 
 void Vehicle::draw() {
-    //BoundingBox lol = sceneObjChassisModel->getModel()->getBoundingBox();
     drawBB(newBB);
     Matrix m;
     glPointSize(10);
@@ -203,18 +155,18 @@ vector<Projektil*> Vehicle::getProjektils() {
 void Vehicle::spawnProjektil()
 {
     
-    // Startposition des Projektils, Position des Vehicles, Möglichkeit zur Änderung durch +1.0, etc... 
+    // Startposition des Projektils, Position des Vehicles, Möglichkeit zur Änderung durch +1.0, etc...
     Vector projektilPosition = *new Vector(this->position.X, this->position.Y, this->position.Z);
     
     // Richtung der Z-Achse
     Matrix direction = this->sceneObjCanonModel->getLocalTransform();
     Vector directionZ = direction.right();
     directionZ.normalize();
- 
+    
     // Projekttil Anzahl begrenzen wenn gewünscht
-    //if(projektils.size() < 5) {
+    if(projektils.size() < 1) {
         projektils.push_back(new Projektil(projektilPosition, directionZ));
-    //}
+    }
 }
 
 void Vehicle::drawBB(BoundingBox &b){

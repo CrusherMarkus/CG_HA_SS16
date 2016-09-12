@@ -126,7 +126,7 @@ void ShaderProgram::deactivate() const {
 void ShaderProgram::loadShaderCodeFromFile(const char *shaderPathAndFilename, std::string *shaderCode) {
     std::ifstream shaderStream(shaderPathAndFilename, std::ios::in);
     std::cout << "shaderPathAndFilename" << shaderPathAndFilename <<  std::endl;
-
+    
     if (!shaderStream.is_open()) {
         char *errorMessage;
         sprintf(errorMessage, "Could not open file %s for reading.", shaderPathAndFilename);

@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "CG_HA_SS16/src/Enemy.cpp"
-            timestampString = "495342180.079559"
+            timestampString = "495357555.354875"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "12"
-            endingLineNumber = "12"
+            startingLineNumber = "11"
+            endingLineNumber = "11"
             landmarkName = "Enemy::Enemy()"
             landmarkType = "5">
          </BreakpointContent>

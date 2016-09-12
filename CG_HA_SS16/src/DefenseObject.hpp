@@ -21,24 +21,15 @@ public:
     DefenseObject();
     ~DefenseObject();
     bool load(const char* DefenseModel, const Vector& StartPos);
-
     void update(float delta);
-
     void draw();
-    
     Vector& getPosition();
-    
     Matrix m_MatrixDefenseObject;
-
-
     
 protected:
-    
-        
     SceneObj *defenseObject = new SceneObj();
     Vector position;
     Vector p;
-
 };
 
 #endif /* DefenseObject_hpp */

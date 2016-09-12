@@ -42,8 +42,8 @@ void Camera::setPosition( const Vector& Pos)
 {
     m_Position = Pos;
     m_Panning = m_Rotation = m_Zoom = Vector(0,0,0);
-
-
+    
+    
 }
 void Camera::setTarget( const Vector& Target)
 {
@@ -85,11 +85,11 @@ void Camera::mouseInput( int x, int y, int Button, int State)
         m_Rotation = Vector(0,0,0);
         m_LastMouseX = -1;
         m_LastMouseY = -1;
-
+        
     }
 }
 void Camera::neuePos(int forwarbackward, int leftright){
-
+    
     forwardBackward = forwarbackward;
     leftRight = leftright;
 }
@@ -110,14 +110,14 @@ void Camera::zoom( float dz)
     Vector aDir = m_Target-m_Position;
     float Dist = aDir.length();
     aDir.normalize();
-  
+    
     if( Dist-dz <= 1.0f)
     {
         m_Zoom = aDir * (Dist-1.0f);
         return;
     }
     
-     m_Zoom = aDir * dz;
+    m_Zoom = aDir * dz;
 }
 
 void Camera::rotate( float x, float y )
@@ -148,7 +148,7 @@ void Camera::rotate( float x, float y )
     Vector cright = cdir.cross(cup);
     cright.normalize();
     cup = cright.cross(cdir);
-
+    
     Vector RotDiffW;
     RotDiffW.X = cright.X * RotDiff.X + cup.X * RotDiff.Y +  -cdir.X * RotDiff.Z;
     RotDiffW.Y = cright.Y * RotDiff.X + cup.Y * RotDiff.Y +  -cdir.Y * RotDiff.Z;
@@ -168,7 +168,7 @@ Vector Camera::rotateAxisAngle( Vector v, Vector n, float a)
     o.X = mx.dot(v);
     o.Y = my.dot(v);
     o.Z = mz.dot(v);
-
+    
     return o;
 }
 
@@ -190,7 +190,7 @@ Vector Camera::getVSpherePos( float x, float y)
     p.Y = -p.Y;
     
     float sqrLen = p.lengthSquared();
-
+    
     if( sqrLen <= 1.0f)
     {
         p.Z = sqrt( 1- sqrLen);

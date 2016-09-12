@@ -19,38 +19,23 @@ DefenseObject::~DefenseObject() {
 bool DefenseObject::load(const char* modelname, const Vector& StartPos) {
     
     ModelBuilder modelBuilder;
-    
-        //std::cout << "DefenseObject: " << modelname << std::endl;
-    
     Model *newModel = modelBuilder.buildModel(modelname);
-
+    
     defenseObject->setModel(newModel);
     defenseObject->setLocalTransform(StartPos, *new Vector(0,1,0),0);
     defenseObject->setScaling(Vector(0.5, 0.5, 0.5));
     
-    
     this->position = StartPos;
-    
     return true;
-    
 }
 
-
 void DefenseObject::update(float delta){
-    //std::cout << "DefenseObject-delta " << delta << std::endl;
-    
     this->m_MatrixDefenseObject = defenseObject->getLocalTransform();
-    
-
-
-
-    
 }
 
 void DefenseObject::draw(){
     
     Matrix m;
-    
     glPushMatrix();
     glMultMatrixf(defenseObject->getLocalTransform() * m.scale(defenseObject->getScaling()));
     defenseObject->getModel()->draw();
