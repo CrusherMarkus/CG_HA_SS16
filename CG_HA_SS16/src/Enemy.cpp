@@ -10,6 +10,7 @@
 
 
 Enemy::Enemy() {
+    
 }
 
 Enemy::~Enemy() {
@@ -47,6 +48,9 @@ bool Enemy::load(const char* modelname, const Vector& v) {
     
     enemy->setScaling(Vector(0.5, 0.5, 0.5));
 
+    this->maxHp = 100;
+    this->hp = 100;
+    this->alive = true;
     this->position = v;
     return true;
 
@@ -209,6 +213,31 @@ void Enemy::drawBB(BoundingBox &b){
     glVertex3f(b.getMax().X,b.getMin().Y,b.getMin().Z);
     glEnd();
 }
+
+short Enemy::getHp() const
+{
+    return this->hp;
+}
+void Enemy::setHp(short hp)
+{
+    this->hp = hp;
+}
+short Enemy::getMaxHp() const
+{
+    return this->maxHp;
+}
+void Enemy::setMaxHp(short maxHp)
+{
+    this->maxHp = maxHp;
+}
+
+bool Enemy::isAlive() const{
+    return this->alive;
+}
+void Enemy::setAlive(bool alive){
+    this->alive = alive;
+}
+
 
 
 
