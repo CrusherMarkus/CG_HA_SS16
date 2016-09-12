@@ -39,7 +39,7 @@ class Enemy{
         BoundingBox newBB;
     
 protected:
-    list<Projektil*> projektils;
+    vector<Projektil*> projektils;
     Vector position;
     
     Vector p;

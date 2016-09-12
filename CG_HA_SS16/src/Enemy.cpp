@@ -111,15 +111,24 @@ void Enemy::updateProjektils(float deltaTimeInSeconds){
 
     
     // Projektile
-    for (list<Projektil*>::const_iterator it = (projektils).begin(); it != (projektils).end();)
-    {
+            for( int i = 0; i< projektils.size(); i++){
+            Projektil* tmp = projektils.at(i);
+            tmp->draw(deltaTimeInSeconds);
+            
+            if(tmp->getPosition().length() >= tmp->getMaxDistance()){
+                  projektils.erase(projektils.begin());
+            }
+        }
+    
+        /*for (vector<Projektil*>::const_iterator it = (projektils).begin(); it != (projektils).end();)
+
         (**it).draw(deltaTimeInSeconds);
         
         if((**it).getPosition().length() >= (**it).getMaxDistance()) {
-            projektils.pop_front();
+          
         }
         ++it;
-    }
+    }*/
     
 }
     
