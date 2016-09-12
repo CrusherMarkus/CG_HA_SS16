@@ -147,7 +147,10 @@ void Game::collision(){
         (tank.getMin().Z <= tmp.getMax().Z && tank.getMax().Z >= tmp.getMin().Z));
        cout << enemies.at(i)->getIsHit() << endl;
     }
-    
-    
-    
+    /*
+    for (int j =0; j< m_Vehicle.getProjektils().size();j++){
+        float a= Math.max(
+    }    
+     
+     */
 }

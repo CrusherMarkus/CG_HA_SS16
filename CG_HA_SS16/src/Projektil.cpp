@@ -10,7 +10,7 @@
 
 Projektil::Projektil()
 {
-    
+    this->radius=0.1;
 }
 
 Projektil::~Projektil()
@@ -49,7 +49,7 @@ void Projektil::draw(float time){
     glTranslatef(this->position->X,this->position->Y,this->position->Z);
     
     // Kugel erzeugen
-    glutSolidSphere(0.1,25,25);
+    glutSolidSphere(this->radius,25,25);
     glPopMatrix();
 
 }

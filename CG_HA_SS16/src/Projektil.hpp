@@ -27,6 +27,7 @@ public:
     Vector getPosition();
     Vector getDirection();
     float getMaxDistance();
+    float radius;
     
 protected:
 private:
