@@ -81,7 +81,7 @@ void Enemy::update(float delta){
             spawnProjektil();
 
             
-            gl::hp -= 10;
+            gl::hp -= 5;
 
         }
     }

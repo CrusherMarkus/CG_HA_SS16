@@ -72,9 +72,10 @@ void Game::gameLoop() {
 
 void Game::gameLogic() {
     
-    /*if(m_DefenseObject.getHp() <= 0){
-     restartGame();
-     }*/
+    if(gl::hp <= 0){
+        exit(0);
+        //restartGame();
+     }
 }
 
 int Game::getEnemySize(){
