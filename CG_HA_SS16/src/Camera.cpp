@@ -219,14 +219,10 @@ void Camera::apply()
 }
 
 void Camera::update(float delta){
-    
-    // Begrenzung links/rechts
-    if((getPosition().X > 4 && leftRight == 1) || (getPosition().X < -4 && leftRight == -1)){
-        cout << "X-Camera Grenze erreicht!" << endl;
-    } else {
+
         
         m_Panning.X += leftRight*0.003*delta;
         m_Panning.Z +=forwardBackward*0.003*delta;
-    }
-    
 }
+    
+

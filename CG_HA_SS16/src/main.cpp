@@ -74,7 +74,6 @@ void SpecialKeyboardUpCallback( int key, int x, int y);
 
 int main(int argc, char * argv[])
 {
-    
     //  Set the window x and y coordinates such that the
     //  window becomes centered
     centerOnScreen ();
@@ -367,10 +366,10 @@ void updateGlui() {
     int enemySize = g_Game.getEnemySize();
     gluiStaticText_EnemySize->set_text((to_string(enemySize).insert(0, "Anzahl Gegner:")).c_str());
     
-    /*short defenceHp = g_Game.m_DefenseObject.getHp();
-     cout << "defenceHp:" << defenceHp << endl;
-     gluiStaticText_DefenceHp->set_text((to_string(defenceHp).insert(0, "Lebenpunkte:")).c_str());*/
-    
+
+    //short defenceHp = g_Game.m_DefenseObject.getHp();
+    cout << "defenceHp:" << gl::hp << endl;
+    gluiStaticText_DefenceHp->set_text((to_string(gl::hp).insert(0, "Lebenpunkte:")).c_str());
 }
 
 //-------------------------------------------------------------------------

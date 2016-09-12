@@ -35,7 +35,6 @@ bool Enemy::load(const char* modelname, const Vector& v) {
         
     }
     
-    cout << angleFacingMid << endl;
     enemy->setScaling(Vector(1.0,1.0,1.0));
     enemy->setLocalTransform(v, Vector(0.0,1.0,0.0), angleFacingMid);
     
@@ -70,18 +69,20 @@ void Enemy::update(float delta){
         
         Vector moveVec = m_MatrixEnemy.forward();
         tm.translation(this->position);
-        
         m_MatrixEnemy.rotationY(angleFacingMid);
         tm *= m_MatrixEnemy;
         enemy->setLocalTransform(tm);
-        
         newBB.setMax(bb.getMax()+this->position);
         newBB.setMin(bb.getMin()+this->position);
-        
+
     } else {
         updateProjektils(delta);
         if(this->projektils.size() < 1 ){
             spawnProjektil();
+
+            
+            gl::hp -= 10;
+
         }
     }
 }
