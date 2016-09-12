@@ -39,10 +39,12 @@ float Projektil::getMaxDistance() {
     return maxDistance;
 }
 
-void Projektil::draw(float time){
+void Projektil::draw(float deltatime){
     
-    time = time *5 ;
-    
+   float time = deltatime *5 ;
+    if( this->distance < this->maxDistance){
+        this->distance += time*1.5;
+    }
    // *this->position += *this->direction * time /3000.0f;
     
     this->position = new Vector(this->position->X+this->direction->X*time,0.5,this->position->Z+this->direction->Z*time);
@@ -54,4 +56,8 @@ void Projektil::draw(float time){
     glutSolidSphere(0.1,25,25);
     glPopMatrix();
 
+}
+
+float Projektil::getDistance(){
+    return this->distance;
 }
