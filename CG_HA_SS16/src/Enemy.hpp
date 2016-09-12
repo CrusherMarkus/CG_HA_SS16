@@ -38,11 +38,24 @@ class Enemy{
         BoundingBox bb;
         BoundingBox newBB;
     
+        short getHp() const;
+        void setHp(short hp);
+        short getMaxHp() const;
+        void setMaxHp(short maxHp);
+    
+        bool isAlive() const;
+        void setAlive(bool alive);
+    
+    
+    
 protected:
     list<Projektil*> projektils;
     Vector position;
-    
     Vector p;
+    
+    short hp;
+    short maxHp;
+    bool alive;
     
     bool isHit;
 };
