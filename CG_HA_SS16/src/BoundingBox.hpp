@@ -23,6 +23,8 @@ public:
     
     Vector &getMin();
     Vector &getMax();
+    void setMax(Vector v);
+    void setMin(Vector v);
 };
 
 #endif /* BoundingBox_hpp */
