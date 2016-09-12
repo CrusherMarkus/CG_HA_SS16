@@ -42,6 +42,10 @@ void Vehicle::steer(float ForwardBackward, float LeftRight) {
     this->leftRight = LeftRight;
 }
 
+const Matrix& Vehicle::getModelViewMatrix() const{
+    return m_MatrixVehicle;
+}
+
 void Vehicle::update(float delta){
     
     

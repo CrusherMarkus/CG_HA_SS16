@@ -13,6 +13,7 @@
 		881DF5441D10A3F4006A0D83 /* RGBImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 881DF5421D10A3F4006A0D83 /* RGBImage.cpp */; };
 		8869F4031D85F97F000EC728 /* DefenseObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8869F4011D85F97F000EC728 /* DefenseObject.cpp */; };
 		8869F4061D85FE1B000EC728 /* Explosion.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8869F4041D85FE1B000EC728 /* Explosion.cpp */; };
+		8869F40F1D862D41000EC728 /* VehicleCamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8869F40D1D862D41000EC728 /* VehicleCamera.cpp */; };
 		887C3EC91D1124DE00CC0E32 /* Projektil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 887C3EC71D1124DE00CC0E32 /* Projektil.cpp */; };
 		887F7C281D0F0D0C001C0651 /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 887F7C1E1D0F0D0C001C0651 /* Camera.cpp */; };
 		887F7C291D0F0D0C001C0651 /* Color.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 887F7C1F1D0F0D0C001C0651 /* Color.cpp */; };
@@ -63,6 +64,8 @@
 		8869F4021D85F97F000EC728 /* DefenseObject.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = DefenseObject.hpp; path = src/DefenseObject.hpp; sourceTree = "<group>"; };
 		8869F4041D85FE1B000EC728 /* Explosion.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Explosion.cpp; path = src/Explosion.cpp; sourceTree = "<group>"; };
 		8869F4051D85FE1B000EC728 /* Explosion.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Explosion.hpp; path = src/Explosion.hpp; sourceTree = "<group>"; };
+		8869F40D1D862D41000EC728 /* VehicleCamera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = VehicleCamera.cpp; path = src/VehicleCamera.cpp; sourceTree = "<group>"; };
+		8869F40E1D862D41000EC728 /* VehicleCamera.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = VehicleCamera.hpp; path = src/VehicleCamera.hpp; sourceTree = "<group>"; };
 		887C3EC71D1124DE00CC0E32 /* Projektil.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Projektil.cpp; path = src/Projektil.cpp; sourceTree = "<group>"; };
 		887C3EC81D1124DE00CC0E32 /* Projektil.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Projektil.hpp; path = src/Projektil.hpp; sourceTree = "<group>"; };
 		887F7C151D0F0D0C001C0651 /* Camera.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Camera.hpp; path = src/Camera.hpp; sourceTree = "<group>"; };
@@ -223,6 +226,8 @@
 				887C3EC81D1124DE00CC0E32 /* Projektil.hpp */,
 				8869F4041D85FE1B000EC728 /* Explosion.cpp */,
 				8869F4051D85FE1B000EC728 /* Explosion.hpp */,
+				8869F40D1D862D41000EC728 /* VehicleCamera.cpp */,
+				8869F40E1D862D41000EC728 /* VehicleCamera.hpp */,
 			);
 			name = Game;
 			sourceTree = "<group>";
@@ -329,6 +334,7 @@
 				88C44B381D855644005F8633 /* ObjModel.cpp in Sources */,
 				8869F4061D85FE1B000EC728 /* Explosion.cpp in Sources */,
 				887F7C2E1D0F0D0C001C0651 /* ShaderProgram.cpp in Sources */,
+				8869F40F1D862D41000EC728 /* VehicleCamera.cpp in Sources */,
 				88C44B441D855BAD005F8633 /* Terrain.cpp in Sources */,
 				887F7C2A1D0F0D0C001C0651 /* main.cpp in Sources */,
 				88C58DB01D145C50001384AC /* Model.cpp in Sources */,

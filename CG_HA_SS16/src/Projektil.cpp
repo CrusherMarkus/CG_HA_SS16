@@ -31,7 +31,7 @@ Vector Projektil::getDirection(){
 Projektil::Projektil(Vector position, Vector direction){
     this->position = new Vector(position.X,position.Y,position.Z);
     this->direction = new Vector(direction.X,direction.Y,direction.Z);
-    this->maxDistance = 5.0f;
+    this->maxDistance = 15.0f;
     this->distance = 0.0f;
 }
 

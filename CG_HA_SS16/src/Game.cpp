@@ -25,6 +25,7 @@ void Game::initialize(){
     Vector *startpos = new Vector(0, 0, -3);
     
     m_Vehicle.load("objs/tank_bottom.obj","objs/tank_top.obj",*startpos);
+        
     m_Enemy.load("objs/tank-camou.obj",*new Vector(20,0,20));
     m_DefenseObject.load("objs/cylinder.obj", *new Vector(1,0,1));
 
@@ -61,8 +62,12 @@ void Game::gameLoop() {
     // Terrain erstellen
     //terrain->draw();
     collision();
+    
+    /*Camera Position updaten*/
+    m_Camera.update(m_Vehicle.getPosition(), m_Vehicle.getModelViewMatrix().right(), 7.0f, m_Vehicle.getPosition().Y + 3.0f, 4.0f, deltaTimeInSeconds);
+    m_Camera.apply();
 
-    g_Camera.apply();
+    //g_Camera.apply();
 
     
 }

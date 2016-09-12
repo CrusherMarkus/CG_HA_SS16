@@ -40,19 +40,25 @@ public:
     float getForwardBackward();
     float getLeftRight();
     
+    const Matrix& getModelViewMatrix() const;
+
+    
     void spawnProjektil();
     
     list<Projektil*> getProjektils();
     
     Matrix m_MatrixVehicle;
     Matrix m_MatrixCannon;
-    SceneObj *sceneObjChassisModel = new SceneObj();
     void drawBB(BoundingBox& b );
-
+    
+    SceneObj *sceneObjCanonModel = new SceneObj();
+    SceneObj *sceneObjChassisModel = new SceneObj();
+    SceneObj *sceneObjmodel = new SceneObj();
+    
 protected:
     
-        SceneObj *sceneObjCanonModel = new SceneObj();
-    
+
+
     Vector position;
     
     float forwardBackward = 0.0;
